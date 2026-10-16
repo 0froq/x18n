@@ -656,7 +656,7 @@ ${table(['Code', 'Message', 'Exit code'], codes.map(c => [`[${c}](/errors/${c.to
 
 function checkExample(id: string, severity: string): string {
   const property = /^[a-z]\w*$/i.test(id) ? id : `'${id}'`
-  return `\`\`\`ts [x18n.config.ts]\nimport { defineConfig } from 'x18n'\n\nexport default defineConfig({\n  checks: {\n    ${property}: '${severity}',\n  },\n})\n\`\`\``
+  return `\`\`\`ts [x18n.config.ts]\nimport { defineConfig } from '@x18n/core'\n\nexport default defineConfig({\n  checks: {\n    ${property}: '${severity}',\n  },\n})\n\`\`\``
 }
 
 function checkPages(): void {
@@ -707,7 +707,7 @@ A check reads the project and reports diagnostics. A diagnostic is one reported 
 The \`recommended\` set is every check that is not \`off\` below. Override the severity of a check in \`checks\`:
 
 \`\`\`ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

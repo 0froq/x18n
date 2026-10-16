@@ -14,9 +14,9 @@ x18n.config.yml  x18n.config.yaml  x18n.config.json
 `@x18n/node` loads them with `unconfig` (TS through its built-in loader). Without a config file, x18n runs on detection alone, the same as i18n-ally `autoDetection`.
 
 ```ts
+import { vueI18n } from '@x18n/cli/presets'
 // x18n.config.ts
-import { defineConfig } from 'x18n'
-import { vueI18n } from 'x18n/presets'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   sourceLocale: 'en',

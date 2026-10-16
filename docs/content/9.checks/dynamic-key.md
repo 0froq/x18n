@@ -16,7 +16,7 @@ A fully dynamic key, such as `t(key)`, has no static prefix. No check can follow
 Turn the check on in `checks`:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

@@ -16,7 +16,7 @@ Usages with a dynamic key are not reported. A usage with a static prefix, such a
 Change the severity, or turn the check off, in `checks`:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

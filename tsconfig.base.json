@@ -26,8 +26,11 @@
       "@x18n/ui": [
         "./packages/ui/src/node/index.ts"
       ],
-      "x18n": [
+      "@x18n/cli": [
         "./packages/cli/src/index.ts"
+      ],
+      "@x18n/cli/presets": [
+        "./packages/cli/src/presets.ts"
       ]
     },
     "resolveJsonModule": true,

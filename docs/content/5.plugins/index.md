@@ -25,7 +25,7 @@ A preset is a group of plugins with a `detect` function. x18n runs `detect` for 
 List plugins in the `plugins` option of the config. An entry is a path, a package name, `[specifier, options]`, or in TS a plugin object:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 import acme from './x18n/acme'
 
 export default defineConfig({

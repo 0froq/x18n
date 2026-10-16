@@ -63,7 +63,7 @@ MCP prompts: `translate`, `review`, `extract`.
 
 ## Shipped skill
 
-`packages/cli/skills/x18n/SKILL.md`, shipped in the `x18n` npm package (like devframe ships its skill), discoverable by `skills-npm`. Content:
+`packages/cli/skills/x18n/SKILL.md`, shipped in the `@x18n/cli` npm package (like devframe ships its skill), discoverable by `skills-npm`. Content:
 
 - When to use x18n instead of editing locale files.
 - The loops: "add a key while coding" (`x18n set` in source locale, then `x18n keys --missing`), "translate missing" (prompt, apply, check), "clean up" (`x18n keys --unused`, `x18n delete --dry-run`), "extract strings" (list, plan, apply).

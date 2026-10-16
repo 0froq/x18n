@@ -7,7 +7,7 @@
 | `packages/core` | `@x18n/core` | any JS runtime | Domain model, project engine, plugin runner, config schema, edit planner, checks, prompt builder. No I/O. |
 | `packages/builtins` | `@x18n/builtins` | any (some subpaths load WASM) | Built-in plugins and presets: formats, locale finders, scanners, extractors, checks, reporters. |
 | `packages/node` | `@x18n/node` | Node >= 22 | Node host (file system, glob, watch, cache, git identity), config and plugin loading. |
-| `packages/cli` | `x18n` | Node >= 22 | The `x18n` command. Also re-exports `defineConfig`, `definePlugin`, `definePreset` so users install one package. Ships the agent skill. |
+| `packages/cli` | `@x18n/cli` | Node >= 22 | The `x18n` command. Ships the agent skill. |
 | `packages/lsp` | `@x18n/lsp` | Node >= 22 | Language server (`x18n-lsp --stdio`). Hosts the UI server on request. |
 | `packages/ui` | `@x18n/ui` | Node side + browser SPA | devframe definition (node side) and the Nuxt SPA (browser side). |
 | `packages/vscode` | `x18n-vscode` (private, Marketplace + Open VSX) | VS Code extension host | Extension client. Bundles the LSP and UI assets. |

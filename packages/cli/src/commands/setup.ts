@@ -49,7 +49,7 @@ export async function init(options: GlobalOptions & { readonly format?: string |
   else {
     file = join(root, 'x18n.config.ts')
     const body = JSON.stringify(config, null, 2).replace(/"(\w+)":/g, '$1:').replace(/"/g, '\'')
-    content = `import { defineConfig } from 'x18n'\n\n// Detected presets: ${detected.join(', ') || 'none'}. They apply automatically.\nexport default defineConfig(${body})\n`
+    content = `import { defineConfig } from '@x18n/core'\n\n// Detected presets: ${detected.join(', ') || 'none'}. They apply automatically.\nexport default defineConfig(${body})\n`
   }
   if (!configFileNames.some(name => file.endsWith(name)))
     throw new X18nError('X18N0001', `unknown format "${format}" (ts, yml, json)`)
@@ -91,7 +91,7 @@ function ejectPlugin(data: PluginFile): string {
   if (data.localeInfo)
     fields.push(`  localeInfo: code => (${literal(data.localeInfo)} as Record<string, { flag?: string, displayName?: string }>)[code],`)
   const imports = ['definePlugin', ...data.detect ? ['definePreset'] : []]
-  lines.push(`import { ${imports.join(', ')} } from 'x18n'`)
+  lines.push(`import { ${imports.join(', ')} } from '@x18n/core'`)
   if (data.placeholders)
     lines.push(`import { placeholderFromShape } from '@x18n/builtins/placeholders'`)
   if (data.scopes)

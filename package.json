@@ -52,6 +52,7 @@
     "@antfu/skills": "catalog:agentic",
     "@antfu/utils": "catalog:inlined",
     "@types/node": "catalog:types",
+    "@x18n/cli": "workspace:*",
     "@x18n/node": "workspace:*",
     "bumpp": "catalog:cli",
     "eslint": "catalog:cli",
@@ -69,8 +70,7 @@
     "turbo": "catalog:build",
     "typescript": "catalog:cli",
     "vite": "catalog:cli",
-    "vitest": "catalog:testing",
-    "x18n": "workspace:*"
+    "vitest": "catalog:testing"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm run ci && pnpx nano-staged"

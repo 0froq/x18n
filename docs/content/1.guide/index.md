@@ -55,8 +55,8 @@ The built-in formats read JSON, JSONC, JSON5, YAML, gettext PO, Java properties,
 
 | Package | Contents |
 | --- | --- |
-| `x18n` | The CLI, `defineConfig`, and the presets in `x18n/presets`. |
-| `@x18n/core` | The engine: domain model, plugin API and analysis. |
+| `@x18n/cli` | The CLI and the presets in `@x18n/cli/presets`. |
+| `@x18n/core` | The engine: domain model, plugin API, analysis, and `defineConfig`. |
 | `@x18n/builtins` | The built-in plugins and presets. |
 | `@x18n/node` | Config loading and file access in Node. |
 | `@x18n/lsp` | The language server. |

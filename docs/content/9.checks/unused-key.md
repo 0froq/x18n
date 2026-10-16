@@ -24,7 +24,7 @@ The check runs only when the project has at least one scanner.
 Change the severity, or turn the check off, in `checks`:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

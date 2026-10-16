@@ -16,7 +16,7 @@ The check reads the `glossary` config. For each term in a source value, it expec
 Turn the check on in `checks`:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

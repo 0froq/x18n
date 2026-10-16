@@ -1,4 +1,4 @@
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 /** The UI's own messages; `x18n check` runs on them in CI. */
 export default defineConfig({

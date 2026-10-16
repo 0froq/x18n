@@ -191,7 +191,7 @@
       "via": "@antfu/skills"
     },
     "x18n": {
-      "source": "x18n",
+      "source": "@x18n/cli",
       "sourceType": "node_modules",
       "skillPath": "skills/x18n/SKILL.md",
       "version": "0.0.0",

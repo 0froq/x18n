@@ -6,7 +6,7 @@ The extension holds no i18n logic. Everything comes from the LSP through standar
 
 ## Package name and id
 
-Turborepo refuses two workspace packages with the same name, and the CLI owns `x18n`. So the workspace package is `x18n-vscode`. The `ext:package` and `ext:publish` scripts write a staged copy to `.vsce/`, with `name: "x18n"` and without dev-only fields, then run `vsce` and `ovsx` on the `.vsix` built from it. Code never relies on the generated `extensionId` constant, which would read `antfu.x18n-vscode`.
+Turborepo refuses two workspace packages with the same name, and the CLI owns `@x18n/cli`. So the workspace package is `x18n-vscode`. The `ext:package` and `ext:publish` scripts write a staged copy to `.vsce/`, with `name: "x18n"` and without dev-only fields, then run `vsce` and `ovsx` on the `.vsix` built from it. Code never relies on the generated `extensionId` constant, which would read `antfu.x18n-vscode`.
 
 ## Activation
 

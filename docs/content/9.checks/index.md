@@ -10,7 +10,7 @@ A check reads the project and reports diagnostics. A diagnostic is one reported 
 The `recommended` set is every check that is not `off` below. Override the severity of a check in `checks`:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

@@ -12,7 +12,7 @@ The check is off by default.
 The check takes options. Set them with the array form:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {
@@ -29,7 +29,7 @@ export default defineConfig({
 Turn the check on in `checks`:
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   checks: {

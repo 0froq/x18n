@@ -11,7 +11,7 @@ description: x18n reads the locale files of any project, finds where each key is
 orientation: horizontal
 ---
 ```sh
-$ npx x18n check
+$ npx @x18n/cli check
 src/App.vue:17:15 - error missing-key: "app.titel" is not defined in en.
 17     <p>{{ $t('app.titel') }}</p>
                  ~~~~~~~~~
@@ -137,17 +137,17 @@ Run x18n in the root of a project. It detects the i18n library from your depende
 
 #code-0
   ```sh
-  npx x18n
+  npx @x18n/cli
   ```
 
 #code-1
   ```sh
-  npx x18n check
+  npx @x18n/cli check
   ```
 
 #code-2
   ```sh
-  npx x18n init
+  npx @x18n/cli init
   ```
 ::
 

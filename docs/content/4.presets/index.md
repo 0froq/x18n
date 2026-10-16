@@ -54,8 +54,8 @@ To pick the presets yourself, list them. x18n then applies exactly the listed pr
 ::code-group
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
-import { general, vueI18n } from 'x18n/presets'
+import { general, vueI18n } from '@x18n/cli/presets'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   presets: [vueI18n(), general()],
@@ -68,7 +68,7 @@ presets: [vue-i18n, general]
 
 ::
 
-In TS, the presets are functions from `x18n/presets`: `nuxtI18n`, `vueI18n`, `fluentVue`, `i18nextShopify`, `reactI18next`, `nextTranslate`, `nextInternational`, `i18next`, `nextIntl`, `reactIntl`, `svelteI18n`, `ngxTranslate`, `transloco`, `lingui`, `emberIntl`, `polyglot`, `globalize`, `i18nTag`, `i18nJs`, `ui5`, `chromeExtension`, `vscodeExtension`, `laravel`, `phpJoomla`, `phpGettext`, `rubyRails`, `jekyll`, `flutter` and `general`. In YAML and JSON, use the names in the first column of the table. `presets: []` turns every preset off.
+In TS, the presets are functions from `@x18n/cli/presets`: `nuxtI18n`, `vueI18n`, `fluentVue`, `i18nextShopify`, `reactI18next`, `nextTranslate`, `nextInternational`, `i18next`, `nextIntl`, `reactIntl`, `svelteI18n`, `ngxTranslate`, `transloco`, `lingui`, `emberIntl`, `polyglot`, `globalize`, `i18nTag`, `i18nJs`, `ui5`, `chromeExtension`, `vscodeExtension`, `laravel`, `phpJoomla`, `phpGettext`, `rubyRails`, `jekyll`, `flutter` and `general`. In YAML and JSON, use the names in the first column of the table. `presets: []` turns every preset off.
 
 ## What a preset adds
 
@@ -148,7 +148,7 @@ x18n picks the first template that matches the kind (`kinds`) and the file (`fil
 A template can add `imports`: lines that x18n adds once to the file when they are missing, such as `import { useI18n } from 'vue-i18n'`.
 
 ```ts [x18n.config.ts]
-import { defineConfig } from 'x18n'
+import { defineConfig } from '@x18n/core'
 
 export default defineConfig({
   extract: {

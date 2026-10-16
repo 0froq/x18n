@@ -312,7 +312,7 @@ Rules:
 
 ```ts
 // x18n/acme.ts
-import { definePlugin } from 'x18n'
+import { definePlugin } from '@x18n/core'
 
 export default definePlugin((options: { prefix: string }) => ({
   name: 'acme-keys',

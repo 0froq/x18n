@@ -12,7 +12,7 @@
 @x18n/builtins/presets    vueI18n(), i18next(), reactI18next(), nextIntl(), ...
 ```
 
-`x18n` re-exports `presets` as `x18n/presets` so a TS config has one import source.
+`x18n` re-exports `presets` as `@x18n/cli/presets` so a TS config has one import source.
 
 Tiers decide the release: tier 1 ships in 1.0 with full parity tests, tier 2 in 1.x (M15), tier 3 when someone asks.
 
