@@ -4,6 +4,7 @@ import type { PromptContext, PromptDraft } from '../types/plugin'
 import type { Project } from '../types/project'
 import { keyMatcher } from '../keys'
 import { createLineIndex } from '../text'
+import { isOutdated } from './history'
 
 export interface PromptOptions {
   /** Key glob, or a list of keys. */
@@ -15,6 +16,8 @@ export interface PromptOptions {
   readonly cursor?: string | undefined
   /** Include code around usages. Default true. */
   readonly context?: boolean | undefined
+  /** Translate prompts: add stale translations (load history first). */
+  readonly stale?: boolean | undefined
 }
 
 export interface UsageContext {
@@ -29,6 +32,8 @@ export interface PromptItem {
   readonly placeholders: readonly string[]
   /** The current value in the target locale, when there is one. */
   readonly existing: string | undefined
+  /** For a stale translation: the source value when the translation last changed, when known. */
+  readonly previousSource?: string | undefined
   readonly context: readonly UsageContext[]
 }
 
@@ -75,6 +80,7 @@ export function buildPrompt(project: Project, kind: 'translate' | 'review', to: 
   const from = project.sourceLocale
   const match = typeof options.keys === 'string' ? keyMatcher([options.keys]) : undefined
   const list = Array.isArray(options.keys) ? new Set(options.keys) : undefined
+  const stale = (key: KeyString): boolean => isOutdated(project.history(key, from), project.history(key, to))
   const candidates = project.keys({ namespace: options.namespace }).filter((key) => {
     if (match && !match(key))
       return false
@@ -84,7 +90,9 @@ export function buildPrompt(project: Project, kind: 'translate' | 'review', to: 
     if (source === undefined || source === '')
       return false
     const target = text(project.message(key, to)?.value)
-    return kind === 'translate' ? list !== undefined || target === undefined || target === '' : target !== undefined && target !== ''
+    if (kind === 'review')
+      return target !== undefined && target !== ''
+    return list !== undefined || target === undefined || target === '' || (options.stale === true && stale(key))
   })
   const start = Number(options.cursor ?? 0) || 0
   const limit = options.limit ?? 50
@@ -116,11 +124,14 @@ export function buildPrompt(project: Project, kind: 'translate' | 'review', to: 
 
   const items = page.map((key): PromptItem => {
     const source = text(project.message(key, from)?.value) ?? ''
+    const translated = project.history(key, to)
+    const previous = translated && stale(key) ? text(project.valueAt(key, from, translated.updatedAt)) : undefined
     return {
       key,
       source,
       placeholders: [...new Set(syntaxes.flatMap(s => s.find(source)).map(p => p.text))],
       existing: text(project.message(key, to)?.value) || undefined,
+      previousSource: previous === source ? undefined : previous,
       context: options.context === false ? [] : contextOf(project, key),
     }
   })
@@ -166,6 +177,8 @@ function renderItem(item: PromptItem, to: LocaleCode): string[] {
   const out = [`### \`${item.key}\``, '', `- Source: ${JSON.stringify(item.source)}`]
   if (item.placeholders.length)
     out.push(`- Placeholders: ${item.placeholders.map(p => `\`${p}\``).join(', ')}`)
+  if (item.previousSource !== undefined)
+    out.push(`- Source when ${to} last changed: ${JSON.stringify(item.previousSource)}`)
   if (item.existing !== undefined)
     out.push(`- Current ${to}: ${JSON.stringify(item.existing)}`)
   for (const context of item.context)

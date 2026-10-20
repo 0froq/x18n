@@ -11,13 +11,14 @@ import type {
   LocaleCode,
   LocaleInfo,
   Message,
+  MessageLeaf,
   NodeRange,
   Resource,
   TextEdit,
   TextRange,
   Usage,
 } from './model'
-import type { HardString, LocaleCoverage, PlaceholderSyntax, Reporter, ScanResult } from './plugin'
+import type { HardString, LocaleCoverage, MessageChange, PlaceholderSyntax, Reporter, ScanResult } from './plugin'
 
 export interface KeyQuery {
   /** Key glob: `*` inside a segment, `**` across segments. */
@@ -173,6 +174,12 @@ export interface Project {
   readonly keySlots: (path: string) => readonly TextRange[]
   readonly hardStrings: (path?: string) => readonly (HardString & { readonly path: string })[]
   readonly analyze: () => Analysis
+  /** Loads history from the history providers, after `ready`. `watch` reloads it when a provider sees a change. Analysis runs again once it is loaded. */
+  readonly loadHistory: (options?: { readonly watch?: boolean | undefined }) => Promise<void>
+  /** When a message last changed. Undefined until history is loaded, and for messages without history. */
+  readonly history: (key: KeyString, locale: LocaleCode) => MessageChange | undefined
+  /** The value a message had at a time (ms), from the provider that knows the message. */
+  readonly valueAt: (key: KeyString, locale: LocaleCode, at: number) => MessageLeaf | undefined
   /** Parts of a translate or review prompt for an agent or LLM; render with `renderPrompt`. */
   readonly prompt: (kind: 'translate' | 'review', locale: LocaleCode, options?: PromptOptions) => PromptData
   readonly explain: () => ProjectExplanation
