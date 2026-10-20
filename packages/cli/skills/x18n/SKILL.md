@@ -28,6 +28,46 @@ Batch the questions into one message. Routine work needs no question: adding a k
 - Keep every placeholder of the source message (`{name}`, `{{count}}`, `%{name}`, `:name`, `%s`, `@:key`).
 - Pass `--json` and read the envelope `{ "x18n": 1, "command", "data", "diagnostics", "errors" }`.
 - Run renames and deletes with `--dry-run` first, and read the plan.
+- Write every key as a full string literal. Do not build keys at runtime (see below).
+
+## Avoid composed keys
+
+Do not build a key from parts, such as `` t(`foo.bar.${name}`) `` or `t('foo.bar.' + name)`. x18n and the compiler cannot see the full key, so:
+
+- `x18n keys --unused` reports the key as unused, and `x18n delete` can remove a message that the code needs
+- `x18n rename` does not update the usage
+- `x18n check` cannot find a missing message until the user hits it at runtime
+- translators cannot see the full key in context
+
+Write each key out in full and map the value to it:
+
+```ts
+// Avoid
+t(`status.${status}`)
+
+// Prefer: a lookup of full literal keys
+const labels = {
+  active: t('status.active'),
+  paused: t('status.paused'),
+} as const
+labels[status]
+```
+
+```ts
+// Avoid
+t(`plans.${plan}.title`)
+
+// Prefer: a switch, or a record of functions when the call must be lazy
+const planTitle = {
+  free: () => t('plans.free.title'),
+  pro: () => t('plans.pro.title'),
+}
+planTitle[plan]()
+```
+
+When the variable part is only a word inside a sentence, use a placeholder instead of a key part: `t('greeting', { name })` with the message `Hello, {name}`. When the text differs by count, use the library's plural syntax, not `t(count === 1 ? 'item.one' : 'item.many')`.
+
+If the user's code already composes keys, do not rewrite it unasked. Tell the user which keys are affected, and treat those keys as used when you clean up.
 
 ## Set up x18n
 
