@@ -13,3 +13,39 @@ jobs:
     permissions:
       contents: write
       id-token: write
+
+  # Publishes the VS Code extension to the Marketplace, Open VSX and the GitHub
+  # release. Runs after `release`, which creates the release page vsxpub uploads to.
+  extension:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - run: pnpm install
+
+      - name: Package extension
+        working-directory: packages/vscode
+        run: |
+          pnpm run ext:package
+          version=$(node -p "require('./package.json').version")
+          mv x18n.vsix "x18n-$version.vsix"
+
+      - name: Publish extension
+        working-directory: packages/vscode
+        run: pnpm exec vsxpub --name x18n --repo "$GITHUB_REPOSITORY" --tag "$GITHUB_REF_NAME" --version "$(node -p "require('./package.json').version")" --no-dependencies
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}

@@ -2,6 +2,6 @@
   "name": "docs",
   "private": true,
   "dependencies": {
-    "i18next": "^25.0.0"
+    "i18next": "^26.5.3"
   }
 }

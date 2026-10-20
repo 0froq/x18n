@@ -2,7 +2,7 @@
   "name": "playground-angular",
   "private": true,
   "dependencies": {
-    "@angular/core": "^20.0.0",
-    "@ngx-translate/core": "^17.0.0"
+    "@angular/core": "^22.2.3",
+    "@ngx-translate/core": "^18.0.0"
   }
 }

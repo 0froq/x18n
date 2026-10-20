@@ -287,6 +287,7 @@
     "tsx": "catalog:cli",
     "vscode-ext-gen": "catalog:vscode",
     "vscode-languageclient": "catalog:vscode",
-    "vscode-languageserver": "catalog:deps"
+    "vscode-languageserver": "catalog:deps",
+    "vsxpub": "catalog:vscode"
   }
 }

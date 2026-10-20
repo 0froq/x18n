@@ -25,3 +25,4 @@ playwright-report
 bench
 packages/builtins/THIRD-PARTY-NOTICES.md
 packages/cli/skills
+.env*
