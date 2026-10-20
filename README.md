@@ -1,8 +1,46 @@
 # x18n
 
-Manage and view the i18n files of any project, for humans and agents.
+Universal toolkits for linting, viewing and managing i18n for any frameworks.
 
-x18n takes the ideas of [i18n-ally](https://github.com/lokalise/i18n-ally) and rebuilds them as layers that work outside VS Code:
+`x18n` is the spiritual successor of [i18n-ally](https://github.com/lokalise/i18n-ally), that generalizes its concepts into a framework-agnostic toolkit that runs everywhere with a more robust and extensible architecture.
+
+## Usages
+
+You can use the `@x18n/cli` package to check, analyze, and manage your i18n resources from the command line.
+
+For example,
+
+```bash
+pnpx @x18n/cli
+```
+
+would output an overview of the i18n resources,
+
+```bash
+pnpx @x18n/cli check
+```
+
+would do the linting and checking of your i18n resources, reporting missing keys, or unused keys.
+
+```bash
+pnpx @x18n/cli usages nav.keys
+```
+
+would list all the usages of the specified key (`nav.keys`) across your project.
+
+You can also run 
+
+```bash
+pnpx @x18n/cli ui
+```
+
+to have an interactive UI in browser to manage your i18n resources easily.
+
+Additionally, you can also install the [VS Code extension](./packages/vscode) for a rendering the translations directly within the editor, enabling inline translation previews, and providing rich "Go to Definition" and "Find References" support for your i18n keys.
+
+For other editors, you can use the [Language Server](./packages/lsp) to enable similar features.
+
+## Packages
 
 | Package | What it is |
 | --- | --- |
@@ -14,8 +52,9 @@ x18n takes the ideas of [i18n-ally](https://github.com/lokalise/i18n-ally) and r
 | [`@x18n/ui`](./packages/ui) | devframe UI: local dev server, static report, in-browser workspace, VS Code panel |
 | [`x18n-vscode`](./packages/vscode) | VS Code extension on top of the language server |
 
-> [!NOTE]
-> x18n is in early development. Nothing is published yet. Read the [plan](./plans/README.md).
+## Credits
+
+x18n builds on the ideas of [i18n Ally](https://github.com/lokalise/i18n-ally) and [i18n Ally Next](https://github.com/Lydanne/i18n-ally-next).
 
 ## License
 
