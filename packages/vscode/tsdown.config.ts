@@ -11,6 +11,10 @@ export default defineConfig([
     external: ['vscode'],
     // The extension ships without node_modules, so every dependency is bundled.
     noExternal: [/.*/],
+    // The native oxc binding is a `.node` file that cannot be bundled, so the extension parses with
+    // the WASM build, which loads `parser.wasm32-wasip1.wasm` from beside the bundle.
+    alias: { 'oxc-parser': 'oxc-parser/src-js/wasm.js' },
+    copy: [{ from: 'node_modules/@oxc-parser/binding-wasm32-wasip1/parser.wasm32-wasip1.wasm', to: 'dist' }],
     // Prefer ESM entries: UMD `main` builds (jsonc-parser) `require` relative files that are not bundled.
     inputOptions: { resolve: { mainFields: ['module', 'main'] } },
   },

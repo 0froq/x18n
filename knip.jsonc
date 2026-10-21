@@ -8,6 +8,10 @@
       // Loaded by the x18n CLI itself, not imported.
       "entry": ["x18n.config.ts"]
     },
+    "packages/vscode": {
+      // Never imported: tsdown copies its `.wasm` next to the bundle, where the aliased WASM `oxc-parser` loads it.
+      "ignoreDependencies": ["@oxc-parser/binding-wasm32-wasip1"]
+    },
     "packages/ui": {
       // `@unocss/reset` is loaded through the `css` option of `nuxt.config.ts`;
       // `vue-tsc` is run by `nuxt typecheck`; `@iconify-json/*` are read by

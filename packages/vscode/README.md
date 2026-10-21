@@ -48,15 +48,16 @@ Project settings live in `x18n.config.ts`; the settings below only change the ed
 
 <!-- configs -->
 
-| Key                        | Description                                                                                                           | Type      | Default |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
-| `x18n.enabled`             | Run the x18n language server in this workspace.                                                                       | `boolean` | `true`  |
-| `x18n.annotations`         | Show translated values next to or in place of keys in code.                                                           | `boolean` | `true`  |
-| `x18n.inPlace`             | Replace keys in code with their display-locale value. The raw key shows on the cursor line and inside selections.     | `boolean` | `true`  |
-| `x18n.annotationMaxLength` | Longest value shown in an annotation. Longer values are truncated, and in-place mode falls back to an after-key hint. | `number`  | `40`    |
-| `x18n.displayLocale`       | Locale shown in annotations. Empty means the source locale.                                                           | `string`  | `""`    |
-| `x18n.codeLens`            | Show usage counts and missing locales above keys in resource files.                                                   | `boolean` | `false` |
-| `x18n.trace.server`        | Trace the communication between VS Code and the x18n language server.                                                 | `string`  | `"off"` |
+| Key                        | Description                                                                                                                                               | Type      | Default |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- |
+| `x18n.enabled`             | Run the x18n language server in this workspace.                                                                                                           | `boolean` | `true`  |
+| `x18n.useLocalServer`      | Run the `@x18n/lsp` installed in the workspace's `node_modules` instead of the bundled server, when there is one. Restart the server after changing this. | `boolean` | `true`  |
+| `x18n.annotations`         | Show translated values next to or in place of keys in code.                                                                                               | `boolean` | `true`  |
+| `x18n.inPlace`             | Replace keys in code with their display-locale value. The raw key shows on the cursor line and inside selections.                                         | `boolean` | `true`  |
+| `x18n.annotationMaxLength` | Longest value shown in an annotation. Longer values are truncated, and in-place mode falls back to an after-key hint.                                     | `number`  | `40`    |
+| `x18n.displayLocale`       | Locale shown in annotations. Empty means the source locale.                                                                                               | `string`  | `""`    |
+| `x18n.codeLens`            | Show usage counts and missing locales above keys in resource files.                                                                                       | `boolean` | `false` |
+| `x18n.trace.server`        | Trace the communication between VS Code and the x18n language server.                                                                                     | `string`  | `"off"` |
 
 <!-- configs -->
 

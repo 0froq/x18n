@@ -103,6 +103,7 @@ catalogs:
   deps:
     '@devframes/agentic': 1.2.5
     '@devframes/vite': 1.2.5
+    '@oxc-parser/binding-wasm32-wasip1': ^0.155.0
     '@valibot/to-json-schema': ^1.8.0
     '@vue/compiler-core': ^3.5.44
     '@vue/compiler-sfc': ^3.5.44

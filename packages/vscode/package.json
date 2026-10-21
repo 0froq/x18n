@@ -208,6 +208,11 @@
           "default": true,
           "description": "Run the x18n language server in this workspace."
         },
+        "x18n.useLocalServer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run the `@x18n/lsp` installed in the workspace's `node_modules` instead of the bundled server, when there is one. Restart the server after changing this."
+        },
         "x18n.annotations": {
           "type": "boolean",
           "default": true,
@@ -279,6 +284,7 @@
     "ext:publish": "pnpm run ext:package && vsce publish --packagePath x18n.vsix && ovsx publish x18n.vsix"
   },
   "devDependencies": {
+    "@oxc-parser/binding-wasm32-wasip1": "catalog:deps",
     "@types/vscode": "catalog:types",
     "@vscode/test-electron": "catalog:vscode",
     "@vscode/vsce": "catalog:vscode",

@@ -1,11 +1,12 @@
 import type { Decoration } from '@x18n/lsp'
 import type { ExtensionContext } from 'vscode'
 import type { LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node'
-import { Uri } from 'vscode'
+import { Uri, workspace } from 'vscode'
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node'
 import { config } from './config'
 import { displayName } from './generated/meta'
 import { hintCovered } from './model/inplace'
+import { findLocalServer } from './model/local-server'
 import { dedupeLocations } from './model/locations'
 
 export interface ClientHooks {
@@ -16,7 +17,10 @@ export interface ClientHooks {
 }
 
 export function createClient(context: ExtensionContext, hooks: ClientHooks): LanguageClient {
-  const module = Uri.joinPath(context.extensionUri, 'dist', 'server.cjs').fsPath
+  const folder = workspace.workspaceFolders?.[0]?.uri
+  // A server installed in the project wins over the bundled one, so the project's own x18n version (and its native parser) is used.
+  const local = config.useLocalServer && folder?.scheme === 'file' ? findLocalServer(folder.fsPath) : undefined
+  const module = local ?? Uri.joinPath(context.extensionUri, 'dist', 'server.cjs').fsPath
   const serverOptions: ServerOptions = {
     run: { module, transport: TransportKind.ipc },
     debug: { module, transport: TransportKind.ipc, options: { execArgv: ['--nolazy', '--inspect=6009'] } },
@@ -49,5 +53,7 @@ export function createClient(context: ExtensionContext, hooks: ClientHooks): Lan
       executeCommand: (command, args, next) => command === 'x18n.extract' && args.length === 0 ? hooks.extractAtCursor() : next(command, args),
     },
   }
-  return new LanguageClient('x18n', displayName, serverOptions, clientOptions)
+  const client = new LanguageClient('x18n', displayName, serverOptions, clientOptions)
+  client.outputChannel.appendLine(local ? `Using the project's language server: ${local}` : 'Using the bundled language server.')
+  return client
 }
