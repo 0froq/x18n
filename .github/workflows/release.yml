@@ -44,7 +44,7 @@ jobs:
 
       - name: Publish extension
         working-directory: packages/vscode
-        run: pnpm exec vsxpub --name x18n --repo "$GITHUB_REPOSITORY" --tag "$GITHUB_REF_NAME" --version "$(node -p "require('./package.json').version")" --no-dependencies
+        run: pnpm exec vsxpub --name x18n --repo "$GITHUB_REPOSITORY" --tag "$GITHUB_REF_NAME" --no-dependencies
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
