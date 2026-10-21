@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "tsx --tsconfig ../tsconfig.json scripts/generate.ts",
-    "dev": "pnpm run generate && nuxt dev --host",
+    "dev": "pnpm run generate && nuxt dev",
     "docs:build": "pnpm run generate && nuxt build",
     "docs:serve": "nuxt preview"
   },

@@ -20,7 +20,7 @@ export default defineAppConfig({
   },
 
   github: {
-    owner: 'antfu',
+    owner: 'x18n-dev',
     name: 'x18n',
     branch: 'main',
     contentDir: 'docs/content',
