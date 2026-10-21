@@ -124,7 +124,7 @@ Detection uses the dependencies listed. "Parity" means the i18n-ally framework w
 
 | Id | Output | Use |
 | --- | --- | --- |
-| `pretty` | tsc-style `path:line:col - error missing-key: message` (check id in place of the TS code) with code frames, then a "Found N errors in M files" summary | Humans |
+| `pretty` | `path:line:col`, then a severity badge with the message and check id, and a code frame with one line of context each side, then a `✖ N errors  ⚠ N warnings  N files` summary ("Found no errors." when clean) | Humans |
 | `json` | The versioned JSON contract of [06-cli.md](./06-cli.md) | Tools, agents |
 | `markdown` | Summary and tables | PR comments, agent context |
 | `github` | `::error file=...` workflow commands | GitHub Actions annotations |

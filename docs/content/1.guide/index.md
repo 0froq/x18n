@@ -30,6 +30,9 @@ Every surface reads the same config and reports the same diagnostics. A fix that
 
 ## Libraries and formats
 
+::x18n-frameworks
+::
+
 x18n knows no i18n library and no file format by itself. Plugins add that knowledge. A preset is a group of plugins for one library. x18n detects the presets from the dependencies of the project:
 
 - Vue: [vue-i18n](/presets/vue-i18n), [@nuxtjs/i18n](/presets/nuxt-i18n) and [fluent-vue](/presets/fluent-vue)

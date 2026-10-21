@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     // Markdown resolves components by name at runtime, so the ones it uses must be global.
     'components:extend': (components) => {
       for (const component of components) {
-        if (component.pascalName === 'X18nDemo' || component.pascalName === 'X18nTerminal')
+        if (['X18nDemo', 'X18nTerminal', 'X18nFrameworks'].includes(component.pascalName))
           component.global = true
       }
     },

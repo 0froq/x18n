@@ -9,6 +9,7 @@
     "docs:serve": "nuxt preview"
   },
   "dependencies": {
+    "@iconify-json/logos": "catalog:frontend",
     "@iconify-json/ph": "catalog:frontend",
     "comark-docs": "catalog:docs",
     "nuxt": "catalog:build"

@@ -42,10 +42,28 @@ function localeRow(code: string, percent: number, done: number): Line {
   ]
 }
 
-function frame(n: number, text: string, mark: [number, number], tone: string): Line[] {
+/** A check diagnostic: location, badge with message and rule, and a code frame marked under its middle line. */
+function diagnostic(
+  path: string,
+  pos: string,
+  level: 'error' | 'warning',
+  text: string,
+  rule: string,
+  from: number,
+  code: [string, string, string],
+  mark: [offset: number, length: number],
+): Line[] {
+  const error = level === 'error'
+  const badge = ` ${level.toUpperCase()} `
+  // Pad past the badge so the rule lines up for both levels.
+  const message = text.padEnd(46 - badge.length)
   return [
-    [[`${String(n).padStart(3)} │ `, c.faint], [text, c.dim]],
-    [[`    │ `, c.faint], [' '.repeat(mark[0]) + '~'.repeat(mark[1]), tone]],
+    [[path, c.path], [`:${pos}`, c.dim]],
+    [[badge, error ? c.errBadge : c.warnBadge], ` ${message}`, [rule, c.dim]],
+    ...code.flatMap((line, i): Line[] => [
+      [[`${String(from + i).padStart(2)} │ `, c.faint], [line, i === 1 ? '' : c.dim]],
+      ...(i === 1 ? [[[`   │ `, c.faint], [' '.repeat(mark[0]) + '~'.repeat(mark[1]), error ? c.err : c.warn]] as Line] : []),
+    ]),
   ]
 }
 
@@ -67,17 +85,21 @@ const outputs: Record<typeof props.name, { command: string, busy?: string, lines
   },
   check: {
     command: 'pnpx @x18n/cli check',
-    busy: 'Checking 4 locales, 4 resources, 137 keys',
+    busy: 'Checking 5 locales, 6 resources, 137 keys',
     lines: [
-      [['src/App.vue', c.path], [':17:15', c.dim], ' - ', ['error', c.errBadge], ' ', ['missing-key', c.dim]],
-      [['  "app.titel"', c.key], ' is not defined in en.'],
-      ...frame(17, `    <p>{{ $t('app.titel') }}</p>`, [16, 9], c.err),
+      ...diagnostic('src/App.vue', '17:15', 'error', '"app.titel" is not defined in en.', 'missing-key', 16, [
+        '  <main>',
+        `    <p>{{ $t('app.titel') }}</p>`,
+        '  </main>',
+      ], [14, 9]),
       [''],
-      [['src/locales/de.json', c.path], [':8:6', c.dim], ' - ', ['warning', c.warnBadge], ' ', ['empty-translation', c.dim]],
-      [['  "nav.about"', c.key], ' is empty in de.'],
-      ...frame(8, '    "about": ""', [5, 5], c.warn),
+      ...diagnostic('src/locales/en.json', '18:4', 'warning', '"unused" is not used.', 'unused-key', 17, [
+        '  "app.save": "Save",',
+        '  "unused": "Nobody uses me",',
+        '  "app.title": "Welcome back"',
+      ], [3, 6]),
       [''],
-      ['Found ', ['1 error', c.err], ' and ', ['2 warnings', c.warn], ' in ', ['3', c.bold], ' files.'],
+      [['✖ 1 error', `${c.err} ${c.bold}`], '  ', ['⚠ 1 warning', `${c.warn} ${c.bold}`], ['  2 files · 96ms', c.dim]],
     ],
   },
   get: {
@@ -214,7 +236,7 @@ function seg(s: Seg): [string, string] {
       <span class="size-2.5 rounded-full bg-emerald-400/80" />
       <span class="ml-3 text-xs text-neutral-500">my-app</span>
     </div>
-    <div class="h-[22rem] overflow-hidden p-5">
+    <div class="h-[27rem] overflow-hidden p-5">
       <div class="flex items-center gap-2.5">
         <span class="text-emerald-600 dark:text-emerald-400">❯</span>
         <span>{{ typed }}<span v-if="typing" class="term-caret">▍</span></span>

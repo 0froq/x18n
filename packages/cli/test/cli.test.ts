@@ -53,12 +53,12 @@ describe('x18n binary', () => {
     expect(stdout).toContain(`x18n/${version}`)
   })
 
-  it('check prints tsc-style diagnostics and fails on errors', async () => {
+  it('check prints diagnostics with code frames and fails on errors', async () => {
     const dir = await fixture('vue-i18n')
     const result = await x18n(dir, ['check'])
     expect(result.code).toBe(1)
-    expect(result.stdout).toContain('src/locales/de.json:4:6 - error placeholder-mismatch: "app.greeting" in de has different placeholders than en: missing name.')
-    expect(result.stdout).toMatch(/Found \d+ errors? and \d+ warnings? in \d+ files?\./)
+    expect(result.stdout).toContain('src/locales/de.json:4:6\n ERROR  "app.greeting" in de has different placeholders than en: missing name.  placeholder-mismatch\n')
+    expect(result.stdout).toMatch(/✖ \d+ errors?(?: {2}⚠ \d+ warnings?)? {2}\d+ files?\n$/)
   })
 
   it('check --json follows the contract', async () => {

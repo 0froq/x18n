@@ -42,7 +42,7 @@ Each milestone is one or a few PRs. A milestone is done when its exit criteria p
   - bare `x18n` (status)
   - `status`, `keys`, `get`, `locales`, `doctor`, `schema`, `init` (writes `x18n.config.ts`)
 - **`x18n check`**, behaving like `tsc`:
-  - tsc-style lines with a code frame, and a "Found N errors in M files" summary
+  - path and position, a severity badge line, a code frame, and an "N errors, N warnings, N files" summary
   - `--watch`, `--strict`, `--locale`, `--max-warnings`
 - Reporters: `pretty`, `json`, `markdown`, `github`.
 - JSON contract v1 for these commands.
