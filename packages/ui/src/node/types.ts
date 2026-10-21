@@ -128,6 +128,14 @@ export interface HistoryView {
   readonly author: string | undefined
 }
 
+/** The messages one revision changed. */
+export interface ChangeGroup extends HistoryView {
+  /** The first keys by name, each with every locale the revision touched. */
+  readonly keys: readonly { readonly key: KeyString, readonly locales: readonly LocaleCode[] }[]
+  /** How many keys the revision changed in all. */
+  readonly total: number
+}
+
 export interface LocaleSummary {
   readonly code: LocaleCode
   readonly displayName: string | undefined
@@ -161,8 +169,8 @@ export interface ProjectSummary {
   readonly diagnostics: DiagnosticCounts
   /** Presets that are listed in the config or detected. */
   readonly presets: readonly string[]
-  /** The latest message changes in history, local changes first; one entry per key and revision, listing every locale it touched. */
-  readonly changes: readonly (HistoryView & { readonly key: KeyString, readonly locales: readonly LocaleCode[] })[]
+  /** The latest revisions in history, local changes first. */
+  readonly changes: readonly ChangeGroup[]
 }
 
 export interface ProjectList {

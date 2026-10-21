@@ -15,6 +15,7 @@ import UiPage from '../../components/ui/UiPage.vue'
 import UiSection from '../../components/ui/UiSection.vue'
 import { applyEdit, describeProblem, setMessage } from '../../edit'
 import { t } from '../../i18n'
+import { translatePrompt } from '../../prompt'
 import { backend, currentProject, locales, projectName, showAllLocales, useLive, visibleLocales } from '../../state'
 
 const route = useRoute()
@@ -63,7 +64,7 @@ function openUsage(usage: UsageView): void {
   <UiPage>
     <header class="flex items-center gap-3 border-b border-base px-4 py-4">
       <NuxtLink to="/keys" class="btn-icon" :aria-label="t('detail.back')">
-        <span class="i-ph-arrow-left" />
+        <span class="i-ph-arrow-left-duotone" />
       </NuxtLink>
       <div class="grid gap-1">
         <span class="label">{{ t('detail.label') }}</span>
@@ -93,7 +94,7 @@ function openUsage(usage: UsageView): void {
           <div v-if="editing?.locale === row.locale" class="grid gap-2">
             <textarea v-model="editing.draft" class="input h-auto py-1.5 font-mono" rows="2" :aria-label="t('keys.editValue', { key, locale: row.locale })" @keydown.enter.exact.prevent="save()" @keydown.escape="editing = undefined" />
             <p v-if="problem" class="flex items-center gap-2 color-warn">
-              <span class="i-ph-warning" />
+              <span class="i-ph-warning-duotone" />
               {{ problem }}
               <button class="btn-outline h-7" @click="save(true)">
                 {{ t('edit.saveAnyway') }}
@@ -116,23 +117,23 @@ function openUsage(usage: UsageView): void {
             </dl>
           </div>
           <div class="flex gap-1">
-            <InfoPop v-if="row.message" icon="i-ph-file-text" :label="t('detail.file')">
+            <CopyPrompt v-if="row.locale !== currentProject?.sourceLocale" :text="translatePrompt([{ locale: row.locale, key }])" :label="t('prompt.copy')" :hint="t('prompt.hint')" />
+            <InfoPop v-if="row.message" icon="i-ph-file-text-duotone" :label="t('detail.file')">
               <FilePath :path="row.message.path" :line="row.message.line" />
             </InfoPop>
-            <InfoPop v-if="row.message?.changed" icon="i-ph-clock-counter-clockwise" :label="t('history.title')">
+            <InfoPop v-if="row.message?.changed" icon="i-ph-clock-counter-clockwise-duotone" :label="t('history.title')">
               <ChangeInfo :change="row.message.changed" />
             </InfoPop>
-            <CopyPrompt v-if="row.locale !== currentProject?.sourceLocale" :query="{ project: projectName, locale: row.locale, keys: [key] }" />
           </div>
         </div>
         <button v-if="hiddenCount" class="btn-ghost h-9 w-full justify-start px-4" @click="showAllLocales">
-          <span class="i-ph-dots-three" /> {{ t('detail.showAllLocales') }} ({{ hiddenCount }})
+          <span class="i-ph-dots-three-duotone" /> {{ t('detail.showAllLocales') }} ({{ hiddenCount }})
         </button>
       </UiSection>
 
       <UiSection v-if="detail.diagnostics.length" index="02" :title="t('detail.diagnostics')">
         <div v-for="(d, i) in detail.diagnostics" :key="i" class="flex items-center gap-2 border-b border-base px-4 py-2 last:border-b-0">
-          <span :class="d.severity === 'error' ? 'i-ph-x-circle color-error' : 'i-ph-warning color-warn'" />
+          <span :class="d.severity === 'error' ? 'i-ph-x-circle-duotone color-error' : 'i-ph-warning-duotone color-warn'" />
           <span class="font-mono text-xs color-muted">{{ d.code }}</span>
           <span class="flex-auto">{{ d.message }}</span>
           <template v-if="backend?.capabilities.write">
@@ -153,7 +154,7 @@ function openUsage(usage: UsageView): void {
             <span v-if="usage.possible" class="badge">{{ t('detail.possible') }}</span>
             <span class="flex-auto" />
             <button v-if="backend?.capabilities.openInEditor" class="btn-ghost h-7" @click="openUsage(usage)">
-              <span class="i-ph-arrow-square-out" /> {{ t('detail.openInEditor') }}
+              <span class="i-ph-arrow-square-out-duotone" /> {{ t('detail.openInEditor') }}
             </button>
           </div>
           <CodeSnippet :usage="usage" />

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ExplainList } from '../../src/node/types'
-import { computed, onMounted, shallowRef } from 'vue'
+import { computed, onMounted, ref, shallowRef } from 'vue'
 import FilePath from '../components/FilePath.vue'
 import UiPage from '../components/ui/UiPage.vue'
 import UiSection from '../components/ui/UiSection.vue'
@@ -12,22 +12,34 @@ onMounted(async () => {
   list.value = await backend.value!.explain()
 })
 const explain = computed(() => list.value?.projects.find(p => p.name === projectName.value))
+
+/** Listed or detected presets are the ones in effect; the rest sit behind a button. */
+const showAll = ref(false)
+const presets = computed(() => (explain.value?.presets ?? []).filter(p => showAll.value || isActive(p.reason)))
+const hiddenPresets = computed(() => (explain.value?.presets.length ?? 0) - presets.value.length)
+
+function isActive(reason: string): boolean {
+  return reason === 'listed' || reason === 'detected'
+}
 </script>
 
 <template>
   <UiPage v-if="explain">
     <UiSection index="01" :title="t('project.presets')">
-      <div v-for="preset in explain.presets" :key="preset.name" class="flex items-center gap-2 border-b border-base px-4 py-1.5 last:border-b-0">
-        <span :class="preset.reason === 'listed' || preset.reason === 'detected' ? 'i-ph-check-circle color-ok' : 'i-ph-circle color-faint'" />
+      <div v-for="preset in presets" :key="preset.name" class="flex items-center gap-2 border-b border-base px-4 py-1.5 last:border-b-0">
+        <span :class="isActive(preset.reason) ? 'i-ph-check-circle-duotone color-ok' : 'i-ph-circle-duotone color-faint'" />
         <span class="flex-auto font-mono text-xs">{{ preset.name }}</span>
         <span class="label">{{ preset.reason }}</span>
       </div>
+      <button v-if="hiddenPresets" class="btn-ghost h-9 w-full justify-start px-4" @click="showAll = true">
+        <span class="i-ph-dots-three-duotone" /> {{ t('project.showAllPresets') }} ({{ hiddenPresets }})
+      </button>
     </UiSection>
 
     <UiSection index="02" :title="t('project.finders')">
       <details v-for="finder in explain.finders" :key="finder.id" class="group border-b border-base last:border-b-0">
         <summary class="flex cursor-pointer list-none items-center gap-2 px-4 py-1.5 hover:bg-hover">
-          <span class="i-ph-caret-right text-xs color-muted transition-transform group-open:rotate-90" />
+          <span class="i-ph-caret-right-duotone text-xs color-muted transition-transform group-open:rotate-90" />
           <span class="font-mono text-xs">{{ finder.id }}</span>
           <span class="label">{{ t('project.resources', { count: finder.resources.length }) }}</span>
         </summary>

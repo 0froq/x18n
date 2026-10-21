@@ -65,7 +65,7 @@ test('the locale bar hides a locale in every view and remembers it', async ({ pa
     await expect(page.locator('[data-locale="en"]')).toContainText('Home')
     await expect(page.locator('[data-locale="de"]')).toHaveCount(0)
 
-    await page.getByRole('button', { name: 'Show all' }).click()
+    await page.getByRole('button', { name: 'Show all', exact: true }).click()
     await expect(page.locator('[data-locale="de"]')).toContainText('Start')
   }
   finally {
@@ -110,7 +110,8 @@ test('the UI speaks the requested language and remembers a picked one', async ({
     await expect(page.locator('html')).toHaveAttribute('lang', 'zh-Hant')
 
     await page.goto(server.url)
-    await page.getByLabel('Language').selectOption('de')
+    await page.getByRole('button', { name: 'Language' }).click()
+    await page.getByRole('menuitemradio', { name: 'Deutsch' }).click()
     await expect(page.getByRole('link', { name: 'Schlüssel', exact: true })).toBeVisible()
     await page.reload()
     await expect(page.getByRole('link', { name: 'Schlüssel', exact: true })).toBeVisible()

@@ -8,7 +8,8 @@ import MessageText from '../../components/MessageText.vue'
 import UiPage from '../../components/ui/UiPage.vue'
 import UiSection from '../../components/ui/UiSection.vue'
 import { formatPercent, languageName, t } from '../../i18n'
-import { currentProject, isLocaleVisible, projectName, toggleLocale, useLive } from '../../state'
+import { translatePrompt } from '../../prompt'
+import { currentProject, isLocaleVisible, toggleLocale, useLive } from '../../state'
 
 const route = useRoute()
 const code = computed(() => String(route.params.locale))
@@ -45,9 +46,9 @@ function showInGrid(): void {
         <span v-if="isSource" class="badge mb-1.5">{{ t('overview.source') }}</span>
         <span class="flex-auto" />
         <NuxtLink :to="{ path: '/keys', query: { missing: code } }" class="btn-outline" @click="showInGrid">
-          <span class="i-ph-table" /> {{ t('locale.openInGrid') }}
+          <span class="i-ph-table-duotone" /> {{ t('locale.openInGrid') }}
         </NuxtLink>
-        <CopyPrompt v-if="!isSource" :query="{ project: projectName, locale: code, stale: outdated.length > 0 }" :label="outdated.length ? t('prompt.copyStale') : undefined" class="h-8" />
+        <CopyPrompt v-if="!isSource" :text="translatePrompt([{ locale: code, stale: outdated.length > 0 }])" :label="outdated.length ? t('prompt.copyStale') : t('prompt.copy')" :hint="outdated.length ? t('prompt.staleHint') : t('prompt.hint')" />
       </div>
       <div v-if="summary" class="grid gap-1.5">
         <span class="h-2 flex border border-strong">
@@ -78,7 +79,7 @@ function showInGrid(): void {
     <UiSection v-if="outdated.length" index="03" :title="t('locale.outdated', { count: outdated.length })">
       <NuxtLink v-for="row in outdated" :key="row.key" :to="`/keys/${encodeURIComponent(row.key)}`" class="focus-ring grid grid-cols-[minmax(0,20rem)_1fr_1fr] items-center gap-4 border-b border-base px-4 py-1.5 transition-colors last:border-b-0 hover:bg-hover">
         <span class="flex min-w-0 items-center gap-2 font-mono text-xs">
-          <span class="i-ph-clock-counter-clockwise shrink-0 color-warn" />
+          <span class="i-ph-clock-counter-clockwise-duotone shrink-0 color-warn" />
           <span class="truncate">{{ row.key }}</span>
         </span>
         <span class="truncate"><MessageText :value="row.values[currentProject?.sourceLocale ?? '']" inline /></span>
@@ -95,7 +96,7 @@ function showInGrid(): void {
         class="flex items-center gap-2 border-b border-base px-4 py-1.5 last:border-b-0"
         :class="d.key && 'transition-colors hover:bg-hover'"
       >
-        <span :class="d.severity === 'error' ? 'i-ph-x-circle color-error' : 'i-ph-warning color-warn'" />
+        <span :class="d.severity === 'error' ? 'i-ph-x-circle-duotone color-error' : 'i-ph-warning-duotone color-warn'" />
         <span class="font-mono text-xs color-muted">{{ d.code }}</span>
         <span v-if="d.key" class="font-mono text-xs">{{ d.key }}</span>
         <span class="flex-auto truncate">{{ d.message }}</span>
@@ -103,7 +104,7 @@ function showInGrid(): void {
     </UiSection>
 
     <p v-if="summary && table && !missing.length && !empty.length && !outdated.length && !problems.length" class="flex items-center gap-2 px-4 py-3 color-ok">
-      <span class="i-ph-check-circle" /> {{ t('locale.complete') }}
+      <span class="i-ph-check-circle-duotone" /> {{ t('locale.complete') }}
     </p>
   </UiPage>
 </template>

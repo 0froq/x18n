@@ -126,14 +126,17 @@
     "presets": "Presets",
     "problems": "Problemas",
     "resources": "Recursos: {count}",
-    "scanners": "Scanners"
+    "scanners": "Scanners",
+    "showAllPresets": "Mostrar todos os presets"
   },
   "prompt": {
     "copied": "Copiado",
     "copy": "Copiar prompt de tradução",
     "hint": "Copiar um prompt para um LLM ou agente traduzir as mensagens ausentes",
     "copyStale": "Copiar prompt com desatualizadas",
-    "staleHint": "Copia um prompt para um LLM ou agente que traduz as mensagens ausentes e atualiza as desatualizadas"
+    "staleHint": "Copia um prompt para um LLM ou agente que traduz as mensagens ausentes e atualiza as desatualizadas",
+    "copyAll": "Copiar o prompt de tradução de todos os idiomas",
+    "allHint": "Copia um prompt para um LLM ou agente que traduza o que falta em cada idioma"
   },
   "usages": {
     "all": "Todos ({count})",
@@ -155,6 +158,8 @@
     "outdated": "desatualizada",
     "outdatedHint": "A mensagem de origem mudou depois desta tradução",
     "sourceThen": "Origem na época",
-    "sourceNow": "Origem agora"
+    "sourceNow": "Origem agora",
+    "more": "e mais {count}",
+    "locales": "{count} idiomas"
   }
 }

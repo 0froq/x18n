@@ -30,28 +30,31 @@ function outdatedByKey(coverage: readonly LocaleCoverage[]): Map<KeyString, Loca
   return out
 }
 
-const recentChanges = 8
+const recentRevisions = 8
+const keysPerRevision = 20
 
-/** The latest changes, with the locales of one key changed in the same revision merged into one entry. */
-function recentChangeViews(project: UiProject['project']): ProjectSummary['changes'] {
-  const merged = new Map<string, { key: KeyString, locales: LocaleCode[], updatedAt: number, view: HistoryView }>()
+/** The latest revisions, each with the keys it changed and the locales of a key merged into one entry. */
+function recentChangeGroups(project: UiProject['project']): ProjectSummary['changes'] {
+  const groups = new Map<string, { updatedAt: number, view: HistoryView, keys: Map<KeyString, LocaleCode[]> }>()
   for (const key of project.keys()) {
     for (const locale of project.locales) {
       const change = project.history(key, locale)
       if (!change)
         continue
-      const id = `${key}\0${change.revision ?? 'local'}`
-      const entry = merged.get(id)
-      if (!entry)
-        merged.set(id, { key, locales: [locale], updatedAt: change.updatedAt, view: historyView(change) })
-      else
-        entry.locales.push(locale)
+      const id = change.revision ?? 'local'
+      const group = groups.get(id) ?? { updatedAt: change.updatedAt, view: historyView(change), keys: new Map() }
+      group.keys.set(key, [...group.keys.get(key) ?? [], locale])
+      groups.set(id, group)
     }
   }
-  return [...merged.values()]
+  return [...groups.values()]
     .sort((a, b) => b.updatedAt === a.updatedAt ? 0 : b.updatedAt > a.updatedAt ? 1 : -1)
-    .slice(0, recentChanges)
-    .map(({ key, locales, view }) => ({ key, locales, ...view }))
+    .slice(0, recentRevisions)
+    .map(({ view, keys }) => ({
+      ...view,
+      total: keys.size,
+      keys: [...keys].sort(([a], [b]) => a.localeCompare(b)).slice(0, keysPerRevision).map(([key, locales]) => ({ key, locales })),
+    }))
 }
 
 export function summarize({ name, project }: UiProject): ProjectSummary {
@@ -80,7 +83,7 @@ export function summarize({ name, project }: UiProject): ProjectSummary {
       byCode: [...byCode.values()].sort((a, b) => b.count - a.count || a.code.localeCompare(b.code)),
     },
     presets: project.explain().presets.filter(p => p.reason === 'listed' || p.reason === 'detected').map(p => p.name),
-    changes: recentChangeViews(project),
+    changes: recentChangeGroups(project),
   }
 }
 

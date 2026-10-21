@@ -41,6 +41,13 @@ export interface ApplyView extends PlanView {
   readonly applied: boolean;
   readonly revision: number;
 }
+export interface ChangeGroup extends HistoryView {
+  readonly keys: readonly {
+    readonly key: KeyString;
+    readonly locales: readonly LocaleCode[];
+  }[];
+  readonly total: number;
+}
 export interface ChangeView {
   readonly type: FileChange["type"];
   readonly path: string;
@@ -152,10 +159,7 @@ export interface ProjectSummary {
   readonly usages: number;
   readonly diagnostics: DiagnosticCounts;
   readonly presets: readonly string[];
-  readonly changes: readonly (HistoryView & {
-    readonly key: KeyString;
-    readonly locales: readonly LocaleCode[];
-  })[];
+  readonly changes: readonly ChangeGroup[];
 }
 export interface PromptQuery extends ProjectQuery {
   readonly locale: LocaleCode;

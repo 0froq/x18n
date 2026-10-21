@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { t } from '../i18n'
-import { backend, projectName } from '../state'
+import { canOpenInEditor as openable, openInEditor } from '../open'
 import FileIcon from './FileIcon.vue'
 
 const { path, line, column, icon = true } = defineProps<{
@@ -17,13 +17,11 @@ const parts = computed(() => {
   return { dir: path.slice(0, at), base: path.slice(at) }
 })
 
-const openable = computed(() => Boolean(backend.value?.capabilities.openInEditor && projectName.value))
-
 function open(event: Event): void {
   // Paths often sit inside links and rows; opening the file must not also navigate.
   event.preventDefault()
   event.stopPropagation()
-  void backend.value?.openInEditor({ project: projectName.value!, path, line: line ?? 1, column: column ?? 1 })
+  openInEditor(path, line, column)
 }
 </script>
 

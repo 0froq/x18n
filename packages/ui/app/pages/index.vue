@@ -1,18 +1,40 @@
 <script setup lang="ts">
-import type { LocaleSummary } from '../../src/node/types'
-import { computed } from 'vue'
+import type { ChangeGroup, LocaleSummary } from '../../src/node/types'
+import { computed, ref } from 'vue'
 import { NuxtLink } from '#components'
+import ChangedValues from '../components/ChangedValues.vue'
 import ChangeInfo from '../components/ChangeInfo.vue'
+import CopyPrompt from '../components/CopyPrompt.vue'
 import LocaleFlag from '../components/LocaleFlag.vue'
 import UiPage from '../components/ui/UiPage.vue'
 import UiSection from '../components/ui/UiSection.vue'
 import UiStat from '../components/ui/UiStat.vue'
 import { formatPercent, languageName, t } from '../i18n'
+import { translatePrompt } from '../prompt'
 import { locales, currentProject as project, recentKeys } from '../state'
 
 function outdatedPercent(locale: LocaleSummary): number {
   return locale.total === 0 ? 0 : (locale.outdated / locale.total) * 100
 }
+
+// The latest revision starts open; a click on any revision flips it.
+const flipped = ref(new Set<string>())
+
+function isOpen(change: ChangeGroup, index: number): boolean {
+  return (index === 0) !== flipped.value.has(change.revision ?? 'local')
+}
+
+function toggle(change: ChangeGroup): void {
+  const id = change.revision ?? 'local'
+  const next = new Set(flipped.value)
+  if (!next.delete(id))
+    next.add(id)
+  flipped.value = next
+}
+
+// The title button covers every locale that has work left; with none, it says there is nothing to do.
+const translatable = computed(() => (project.value?.locales ?? []).filter(l => l.code !== project.value?.sourceLocale))
+const todo = computed(() => translatable.value.filter(l => l.missing + l.empty + l.outdated > 0))
 
 const stats = computed(() => project.value && [
   { label: t('overview.keys'), value: project.value.keys, to: '/keys' },
@@ -31,27 +53,34 @@ const stats = computed(() => project.value && [
     </div>
 
     <UiSection index="01" :title="t('overview.coverage')">
-      <NuxtLink
-        v-for="locale in locales"
-        :key="locale.code"
-        :to="`/locales/${encodeURIComponent(locale.code)}`"
-        class="focus-ring grid grid-cols-[7rem_1fr_4.5rem_14rem] items-center gap-4 border-b border-base px-4 py-2 transition-colors last:border-b-0 hover:bg-hover"
-      >
-        <span class="flex items-center gap-2 font-mono">
-          <LocaleFlag :code="locale.code" />
-          {{ locale.code }}
-          <span v-if="locale.code === project.sourceLocale" class="badge">{{ t('overview.source') }}</span>
+      <template #aside>
+        <span class="flex-auto" />
+        <CopyPrompt v-if="translatable.length" :text="translatePrompt((todo.length ? todo : translatable).map(l => ({ locale: l.code, stale: l.outdated > 0 })))" :label="t('prompt.copyAll')" :hint="t('prompt.allHint')" />
+      </template>
+      <div v-for="locale in locales" :key="locale.code" class="flex items-center border-b border-base transition-colors last:border-b-0 hover:bg-hover">
+        <NuxtLink
+          :to="`/locales/${encodeURIComponent(locale.code)}`"
+          class="focus-ring grid flex-auto grid-cols-[7rem_1fr_4.5rem_14rem] items-center gap-4 py-2 pl-4"
+        >
+          <span class="flex items-center gap-2 font-mono">
+            <LocaleFlag :code="locale.code" />
+            {{ locale.code }}
+            <span v-if="locale.code === project.sourceLocale" class="badge">{{ t('overview.source') }}</span>
+          </span>
+          <span class="h-1.5 flex border border-strong" :title="languageName(locale.code)">
+            <span class="h-full bg-inverse" :style="{ width: `${Math.max(0, locale.percent - outdatedPercent(locale))}%` }" />
+            <span class="h-full bg-[var(--x-warn)]" :style="{ width: `${outdatedPercent(locale)}%` }" />
+          </span>
+          <span class="text-right font-mono tabular-nums" :class="locale.percent >= 100 && 'color-ok'">{{ formatPercent(locale.percent) }}</span>
+          <span class="text-xs color-muted tabular-nums">
+            {{ t('overview.missing', { missing: locale.missing, empty: locale.empty }) }}
+            <span v-if="locale.outdated" class="color-warn">· {{ t('overview.outdated', { count: locale.outdated }) }}</span>
+          </span>
+        </NuxtLink>
+        <span class="flex w-12 shrink-0 justify-center">
+          <CopyPrompt v-if="locale.code !== project.sourceLocale" :text="translatePrompt([{ locale: locale.code, stale: locale.outdated > 0 }])" :label="locale.outdated ? t('prompt.copyStale') : t('prompt.copy')" :hint="locale.outdated ? t('prompt.staleHint') : t('prompt.hint')" />
         </span>
-        <span class="h-1.5 flex border border-strong" :title="languageName(locale.code)">
-          <span class="h-full bg-inverse" :style="{ width: `${Math.max(0, locale.percent - outdatedPercent(locale))}%` }" />
-          <span class="h-full bg-[var(--x-warn)]" :style="{ width: `${outdatedPercent(locale)}%` }" />
-        </span>
-        <span class="text-right font-mono tabular-nums" :class="locale.percent >= 100 && 'color-ok'">{{ formatPercent(locale.percent) }}</span>
-        <span class="text-xs color-muted tabular-nums">
-          {{ t('overview.missing', { missing: locale.missing, empty: locale.empty }) }}
-          <span v-if="locale.outdated" class="color-warn">· {{ t('overview.outdated', { count: locale.outdated }) }}</span>
-        </span>
-      </NuxtLink>
+      </div>
     </UiSection>
 
     <div class="grid md:grid-cols-2">
@@ -65,7 +94,7 @@ const stats = computed(() => project.value && [
           {{ t('overview.clean') }}
         </p>
         <div v-for="d in project.diagnostics.byCode" :key="d.code" class="flex items-center gap-2 px-4 py-1.5">
-          <span :class="d.severity === 'error' ? 'i-ph-x-circle color-error' : 'i-ph-warning color-warn'" />
+          <span :class="d.severity === 'error' ? 'i-ph-x-circle-duotone color-error' : 'i-ph-warning-duotone color-warn'" />
           <span class="flex-auto font-mono text-xs">{{ d.code }}</span>
           <span class="font-mono tabular-nums">{{ d.count }}</span>
         </div>
@@ -80,9 +109,11 @@ const stats = computed(() => project.value && [
         </UiSection>
         <UiSection index="04" :title="t('overview.recent')">
           <div class="flex flex-wrap gap-1 px-4 py-3">
-            <NuxtLink v-for="key in recentKeys" :key="key" :to="`/keys/${encodeURIComponent(key)}`" class="focus-ring border border-base px-1.5 font-mono text-xs hover:border-inverse">
-              {{ key }}
-            </NuxtLink>
+            <ChangedValues v-for="key in recentKeys" :key="key" :project="project.name" :key-name="key">
+              <NuxtLink :to="`/keys/${encodeURIComponent(key)}`" class="focus-ring border border-base px-1.5 font-mono text-xs hover:border-inverse">
+                {{ key }}
+              </NuxtLink>
+            </ChangedValues>
             <span v-if="!recentKeys.length" class="color-muted">{{ t('overview.noRecent') }}</span>
           </div>
         </UiSection>
@@ -90,16 +121,28 @@ const stats = computed(() => project.value && [
     </div>
 
     <UiSection v-if="project.changes.length" index="05" :title="t('history.title')">
-      <NuxtLink
-        v-for="change in project.changes"
-        :key="`${change.key}:${change.revision ?? 'local'}`"
-        :to="`/keys/${encodeURIComponent(change.key)}`"
-        class="focus-ring grid grid-cols-[minmax(0,20rem)_10rem_1fr] items-center gap-4 border-b border-base px-4 py-1.5 transition-colors last:border-b-0 hover:bg-hover"
-      >
-        <span class="truncate font-mono text-xs">{{ change.key }}</span>
-        <span class="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-mono text-xs"><span v-for="locale in change.locales" :key="locale" class="inline-flex items-center gap-1"><LocaleFlag :code="locale" />{{ locale }}</span></span>
-        <ChangeInfo :change="change" />
-      </NuxtLink>
+      <div v-for="(change, i) in project.changes" :key="change.revision ?? 'local'" class="border-b border-base last:border-b-0">
+        <button type="button" class="focus-ring flex w-full items-center gap-3 px-4 py-2 text-left transition-colors hover:bg-hover" :aria-expanded="isOpen(change, i)" @click="toggle(change)">
+          <span class="i-ph-caret-right-duotone shrink-0 transition-transform" :class="isOpen(change, i) && 'rotate-90'" />
+          <ChangeInfo :change="change" />
+          <span class="flex-auto" />
+          <span class="badge" :title="t('overview.keys')">{{ change.total }}</span>
+        </button>
+        <div v-if="isOpen(change, i)" class="border-t border-base">
+          <NuxtLink
+            v-for="entry in change.keys"
+            :key="entry.key"
+            :to="`/keys/${encodeURIComponent(entry.key)}`"
+            class="focus-ring grid grid-cols-[minmax(0,20rem)_1fr] items-center gap-4 border-b border-base py-1.5 pl-10 pr-4 transition-colors last:border-b-0 hover:bg-hover"
+          >
+            <span class="truncate font-mono text-xs">{{ entry.key }}</span>
+            <ChangedValues :project="project.name" :key-name="entry.key" :locales="entry.locales" />
+          </NuxtLink>
+          <p v-if="change.total > change.keys.length" class="py-1.5 pl-10 pr-4 text-xs color-muted">
+            {{ t('history.more', { count: change.total - change.keys.length }) }}
+          </p>
+        </div>
+      </div>
     </UiSection>
   </UiPage>
 </template>

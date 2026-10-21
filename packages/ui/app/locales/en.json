@@ -107,7 +107,9 @@
     "copied": "Copied",
     "hint": "Copy a prompt for an LLM or agent that translates the missing messages",
     "copyStale": "Copy prompt with outdated",
-    "staleHint": "Copy a prompt for an LLM or agent that translates the missing messages and updates the outdated ones"
+    "staleHint": "Copy a prompt for an LLM or agent that translates the missing messages and updates the outdated ones",
+    "copyAll": "Copy translate prompt for all locales",
+    "allHint": "Copy a prompt for an LLM or agent that translates what is missing in every locale"
   },
   "locale": {
     "label": "Locale",
@@ -147,7 +149,8 @@
     "files": "Files: {count}",
     "problems": "Problems",
     "conflict": ".{extension}: {winner} wins over {loser}",
-    "config": "Config and where each value comes from"
+    "config": "Config and where each value comes from",
+    "showAllPresets": "Show all presets"
   },
   "history": {
     "title": "History",
@@ -155,6 +158,8 @@
     "outdated": "outdated",
     "outdatedHint": "The source message changed after this translation",
     "sourceThen": "Source then",
-    "sourceNow": "Source now"
+    "sourceNow": "Source now",
+    "more": "and {count} more",
+    "locales": "{count} locales"
   }
 }

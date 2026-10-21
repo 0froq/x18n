@@ -60,7 +60,7 @@ const tabs = computed(() => [
         {{ t('usages.unusedHint') }}
       </p>
       <NuxtLink v-for="key in analysis?.unused" :key="key" :to="`/keys/${encodeURIComponent(key)}`" class="focus-ring flex items-center gap-2 border-b border-base px-4 py-1.5 font-mono text-xs transition-colors hover:bg-hover">
-        <span class="i-ph-ghost color-faint" />
+        <span class="i-ph-ghost-duotone color-faint" />
         {{ key }}
       </NuxtLink>
     </template>

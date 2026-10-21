@@ -1,22 +1,38 @@
 <script setup lang="ts">
-import type { PromptQuery } from '../../src/node/types'
 import { ref } from 'vue'
 import { t } from '../i18n'
 import { backend } from '../state'
+import InfoPop from './InfoPop.vue'
 
-const props = defineProps<{ query: PromptQuery, label?: string | undefined }>()
+const props = defineProps<{
+  /** The prompt to copy. */
+  text: string
+  label: string
+  hint: string
+}>()
 const copied = ref(false)
 
 async function copy(): Promise<void> {
-  await navigator.clipboard.writeText(await backend.value!.translatePrompt(props.query))
+  await navigator.clipboard.writeText(props.text)
   copied.value = true
   setTimeout(() => copied.value = false, 1500)
 }
 </script>
 
 <template>
-  <button v-if="backend?.capabilities.prompts" class="btn-outline h-7" :title="query.stale ? t('prompt.staleHint') : t('prompt.hint')" @click="copy">
-    <span :class="copied ? 'i-ph-check' : 'i-ph-clipboard-text'" />
-    {{ copied ? t('prompt.copied') : label ?? t('prompt.copy') }}
-  </button>
+  <InfoPop
+    v-if="backend?.capabilities.prompts"
+    :icon="copied ? 'i-ph-check-duotone' : 'i-ph-sparkle-duotone'"
+    :label="label"
+    :pinnable="false"
+    @click="copy"
+  >
+    <div class="grid w-80 gap-2">
+      <span class="text-xs font-medium">{{ copied ? t('prompt.copied') : label }}</span>
+      <p class="text-xs color-muted">
+        {{ hint }}
+      </p>
+      <pre class="max-h-64 of-auto whitespace-pre-wrap break-words border border-base p-2 font-mono text-[11px] leading-4">{{ text }}</pre>
+    </div>
+  </InfoPop>
 </template>

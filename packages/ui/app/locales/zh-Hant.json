@@ -126,14 +126,17 @@
     "presets": "預設集",
     "problems": "問題",
     "resources": "資源：{count}",
-    "scanners": "掃描器"
+    "scanners": "掃描器",
+    "showAllPresets": "顯示所有預設"
   },
   "prompt": {
     "copied": "已複製",
     "copy": "複製翻譯提示詞",
     "hint": "複製提示詞，讓 LLM 或代理程式翻譯缺少的訊息",
     "copyStale": "複製包含過時翻譯的提示詞",
-    "staleHint": "複製提示詞，供 LLM 或代理程式翻譯缺少的訊息並更新過時的翻譯"
+    "staleHint": "複製提示詞，供 LLM 或代理程式翻譯缺少的訊息並更新過時的翻譯",
+    "copyAll": "複製所有語言的翻譯提示詞",
+    "allHint": "複製一段提示詞，供 LLM 或代理翻譯每種語言中缺少的訊息"
   },
   "usages": {
     "all": "全部（{count}）",
@@ -155,6 +158,8 @@
     "outdated": "過時",
     "outdatedHint": "此翻譯之後來源訊息已變更",
     "sourceThen": "當時的來源",
-    "sourceNow": "目前的來源"
+    "sourceNow": "目前的來源",
+    "more": "以及另外 {count} 個",
+    "locales": "{count} 種語言"
   }
 }

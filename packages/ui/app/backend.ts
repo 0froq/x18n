@@ -1,6 +1,6 @@
 import type { ExtractCandidate } from '@x18n/builtins/extractors'
 import type { DevframeRpcClient } from 'devframe/client'
-import type { AnalysisView, ApplyQuery, ApplyView, ExplainList, ExtractApplyQuery, KeyDetail, KeyTable, OpenQuery, PlanQuery, PlanView, ProjectList, PromptQuery, UsageView, X18nState } from '../src/node/types'
+import type { AnalysisView, ApplyQuery, ApplyView, ExplainList, ExtractApplyQuery, KeyDetail, KeyTable, OpenQuery, PlanQuery, PlanView, ProjectList, UsageView, X18nState } from '../src/node/types'
 import { connectDevframe } from 'devframe/client'
 import { shallowRef } from 'vue'
 
@@ -15,7 +15,6 @@ export interface UiBackend {
   readonly analysis: (project: string) => Promise<AnalysisView>
   readonly explain: () => Promise<ExplainList>
   readonly extractCandidates: (project: string) => Promise<ExtractCandidate[]>
-  readonly translatePrompt: (query: PromptQuery) => Promise<string>
   readonly plan: (query: PlanQuery) => Promise<PlanView>
   readonly apply: (query: ApplyQuery) => Promise<ApplyView>
   readonly extractApply: (query: ExtractApplyQuery) => Promise<ApplyView>
@@ -46,7 +45,6 @@ function staticBackend(rpc: DevframeRpcClient): UiBackend {
     mode: 'static',
     capabilities: { write: false, prompts: false, openInEditor: false },
     ...reads(rpc),
-    translatePrompt: readOnly,
     plan: readOnly,
     apply: readOnly,
     extractApply: readOnly,
@@ -62,7 +60,6 @@ async function serverBackend(rpc: DevframeRpcClient): Promise<UiBackend> {
     mode: 'server',
     capabilities: { write: true, prompts: true, openInEditor },
     ...reads(rpc),
-    translatePrompt: query => rpc.call('x18n:translate-prompt', query),
     plan: query => rpc.call('x18n:plan', query),
     apply: query => rpc.call('x18n:apply', query),
     extractApply: query => rpc.call('x18n:extract-apply', query),

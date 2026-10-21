@@ -2,10 +2,10 @@
 import { computed, onMounted, ref } from 'vue'
 import { NuxtLink, NuxtPage } from '#components'
 import { pendingAuth, useBackend } from './backend'
+import LanguageMenu from './components/LanguageMenu.vue'
 import LocaleBar from './components/LocaleBar.vue'
-import LocaleFlag from './components/LocaleFlag.vue'
-import { showFlags } from './flags'
-import { endonym, pickUiLocale, setupI18n, t, uiLocale, uiLocales } from './i18n'
+import LogoMark from './components/LogoMark.vue'
+import { setupI18n, t } from './i18n'
 import { backend, projectList, projectName, recentKeys, revision } from './state'
 import { setupTheme } from './theme'
 
@@ -34,7 +34,6 @@ async function refreshProjects(): Promise<void> {
 
 setupTheme()
 setupI18n()
-const language = computed({ get: () => uiLocale.value, set: pickUiLocale })
 onMounted(async () => {
   try {
     const b = await useBackend()
@@ -57,7 +56,7 @@ onMounted(async () => {
     <header class="shrink-0 border-b border-base">
       <div class="h-12 flex items-center gap-6 border-b border-base px-4">
         <NuxtLink to="/" class="focus-ring flex items-center gap-2.5 font-mono text-sm font-medium">
-          <span class="size-6 bg-current" style="mask: url(./logo.svg) center / contain no-repeat" aria-hidden="true" />
+          <LogoMark class="size-6 shrink-0" />
           {{ t('app.name') }}
         </NuxtLink>
         <nav class="flex items-center gap-1">
@@ -66,8 +65,8 @@ onMounted(async () => {
             :key="item.to"
             :to="item.to"
             class="focus-ring whitespace-nowrap px-2 py-1 font-mono text-xs uppercase tracking-[0.12em] color-muted transition-colors hover:color-base"
-            :active-class="item.to === '/' ? '' : '!color-base underline underline-offset-6'"
-            exact-active-class="!color-base underline underline-offset-6"
+            :active-class="item.to === '/' ? '' : '!color-base'"
+            exact-active-class="!color-base"
           >
             {{ item.label }}
           </NuxtLink>
@@ -82,15 +81,7 @@ onMounted(async () => {
             </option>
           </select>
         </label>
-        <label class="flex items-center gap-2">
-          <LocaleFlag v-if="showFlags" :code="uiLocale" />
-          <span v-else class="i-ph-translate color-muted" aria-hidden="true" />
-          <select v-model="language" class="input text-xs" :aria-label="t('app.language')">
-            <option v-for="option in uiLocales" :key="option" :value="option" :lang="option">
-              {{ endonym(option) }}
-            </option>
-          </select>
-        </label>
+        <LanguageMenu />
       </div>
       <LocaleBar v-if="projectName && !pendingAuth" />
     </header>

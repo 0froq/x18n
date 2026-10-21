@@ -171,7 +171,7 @@ function onEditorKey(event: KeyboardEvent): void {
   <div class="h-full flex flex-col">
     <div class="shrink-0 flex flex-wrap items-center gap-3 border-b border-base px-4 py-2">
       <label class="input w-80 flex items-center gap-2 focus-within:border-inverse">
-        <span class="i-ph-magnifying-glass color-faint" />
+        <span class="i-ph-magnifying-glass-duotone color-faint" />
         <input ref="searchInput" v-model="search" class="flex-auto bg-transparent outline-none" :placeholder="t('keys.search')" :aria-label="t('keys.search')" @keydown.escape="containerProps.ref.value?.focus()" @keydown.enter="containerProps.ref.value?.focus()">
         <kbd class="badge">/</kbd>
       </label>
@@ -208,7 +208,7 @@ function onEditorKey(event: KeyboardEvent): void {
     </div>
 
     <div v-if="problem" class="shrink-0 flex items-center gap-2 border-b border-base px-4 py-1.5 color-warn" role="alert">
-      <span class="i-ph-warning" />
+      <span class="i-ph-warning-duotone" />
       <span class="color-base">{{ t('edit.rejected', { key: problem.key, locale: problem.locale, message: problem.message }) }}</span>
       <button class="btn-outline h-7" @click="forceSave">
         {{ t('edit.saveAnyway') }}
@@ -257,7 +257,7 @@ function onEditorKey(event: KeyboardEvent): void {
             @dblclick="open(row)"
           >
             <span class="truncate">{{ row.key }}</span>
-            <span v-if="row.unused" class="i-ph-ghost shrink-0 color-faint" :title="t('keys.unusedHint')" />
+            <span v-if="row.unused" class="i-ph-ghost-duotone shrink-0 color-faint" :title="t('keys.unusedHint')" />
             <span v-if="row.diagnostics" class="badge shrink-0 border-current color-error" :title="t('keys.diagnosticsHint')">{{ row.diagnostics }}</span>
           </div>
           <div
@@ -281,7 +281,7 @@ function onEditorKey(event: KeyboardEvent): void {
             >
             <template v-else>
               <span class="truncate" :title="String(row.values[locale] ?? '')"><MessageText :value="row.values[locale]" inline /></span>
-              <span v-if="row.outdated.includes(locale)" class="ml-auto shrink-0 pl-2 color-warn" :title="t('history.outdatedHint')"><span class="i-ph-clock-counter-clockwise block" /></span>
+              <span v-if="row.outdated.includes(locale)" class="ml-auto shrink-0 pl-2 color-warn" :title="t('history.outdatedHint')"><span class="i-ph-clock-counter-clockwise-duotone block" /></span>
             </template>
           </div>
         </div>

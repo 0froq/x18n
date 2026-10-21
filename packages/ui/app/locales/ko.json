@@ -126,14 +126,17 @@
     "presets": "프리셋",
     "problems": "문제",
     "resources": "리소스: {count}",
-    "scanners": "스캐너"
+    "scanners": "스캐너",
+    "showAllPresets": "모든 프리셋 표시"
   },
   "prompt": {
     "copied": "복사됨",
     "copy": "번역 프롬프트 복사",
     "hint": "누락된 메시지를 번역하는 LLM 또는 에이전트용 프롬프트 복사",
     "copyStale": "오래된 번역 포함 프롬프트 복사",
-    "staleHint": "누락된 메시지를 번역하고 오래된 번역을 갱신하는 LLM 또는 에이전트용 프롬프트를 복사합니다"
+    "staleHint": "누락된 메시지를 번역하고 오래된 번역을 갱신하는 LLM 또는 에이전트용 프롬프트를 복사합니다",
+    "copyAll": "모든 로캘의 번역 프롬프트 복사",
+    "allHint": "모든 로캘에서 누락된 메시지를 번역하는 LLM 또는 에이전트용 프롬프트를 복사합니다"
   },
   "usages": {
     "all": "전체 ({count})",
@@ -155,6 +158,8 @@
     "outdated": "오래됨",
     "outdatedHint": "이 번역 이후에 원본 메시지가 변경되었습니다",
     "sourceThen": "당시 원본",
-    "sourceNow": "현재 원본"
+    "sourceNow": "현재 원본",
+    "more": "외 {count}개",
+    "locales": "로캘 {count}개"
   }
 }

@@ -126,14 +126,17 @@
     "presets": "预设",
     "problems": "问题",
     "resources": "资源：{count}",
-    "scanners": "扫描器"
+    "scanners": "扫描器",
+    "showAllPresets": "显示所有预设"
   },
   "prompt": {
     "copied": "已复制",
     "copy": "复制翻译提示词",
     "hint": "复制一段提示词，供 LLM 或智能体翻译缺失的消息",
     "copyStale": "复制包含过时翻译的提示词",
-    "staleHint": "复制提示词，供 LLM 或智能体翻译缺失的消息并更新过时的翻译"
+    "staleHint": "复制提示词，供 LLM 或智能体翻译缺失的消息并更新过时的翻译",
+    "copyAll": "复制所有语言的翻译提示词",
+    "allHint": "复制一段提示词，供 LLM 或智能体翻译每种语言中缺失的消息"
   },
   "usages": {
     "all": "全部（{count}）",
@@ -155,6 +158,8 @@
     "outdated": "过时",
     "outdatedHint": "此翻译之后源消息发生了更改",
     "sourceThen": "当时的源文本",
-    "sourceNow": "现在的源文本"
+    "sourceNow": "现在的源文本",
+    "more": "以及另外 {count} 个",
+    "locales": "{count} 种语言"
   }
 }

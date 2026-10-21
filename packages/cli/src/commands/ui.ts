@@ -21,11 +21,10 @@ export interface UiCommandOptions extends GlobalOptions {
 export async function ui(options: UiCommandOptions): Promise<void> {
   const workspace = await openWorkspace(options)
   workspace.projects.forEach(p => p.project.watch())
-  const editor = process.env.LAUNCH_EDITOR || process.env.VISUAL || process.env.EDITOR
+  // Without a configured editor, launch-editor detects a running one.
+  const editor = process.env.LAUNCH_EDITOR || process.env.VISUAL || process.env.EDITOR || undefined
   const definition = createX18nDevframe(workspace.projects, {
-    openInEditor: editor
-      ? async ({ project, path, line, column }) => launchEditor(`${join(project.root, path)}:${line}:${column}`, editor)
-      : undefined,
+    openInEditor: async ({ project, path, line, column }) => launchEditor(`${join(project.root, path)}:${line}:${column}`, editor),
   })
   const mcpToken = randomToken()
   const auth = options.auth !== false

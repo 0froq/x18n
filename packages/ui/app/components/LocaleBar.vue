@@ -73,7 +73,7 @@ function onDragEnd(): void {
         @dragend="onDragEnd"
       >
         <LocaleFlag v-if="showFlags" :code="locale.code" :class="!isLocaleVisible(locale.code) && 'grayscale op-50'" />
-        <span v-else :class="isLocaleVisible(locale.code) ? 'i-ph-eye' : 'i-ph-eye-slash'" class="text-[13px] op-70" aria-hidden="true" />
+        <span v-else :class="isLocaleVisible(locale.code) ? 'i-ph-eye-duotone' : 'i-ph-eye-slash-duotone'" class="text-[13px] op-70" aria-hidden="true" />
         {{ locale.code }}
       </button>
     </div>
@@ -86,7 +86,7 @@ function onDragEnd(): void {
       {{ t('localeBar.resetOrder') }}
     </button>
     <button type="button" class="btn-icon h-7 w-7" :aria-pressed="showFlags" :title="t('localeBar.flags')" @click="showFlags = !showFlags">
-      <span :class="showFlags ? 'i-ph-flag-fill' : 'i-ph-flag'" />
+      <span :class="showFlags ? 'i-ph-flag-fill' : 'i-ph-flag-duotone'" />
     </button>
   </div>
 </template>
