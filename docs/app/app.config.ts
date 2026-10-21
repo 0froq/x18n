@@ -1,3 +1,5 @@
+import pkg from '../../packages/cli/package.json'
+
 export default defineAppConfig({
   header: {
     title: 'x18n',
@@ -7,7 +9,23 @@ export default defineAppConfig({
       { label: 'Agents', sections: ['agents'] },
       { label: 'Presets', sections: ['presets'], link: 'section' as const },
       { label: 'Plugins', sections: ['plugins'], link: 'section' as const },
-      { label: 'Reference', sections: ['references', 'checks', 'errors'] },
+      {
+        label: 'Reference',
+        sections: ['references', 'checks', 'errors'],
+        children: [
+          { label: 'References', to: '/references/config', activePath: '/references' },
+          { label: 'Checks', to: '/checks', activePath: '/checks' },
+          { label: 'Errors', to: '/errors', activePath: '/errors' },
+        ],
+      },
+      {
+        label: `v${pkg.version}`,
+        to: 'https://github.com/x18n-dev/x18n/releases',
+        children: [
+          { label: 'Release notes', to: 'https://github.com/x18n-dev/x18n/releases' },
+          { label: 'Migration', to: '/migration' },
+        ],
+      },
     ],
     links: [
       {

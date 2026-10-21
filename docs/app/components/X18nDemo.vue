@@ -42,7 +42,7 @@ function onKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="not-prose w-full text-left lg:-mr-44 lg:w-[calc(100%+11rem)]">
+  <div class="not-prose x18n-demo w-full text-left">
     <div class="mb-3">
       <div role="tablist" aria-label="x18n surfaces" class="flex items-center gap-1" @keydown="onKeydown">
         <button
@@ -91,6 +91,14 @@ function onKeydown(event: KeyboardEvent) {
 </template>
 
 <style>
+/* Bleed past the hero column, but only into the space beside the 80rem container. */
+@media (min-width: 1024px) {
+  .x18n-demo {
+    --x18n-bleed: clamp(0px, calc((100vw - 80rem) / 2), 11rem);
+    margin-right: calc(-1 * var(--x18n-bleed));
+    width: calc(100% + var(--x18n-bleed));
+  }
+}
 .x18n-pane-enter-active,
 .x18n-pane-leave-active {
   transition: opacity 0.18s ease, transform 0.18s ease;

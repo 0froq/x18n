@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits<{ start: [ms: number], done: [] }>()
 
-const command = 'npx @x18n/cli check'
+const command = 'pnpx @x18n/cli check'
 
 interface Block {
   path: string
@@ -80,7 +80,7 @@ function badge(level: Block['level']) {
     </div>
 
     <div v-if="running" class="mt-3 flex items-center gap-2 text-neutral-500">
-      <UIcon name="i-ph-spinner" class="size-4 animate-spin" />
+      <UIcon name="i-ph-spinner-duotone" class="size-4 animate-spin" />
       Checking 5 locales, 6 resources, 137 keys
     </div>
 

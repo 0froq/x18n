@@ -24,7 +24,7 @@ x18n reads the locale files and the translate calls of your project. It reports 
   ---
   to: /guide/getting-started
   size: lg
-  trailing-icon: i-lucide-arrow-right
+  trailing-icon: i-ph-arrow-right
   ---
   Get started
   :::
@@ -53,7 +53,7 @@ One engine, every place you work
 Every surface reads the same config and reports the same diagnostics. The CLI in CI, the editor and the UI always agree.
 
 #default
-  :::landing-feature-card{icon="i-lucide-terminal" to="/surfaces/cli"}
+  :::landing-feature-card{icon="i-ph-terminal-window-duotone" to="/surfaces/cli"}
   #title
   CLI and x18n check
 
@@ -61,7 +61,7 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
   `x18n check` reports invalid, untranslated and unused keys like `tsc --noEmit`. Every command has JSON output.
   :::
 
-  :::landing-feature-card{icon="i-lucide-code" to="/surfaces/vscode"}
+  :::landing-feature-card{icon="i-ph-code-duotone" to="/surfaces/vscode"}
   #title
   VS Code
 
@@ -69,7 +69,7 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
   Translations in place of keys, go to definition, find references and rename across code and every locale file.
   :::
 
-  :::landing-feature-card{icon="i-lucide-table" to="/surfaces/ui"}
+  :::landing-feature-card{icon="i-ph-table-duotone" to="/surfaces/ui"}
   #title
   UI
 
@@ -77,7 +77,7 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
   Every key across every locale in one table. Edit values in the browser, or publish a static, read-only report.
   :::
 
-  :::landing-feature-card{icon="i-lucide-bot" to="/agents/workflows"}
+  :::landing-feature-card{icon="i-ph-robot-duotone" to="/agents/workflows"}
   #title
   Agents
 
@@ -85,7 +85,7 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
   Translate prompts, safe write commands and MCP tools let an agent translate, check and clean up messages.
   :::
 
-  :::landing-feature-card{icon="i-lucide-package" to="/presets"}
+  :::landing-feature-card{icon="i-ph-package-duotone" to="/presets"}
   #title
   Presets
 
@@ -93,7 +93,7 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
   One preset for each framework of i18n-ally, detected from your dependencies: vue-i18n, i18next, next-intl, ngx-translate, Laravel, Rails, Flutter and 21 others.
   :::
 
-  :::landing-feature-card{icon="i-lucide-puzzle" to="/plugins"}
+  :::landing-feature-card{icon="i-ph-puzzle-piece-duotone" to="/plugins"}
   #title
   Plugins
 
@@ -105,13 +105,13 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
 ::landing-tabs
 ---
 items:
-  - icon: i-lucide-list
+  - icon: i-ph-list-duotone
     title: See the project
     description: Locales with coverage, and the counts of resources, keys and usages.
-  - icon: i-lucide-circle-check
+  - icon: i-ph-check-circle
     title: Check it
     description: Missing, unused and broken keys. Exits with 1 on errors.
-  - icon: i-lucide-file-cog
+  - icon: i-ph-file-code-duotone
     title: Write a config
     description: x18n.config.ts from the detected presets and locale files.
 ---
@@ -127,17 +127,17 @@ Run x18n in the root of a project. It detects the i18n library from your depende
 
 #code-0
   ```sh
-  npx @x18n/cli
+  pnpx @x18n/cli
   ```
 
 #code-1
   ```sh
-  npx @x18n/cli check
+  pnpx @x18n/cli check
   ```
 
 #code-2
   ```sh
-  npx @x18n/cli init
+  pnpx @x18n/cli init
   ```
 ::
 
@@ -153,7 +153,7 @@ Coming from i18n-ally?
   ---
   to: /guide/getting-started
   size: lg
-  trailing-icon: i-lucide-arrow-right
+  trailing-icon: i-ph-arrow-right
   ---
   Get started
   :::

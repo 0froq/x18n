@@ -83,11 +83,11 @@ useDemoLoop(async (sleep) => {
   <div class="x18n-vscode relative flex h-full flex-col bg-(--vs-bg) font-mono text-[13px] leading-6 text-(--vs-fg)">
     <div class="flex min-h-0 flex-1">
       <div class="flex w-12 shrink-0 flex-col items-center gap-5 border-r border-(--vs-border) bg-(--vs-side) pt-4 text-(--vs-muted)">
-        <UIcon name="i-ph-files" class="size-6 text-(--vs-fg)" />
-        <UIcon name="i-ph-magnifying-glass" class="size-6" />
-        <UIcon name="i-ph-git-branch" class="size-6" />
-        <UIcon name="i-ph-bug" class="size-6" />
-        <UIcon name="i-ph-squares-four" class="size-6" />
+        <UIcon name="i-ph-files-duotone" class="size-6 text-(--vs-fg)" />
+        <UIcon name="i-ph-magnifying-glass-duotone" class="size-6" />
+        <UIcon name="i-ph-git-branch-duotone" class="size-6" />
+        <UIcon name="i-ph-bug-duotone" class="size-6" />
+        <UIcon name="i-ph-squares-four-duotone" class="size-6" />
       </div>
 
       <div class="relative flex min-w-0 flex-1 flex-col">
@@ -100,7 +100,7 @@ useDemoLoop(async (sleep) => {
         </div>
 
         <div class="flex items-center gap-1.5 px-4 py-1 font-sans text-xs text-(--vs-muted)">
-          src <UIcon name="i-ph-caret-right" class="size-3" /> components <UIcon name="i-ph-caret-right" class="size-3" />
+          src <UIcon name="i-ph-caret-right-duotone" class="size-3" /> components <UIcon name="i-ph-caret-right-duotone" class="size-3" />
           <UIcon name="i-catppuccin-typescript-react" class="size-3.5" /> Welcome.tsx
         </div>
 
@@ -153,18 +153,18 @@ useDemoLoop(async (sleep) => {
       <div class="flex h-full items-center gap-3">
         <span class="flex h-full w-9 items-center justify-center bg-[#0078d4] text-white"><UIcon name="i-ph-arrows-left-right" class="size-3.5" /></span>
         <span class="flex items-center gap-1"><UIcon name="i-ph-x-circle" class="size-3.5" />0</span>
-        <span class="flex items-center gap-1"><UIcon name="i-ph-warning" class="size-3.5" />1</span>
+        <span class="flex items-center gap-1"><UIcon name="i-ph-warning-duotone" class="size-3.5" />1</span>
       </div>
       <div class="flex items-center gap-4">
-        <span class="flex items-center gap-1"><UIcon name="i-ph-globe" class="size-3.5" />en</span>
+        <span class="flex items-center gap-1"><UIcon name="i-ph-globe-duotone" class="size-3.5" />en</span>
         <span class="flex items-center gap-1">
-          <UIcon name="i-ph-eye" class="size-3.5" />{{ displayLocale.code }}
+          <UIcon name="i-ph-eye-duotone" class="size-3.5" />{{ displayLocale.code }}
         </span>
         <span>Spaces: 2</span>
         <span>UTF-8</span>
         <span>LF</span>
-        <span class="flex items-center gap-1"><UIcon name="i-ph-brackets-curly" class="size-3.5" />TypeScript React</span>
-        <UIcon name="i-ph-bell" class="size-3.5" />
+        <span class="flex items-center gap-1"><UIcon name="i-ph-brackets-curly-duotone" class="size-3.5" />TypeScript React</span>
+        <UIcon name="i-ph-bell-duotone" class="size-3.5" />
       </div>
     </div>
   </div>

@@ -10,8 +10,8 @@ x18n is a successor of [i18n-ally](https://github.com/lokalise/i18n-ally). It re
 Run the command in the root of the project. First look at the result with `--dry-run`. It prints the files and writes nothing:
 
 ```sh
-npx @x18n/cli migrate i18n-ally --dry-run
-npx @x18n/cli migrate i18n-ally
+pnpx @x18n/cli migrate i18n-ally --dry-run
+pnpx @x18n/cli migrate i18n-ally
 ```
 
 The command reads:
@@ -161,7 +161,7 @@ Settings that are not on this page are not migrated.
 
 ## After the migration
 
-1. Run `npx @x18n/cli doctor` and make sure that x18n found your locale files and presets.
-2. Run `npx @x18n/cli check`.
+1. Run `pnpx @x18n/cli doctor` and make sure that x18n found your locale files and presets.
+2. Run `pnpx @x18n/cli check`.
 3. Install the [x18n extension](/surfaces/vscode), and turn i18n-ally off for the workspace.
 4. Remove the i18n-ally settings that the command listed.

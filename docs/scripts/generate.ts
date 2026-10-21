@@ -496,7 +496,7 @@ async function lspPage(): Promise<void> {
 \`@x18n/lsp\` is the language server that the VS Code extension uses. Any editor with an LSP client can run it:
 
 \`\`\`sh
-npx x18n-lsp --stdio
+pnpx x18n-lsp --stdio
 \`\`\`
 
 The server also accepts \`--node-ipc\` and \`--socket=<port>\`. It loads the projects of each workspace folder, the same way the CLI does.
