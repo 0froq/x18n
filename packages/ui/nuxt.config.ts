@@ -84,6 +84,7 @@ export default defineNuxtConfig({
     head: {
       title: 'x18n',
       viewport: 'width=device-width,initial-scale=1',
+      link: [{ rel: 'icon', href: './logo.svg', type: 'image/svg+xml' }],
       script: [{ innerHTML: stashOtp }],
     },
   },

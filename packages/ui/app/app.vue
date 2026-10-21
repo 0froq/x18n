@@ -57,7 +57,7 @@ onMounted(async () => {
     <header class="shrink-0 border-b border-base">
       <div class="h-12 flex items-center gap-6 border-b border-base px-4">
         <NuxtLink to="/" class="focus-ring flex items-center gap-2.5 font-mono text-sm font-medium">
-          <span class="size-6 grid place-items-center bg-inverse color-inverse" aria-hidden="true"><span class="i-ph-translate-bold text-sm" /></span>
+          <span class="size-6 bg-current" style="mask: url(./logo.svg) center / contain no-repeat" aria-hidden="true" />
           {{ t('app.name') }}
         </NuxtLink>
         <nav class="flex items-center gap-1">

@@ -27,6 +27,7 @@
     "Linters"
   ],
   "main": "./dist/index.cjs",
+  "icon": "res/icon.png",
   "files": [
     "LICENSE.md",
     "README.md",

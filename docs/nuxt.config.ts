@@ -21,4 +21,13 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: false },
+
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/logo.svg' },
+      ],
+    },
+  },
 })

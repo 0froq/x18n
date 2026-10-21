@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./res/logo-dark.svg">
+    <img src="./res/logo-light.svg" alt="x18n" width="96">
+  </picture>
+</p>
+
 # x18n
 
 Universal toolkits for linting, viewing and managing i18n for any frameworks.
