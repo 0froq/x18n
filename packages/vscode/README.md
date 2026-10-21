@@ -2,7 +2,7 @@
 
 Manage and view the i18n files of any project: inline translations, missing-key diagnostics, key rename, hard-string extraction, and the x18n UI in a panel.
 
-This extension is in early development. See the [plan](https://github.com/antfu/x18n/tree/main/plans/08-vscode.md).
+This extension is in early development. See the [plan](https://github.com/x18n-dev/x18n/tree/main/plans/08-vscode.md).
 
 ## Features
 

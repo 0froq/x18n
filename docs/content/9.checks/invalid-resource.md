@@ -13,4 +13,4 @@ Files that x18n cannot parse as locale files are errors. Source files that a sca
 
 ## Source
 
-- [`packages/core/src/project/analysis.ts`](https://github.com/antfu/x18n/blob/main/packages/core/src/project/analysis.ts)
+- [`packages/core/src/project/analysis.ts`](https://github.com/x18n-dev/x18n/blob/main/packages/core/src/project/analysis.ts)

@@ -5,13 +5,13 @@
   "description": "Node.js host for x18n: file system access, config and plugin loading",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/antfu/x18n#readme",
+  "homepage": "https://github.com/x18n-dev/x18n#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/x18n.git",
+    "url": "git+https://github.com/x18n-dev/x18n.git",
     "directory": "packages/node"
   },
-  "bugs": "https://github.com/antfu/x18n/issues",
+  "bugs": "https://github.com/x18n-dev/x18n/issues",
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.mjs",

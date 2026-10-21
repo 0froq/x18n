@@ -5,13 +5,13 @@
   "description": "x18n UI as a devframe: dev server, static report, in-browser workspace and VS Code panel",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/antfu/x18n#readme",
+  "homepage": "https://github.com/x18n-dev/x18n#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/x18n.git",
+    "url": "git+https://github.com/x18n-dev/x18n.git",
     "directory": "packages/ui"
   },
-  "bugs": "https://github.com/antfu/x18n/issues",
+  "bugs": "https://github.com/x18n-dev/x18n/issues",
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.mjs",

@@ -45,7 +45,7 @@ x18n reads the locale files and the translate calls of your project. It reports 
   color: neutral
   variant: ghost
   size: lg
-  to: https://github.com/antfu/x18n
+  to: https://github.com/x18n-dev/x18n
   target: _blank
   ---
   View on GitHub

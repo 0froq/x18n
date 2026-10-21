@@ -12,7 +12,7 @@ export default defineConfig({
   },
   publint: true,
   hooks: {
-    // The skills live at the repo root (so `skills add antfu/x18n` finds them) and ship in this package.
+    // The skills live at the repo root (so `skills add x18n-dev/x18n` finds them) and ship in this package.
     'build:done': async () => {
       await rm(skills, { recursive: true, force: true })
       await cp(new URL('../../skills/', import.meta.url), skills, { recursive: true })

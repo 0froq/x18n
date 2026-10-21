@@ -63,7 +63,7 @@ MCP prompts: `translate`, `review`, `extract`.
 
 ## Shipped skills
 
-The source is the root `skills/` directory, so `skills add antfu/x18n` finds it on GitHub. The `@x18n/cli` build copies it into the package (like devframe ships its skill), where `skills-npm` discovers it at the installed CLI's version. Three skills, each with its own trigger, with no text shared between them:
+The source is the root `skills/` directory, so `skills add x18n-dev/x18n` finds it on GitHub. The `@x18n/cli` build copies it into the package (like devframe ships its skill), where `skills-npm` discovers it at the installed CLI's version. Three skills, each with its own trigger, with no text shared between them:
 
 - `x18n-setup`: `x18n doctor`, `x18n init` only when detection needs help, the dev dependency and script, and the first `x18n check` summary. Holds `references/migrate-i18n-ally.md`.
 - `x18n-check`: run `x18n check --json`, fix diagnostics per check id, and bring unused-key deletes, glossary terms, check severities and `--strict` to the user.

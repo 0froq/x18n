@@ -12,7 +12,7 @@ export default defineAppConfig({
     links: [
       {
         'icon': 'i-simple-icons-github',
-        'to': 'https://github.com/antfu/x18n',
+        'to': 'https://github.com/x18n-dev/x18n',
         'target': '_blank',
         'aria-label': 'x18n on GitHub',
       },

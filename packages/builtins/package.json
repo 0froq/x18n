@@ -5,13 +5,13 @@
   "description": "Built-in x18n plugins and presets: formats, locale finders, scanners, checks and reporters",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/antfu/x18n#readme",
+  "homepage": "https://github.com/x18n-dev/x18n#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/x18n.git",
+    "url": "git+https://github.com/x18n-dev/x18n.git",
     "directory": "packages/builtins"
   },
-  "bugs": "https://github.com/antfu/x18n/issues",
+  "bugs": "https://github.com/x18n-dev/x18n/issues",
   "sideEffects": false,
   "exports": {
     ".": "./dist/index.mjs",

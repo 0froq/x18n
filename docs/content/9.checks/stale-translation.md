@@ -31,4 +31,4 @@ export default defineConfig({
 
 ## Source
 
-- [`packages/builtins/src/checks/index.ts`](https://github.com/antfu/x18n/blob/main/packages/builtins/src/checks/index.ts)
+- [`packages/builtins/src/checks/index.ts`](https://github.com/x18n-dev/x18n/blob/main/packages/builtins/src/checks/index.ts)

@@ -8,12 +8,12 @@
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/x18n#readme",
+  "homepage": "https://github.com/x18n-dev/x18n#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/x18n.git"
+    "url": "git+https://github.com/x18n-dev/x18n.git"
   },
-  "bugs": "https://github.com/antfu/x18n/issues",
+  "bugs": "https://github.com/x18n-dev/x18n/issues",
   "engines": {
     "node": ">=22"
   },
