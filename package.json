@@ -77,7 +77,8 @@
     "typescript": "catalog:cli",
     "vite": "catalog:cli",
     "vitest": "catalog:testing",
-    "vscode-jsonrpc": "catalog:testing"
+    "vscode-jsonrpc": "catalog:testing",
+    "vue": "catalog:frontend"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpx nano-staged"

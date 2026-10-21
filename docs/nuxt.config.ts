@@ -22,6 +22,16 @@ export default defineNuxtConfig({
 
   devtools: { enabled: false },
 
+  hooks: {
+    // Markdown resolves components by name at runtime, so the ones it uses must be global.
+    'components:extend': (components) => {
+      for (const component of components) {
+        if (component.pascalName === 'X18nDemo')
+          component.global = true
+      }
+    },
+  },
+
   nitro: {
     // `comark` is only a transitive dep (via the layer); Nitro can't resolve it
     // from here and externalizes it as an absolute pnpm store path that is

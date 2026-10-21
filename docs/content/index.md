@@ -10,18 +10,8 @@ description: x18n reads the locale files of any project, finds where each key is
 ---
 orientation: horizontal
 ---
-```sh
-$ npx @x18n/cli check
-src/App.vue:17:15 - error missing-key: "app.titel" is not defined in en.
-17     <p>{{ $t('app.titel') }}</p>
-                 ~~~~~~~~~
-
-src/locales/en.json:18:4 - warning unused-key: "unused" is not used.
-18   "unused": "Nobody uses me",
-      ~~~~~~
-
-Found 1 error and 1 warning in 2 files.
-```
+::x18n-demo
+::
 
 #title
 i18n files, checked and maintained

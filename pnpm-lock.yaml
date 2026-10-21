@@ -310,6 +310,9 @@ catalogs:
     unocss:
       specifier: ^66.11.0
       version: 66.11.0
+    vue:
+      specifier: ^3.5.44
+      version: 3.5.44
   inlined:
     '@antfu/utils':
       specifier: ^9.3.0
@@ -436,6 +439,9 @@ importers:
       vscode-jsonrpc:
         specifier: catalog:testing
         version: 9.0.3
+      vue:
+        specifier: catalog:frontend
+        version: 3.5.44(typescript@6.0.3)
 
   docs:
     dependencies:

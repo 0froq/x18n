@@ -5,7 +5,8 @@ export default antfu(
   {
     type: 'lib',
     pnpm: true,
-    vue: true,
+    // No CSS linter is configured, so style blocks would be parsed as JS.
+    vue: { sfcBlocks: { blocks: { styles: false } } },
     antislop: true,
     ignores: [
       '**/.nuxt',
