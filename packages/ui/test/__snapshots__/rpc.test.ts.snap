@@ -1115,6 +1115,14 @@ exports[`rpc functions > explains the project 1`] = `
           "reason": "not-detected",
         },
         {
+          "name": "solid-primitives-i18n",
+          "reason": "not-detected",
+        },
+        {
+          "name": "paraglide",
+          "reason": "not-detected",
+        },
+        {
           "name": "ngx-translate",
           "reason": "not-detected",
         },

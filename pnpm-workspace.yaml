@@ -128,6 +128,7 @@ catalogs:
   frontend:
     '@iconify-json/catppuccin': ^1.2.17
     '@iconify-json/circle-flags': ^1.2.12
+    '@iconify-json/devicon': ^1.2.71
     '@iconify-json/logos': ^1.2.17
     '@iconify-json/ph': ^1.2.2
     '@unocss/nuxt': ^66.11.0

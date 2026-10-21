@@ -298,6 +298,9 @@ catalogs:
     '@iconify-json/circle-flags':
       specifier: ^1.2.12
       version: 1.2.12
+    '@iconify-json/devicon':
+      specifier: ^1.2.71
+      version: 1.2.71
     '@iconify-json/logos':
       specifier: ^1.2.17
       version: 1.2.17
@@ -450,7 +453,10 @@ importers:
         version: 3.5.44(typescript@6.0.3)
 
   docs:
-    dependencies:
+    devDependencies:
+      '@iconify-json/devicon':
+        specifier: catalog:frontend
+        version: 1.2.71
       '@iconify-json/logos':
         specifier: catalog:frontend
         version: 1.2.17
@@ -1532,6 +1538,9 @@ packages:
 
   '@iconify-json/circle-flags@1.2.12':
     resolution: {integrity: sha512-TPuLJF7uDjqR2ZA7FldWEGz7gZijhnMG5K7B3nKKyJdGYU8KLHh7F4VcrFjUTJHG+ttGglYrHbw0GoIqCqoOyw==}
+
+  '@iconify-json/devicon@1.2.71':
+    resolution: {integrity: sha512-1o+Zl3QveZZoE6VMUl9hL4FEtyHC1NeUHO8sqBm2vb7oG1hL/43uzjKPXolG2tkQRkcEoi6TjH2qMss+xPCdAw==}
 
   '@iconify-json/logos@1.2.17':
     resolution: {integrity: sha512-ruCr6y5h8FW+loXwRJkz+6cJj3njyX5Ccpi+ifMgaWZPbTSCbsCccNyGomZxIdhoyDKNOmNdZuURC3tyBvDr7A==}
@@ -10504,6 +10513,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/circle-flags@1.2.12':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/devicon@1.2.71':
     dependencies:
       '@iconify/types': 2.0.0
 

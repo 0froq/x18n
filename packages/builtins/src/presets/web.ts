@@ -270,3 +270,42 @@ export function chromeExtension(): Preset {
     ],
   }
 }
+
+export function solidPrimitivesI18n(): Preset {
+  return {
+    name: 'solid-primitives-i18n',
+    detect: dependsOn(['@solid-primitives/i18n']),
+    plugins: [
+      library({
+        name: 'solid-primitives-i18n',
+        calls: [{ callee: ['t', 'i18n.t'] }],
+        templates: [
+          { template: '{t(\'{key}\'{args})}', kinds: ['jsx-text'] },
+          { template: '{attr}={t(\'{key}\'{args})}', kinds: ['jsx-attribute'] },
+          { template: 't(\'{key}\'{args})', kinds: ['js-string', 'js-template'] },
+        ],
+      }),
+      placeholders(doubleBraces),
+    ],
+  }
+}
+
+export function paraglide(): Preset {
+  return {
+    name: 'paraglide',
+    detect: dependsOn(['@inlang/paraglide-js', '@inlang/paraglide-sveltekit', '@inlang/paraglide-next', '@inlang/paraglide-astro', '@inlang/paraglide-vite']),
+    plugins: [
+      library({
+        name: 'paraglide',
+        // Messages are functions: `m.hello_world({ name })` or `m['hello.world']()`.
+        regex: [{ extensions: [...scriptExtensions, 'vue', 'svelte', 'astro'], patterns: ['\\bm\\.({key})\\(', '\\bm\\[\\s*[\'"`]({key})[\'"`]\\s*\\]\\('] }],
+        resources: [{ pattern: 'messages/{locale}.json' }],
+        templates: [
+          { template: '{m.{key}({args})}', kinds: ['jsx-text', 'svelte-text'], imports: ['import { m } from \'$lib/paraglide/messages\''] },
+          { template: 'm.{key}({args})', kinds: ['js-string', 'js-template'], imports: ['import { m } from \'$lib/paraglide/messages\''] },
+        ],
+      }),
+      placeholders(braces),
+    ],
+  }
+}

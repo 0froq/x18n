@@ -45,6 +45,25 @@ describe('tier 1 presets', () => {
     expect(project.usages().map(m => m.usage.key)).toEqual(['page.body', 'page.title'])
   })
 
+  it('solid-primitives-i18n: t calls with double-brace placeholders', async () => {
+    const { project } = await createTestProject({
+      'package.json': pkg('@solid-primitives/i18n', 'solid-js'),
+      'src/locales/en.json': json({ home: { title: 'Hi {{name}}' } }),
+      'src/App.tsx': `export default () => <h1>{t('home.title', { name: 'x' })}</h1>`,
+    })
+    expect(project.explain().presets.find(p => p.name === 'solid-primitives-i18n')?.reason).toBe('detected')
+    expect(project.usages().map(m => m.usage.key)).toEqual(['home.title'])
+  })
+
+  it('paraglide: m.key() and m[\'key\']() usages', async () => {
+    const { project } = await createTestProject({
+      'package.json': pkg('@inlang/paraglide-js'),
+      'messages/en.json': json({ 'hello_world': 'Hello {name}', 'a.b': 'AB' }),
+      'src/App.svelte': `<h1>{m.hello_world({ name })}</h1>\n<p>{m['a.b']()}</p>`,
+    })
+    expect(project.usages().map(m => m.usage.key)).toEqual(['hello_world', 'a.b'])
+  })
+
   it('vscode-extension: package.nls files and %key% references', async () => {
     const { project } = await createTestProject({
       'package.json': json({ devDependencies: { '@types/vscode': '*' }, contributes: { commands: [{ title: '%cmd.open%' }] } }),

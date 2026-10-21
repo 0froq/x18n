@@ -18,6 +18,8 @@ A preset is a group of plugins for one i18n library. It tells x18n which calls a
 | [`next-intl`](/presets/next-intl) | next-intl | `next-intl`, `use-intl` |
 | [`react-intl`](/presets/react-intl) | react-intl (FormatJS) | `react-intl`, `@formatjs/*` |
 | [`svelte-i18n`](/presets/svelte-i18n) | svelte-i18n, sveltekit-i18n | `svelte-i18n`, `sveltekit-i18n`, `@sveltekit-i18n/base` |
+| [`solid-primitives-i18n`](/presets/solid-primitives-i18n) | @solid-primitives/i18n | `@solid-primitives/i18n` |
+| [`paraglide`](/presets/paraglide) | Paraglide JS | `@inlang/paraglide-js`, `@inlang/paraglide-sveltekit`, `@inlang/paraglide-next`, `@inlang/paraglide-astro`, `@inlang/paraglide-vite` |
 | [`ngx-translate`](/presets/ngx-translate) | ngx-translate | `@ngx-translate/core` |
 | [`transloco`](/presets/transloco) | Transloco | `@jsverse/transloco`, `@ngneat/transloco` |
 | [`lingui`](/presets/lingui) | Lingui | `@lingui/core`, `@lingui/react`, `@lingui/macro` |
@@ -68,7 +70,7 @@ presets: [vue-i18n, general]
 
 ::
 
-In TS, the presets are functions from `@x18n/cli/presets`: `nuxtI18n`, `vueI18n`, `fluentVue`, `i18nextShopify`, `reactI18next`, `nextTranslate`, `nextInternational`, `i18next`, `nextIntl`, `reactIntl`, `svelteI18n`, `ngxTranslate`, `transloco`, `lingui`, `emberIntl`, `polyglot`, `globalize`, `i18nTag`, `i18nJs`, `ui5`, `chromeExtension`, `vscodeExtension`, `laravel`, `phpJoomla`, `phpGettext`, `rubyRails`, `jekyll`, `flutter` and `general`. In YAML and JSON, use the names in the first column of the table. `presets: []` turns every preset off.
+In TS, the presets are functions from `@x18n/cli/presets`: `nuxtI18n`, `vueI18n`, `fluentVue`, `i18nextShopify`, `reactI18next`, `nextTranslate`, `nextInternational`, `i18next`, `nextIntl`, `reactIntl`, `svelteI18n`, `solidPrimitivesI18n`, `paraglide`, `ngxTranslate`, `transloco`, `lingui`, `emberIntl`, `polyglot`, `globalize`, `i18nTag`, `i18nJs`, `ui5`, `chromeExtension`, `vscodeExtension`, `laravel`, `phpJoomla`, `phpGettext`, `rubyRails`, `jekyll`, `flutter` and `general`. In YAML and JSON, use the names in the first column of the table. `presets: []` turns every preset off.
 
 ## What a preset adds
 

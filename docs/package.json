@@ -8,7 +8,8 @@
     "docs:build": "pnpm run generate && nuxt build",
     "docs:serve": "nuxt preview"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@iconify-json/devicon": "catalog:frontend",
     "@iconify-json/logos": "catalog:frontend",
     "@iconify-json/ph": "catalog:frontend",
     "comark-docs": "catalog:docs",
