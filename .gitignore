@@ -16,6 +16,7 @@ temp
 .nuxt
 .output
 .data
+.vercel
 *.vsix
 packages/vscode/src/generated
 packages/vscode/.vsce
