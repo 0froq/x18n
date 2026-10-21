@@ -26,7 +26,9 @@
     "openInEditor": "在編輯器中開啟",
     "possible": "可能",
     "usages": "使用處（{count}）",
-    "values": "值"
+    "values": "值",
+    "showAllLocales": "顯示所有語言",
+    "file": "檔案"
   },
   "edit": {
     "dismiss": "關閉",

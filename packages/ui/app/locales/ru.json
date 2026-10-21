@@ -26,7 +26,9 @@
     "openInEditor": "Открыть в редакторе",
     "possible": "возможно",
     "usages": "Использования ({count})",
-    "values": "Значения"
+    "values": "Значения",
+    "showAllLocales": "Показать все локали",
+    "file": "Файл"
   },
   "edit": {
     "dismiss": "Закрыть",

@@ -26,7 +26,9 @@
     "openInEditor": "에디터에서 열기",
     "possible": "추정",
     "usages": "사용처 ({count})",
-    "values": "값"
+    "values": "값",
+    "showAllLocales": "모든 로캘 표시",
+    "file": "파일"
   },
   "edit": {
     "dismiss": "닫기",

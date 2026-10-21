@@ -98,7 +98,9 @@
     "usages": "Usages ({count})",
     "noUsages": "No code uses this key.",
     "possible": "possible",
-    "openInEditor": "Open in editor"
+    "openInEditor": "Open in editor",
+    "showAllLocales": "Show all locales",
+    "file": "File"
   },
   "prompt": {
     "copy": "Copy translate prompt",

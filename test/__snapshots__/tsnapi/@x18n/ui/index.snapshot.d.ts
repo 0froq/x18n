@@ -154,7 +154,7 @@ export interface ProjectSummary {
   readonly presets: readonly string[];
   readonly changes: readonly (HistoryView & {
     readonly key: KeyString;
-    readonly locale: LocaleCode;
+    readonly locales: readonly LocaleCode[];
   })[];
 }
 export interface PromptQuery extends ProjectQuery {
@@ -190,6 +190,7 @@ export interface UsageView {
   readonly path: string;
   readonly line: number;
   readonly column: number;
+  readonly length: number;
   readonly kind: UsageKind;
   readonly dynamic: false | "prefix" | "unknown";
   readonly possible: boolean;

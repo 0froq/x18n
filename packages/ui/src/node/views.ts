@@ -32,6 +32,28 @@ function outdatedByKey(coverage: readonly LocaleCoverage[]): Map<KeyString, Loca
 
 const recentChanges = 8
 
+/** The latest changes, with the locales of one key changed in the same revision merged into one entry. */
+function recentChangeViews(project: UiProject['project']): ProjectSummary['changes'] {
+  const merged = new Map<string, { key: KeyString, locales: LocaleCode[], updatedAt: number, view: HistoryView }>()
+  for (const key of project.keys()) {
+    for (const locale of project.locales) {
+      const change = project.history(key, locale)
+      if (!change)
+        continue
+      const id = `${key}\0${change.revision ?? 'local'}`
+      const entry = merged.get(id)
+      if (!entry)
+        merged.set(id, { key, locales: [locale], updatedAt: change.updatedAt, view: historyView(change) })
+      else
+        entry.locales.push(locale)
+    }
+  }
+  return [...merged.values()]
+    .sort((a, b) => b.updatedAt === a.updatedAt ? 0 : b.updatedAt > a.updatedAt ? 1 : -1)
+    .slice(0, recentChanges)
+    .map(({ key, locales, view }) => ({ key, locales, ...view }))
+}
+
 export function summarize({ name, project }: UiProject): ProjectSummary {
   const analysis = project.analyze()
   const byCode = new Map<string, ProjectSummary['diagnostics']['byCode'][number]>()
@@ -58,14 +80,7 @@ export function summarize({ name, project }: UiProject): ProjectSummary {
       byCode: [...byCode.values()].sort((a, b) => b.count - a.count || a.code.localeCompare(b.code)),
     },
     presets: project.explain().presets.filter(p => p.reason === 'listed' || p.reason === 'detected').map(p => p.name),
-    changes: project.keys()
-      .flatMap(key => project.locales.flatMap((locale) => {
-        const change = project.history(key, locale)
-        return change ? [{ key, locale, updatedAt: change.updatedAt, view: historyView(change) }] : []
-      }))
-      .sort((a, b) => b.updatedAt === a.updatedAt ? 0 : b.updatedAt > a.updatedAt ? 1 : -1)
-      .slice(0, recentChanges)
-      .map(({ key, locale, view }) => ({ key, locale, ...view })),
+    changes: recentChangeViews(project),
   }
 }
 
@@ -138,6 +153,7 @@ function usageView(p: UiProject, usage: Usage, possible = false): UsageView {
     path: usage.path,
     line: position.line + 1,
     column: position.character + 1,
+    length: usage.range.end - usage.range.start,
     kind: usage.kind,
     dynamic: usage.dynamic,
     possible,

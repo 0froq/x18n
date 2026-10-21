@@ -161,8 +161,8 @@ export interface ProjectSummary {
   readonly diagnostics: DiagnosticCounts
   /** Presets that are listed in the config or detected. */
   readonly presets: readonly string[]
-  /** The latest message changes in history, local changes first. */
-  readonly changes: readonly (HistoryView & { readonly key: KeyString, readonly locale: LocaleCode })[]
+  /** The latest message changes in history, local changes first; one entry per key and revision, listing every locale it touched. */
+  readonly changes: readonly (HistoryView & { readonly key: KeyString, readonly locales: readonly LocaleCode[] })[]
 }
 
 export interface ProjectList {
@@ -207,6 +207,8 @@ export interface UsageView {
   readonly line: number
   /** 1-based. */
   readonly column: number
+  /** Characters of the key text at `column`, for highlighting. */
+  readonly length: number
   readonly kind: UsageKind
   readonly dynamic: false | 'prefix' | 'unknown'
   /** True for prefix usages that may refer to the key. */

@@ -57,7 +57,7 @@ describe('history in the UI', () => {
   it('counts outdated translations and lists the latest changes', async () => {
     const { projects: [summary] } = await ctx.rpc.invokeLocal('x18n:project')
     expect(summary!.locales.find(l => l.code === 'de')?.outdated).toBe(1)
-    expect(summary!.changes[0]).toMatchObject({ key: 'app.title', locale: 'en', at: Date.parse('2026-02-01T00:00:00Z'), author: 'Ada' })
+    expect(summary!.changes[0]).toMatchObject({ key: 'app.title', locales: ['en'], at: Date.parse('2026-02-01T00:00:00Z'), author: 'Ada' })
   })
 
   it('flags outdated cells and shows the source text from back then', async () => {

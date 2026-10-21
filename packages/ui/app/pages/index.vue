@@ -8,7 +8,7 @@ import UiPage from '../components/ui/UiPage.vue'
 import UiSection from '../components/ui/UiSection.vue'
 import UiStat from '../components/ui/UiStat.vue'
 import { formatPercent, languageName, t } from '../i18n'
-import { currentProject as project, recentKeys, visibleLocales } from '../state'
+import { locales, currentProject as project, recentKeys } from '../state'
 
 function outdatedPercent(locale: LocaleSummary): number {
   return locale.total === 0 ? 0 : (locale.outdated / locale.total) * 100
@@ -31,11 +31,8 @@ const stats = computed(() => project.value && [
     </div>
 
     <UiSection index="01" :title="t('overview.coverage')">
-      <p v-if="!visibleLocales.length" class="px-4 py-3 color-muted">
-        {{ t('localeBar.noneShown') }}
-      </p>
       <NuxtLink
-        v-for="locale in visibleLocales"
+        v-for="locale in locales"
         :key="locale.code"
         :to="`/locales/${encodeURIComponent(locale.code)}`"
         class="focus-ring grid grid-cols-[7rem_1fr_4.5rem_14rem] items-center gap-4 border-b border-base px-4 py-2 transition-colors last:border-b-0 hover:bg-hover"
@@ -95,12 +92,12 @@ const stats = computed(() => project.value && [
     <UiSection v-if="project.changes.length" index="05" :title="t('history.title')">
       <NuxtLink
         v-for="change in project.changes"
-        :key="`${change.key}:${change.locale}`"
+        :key="`${change.key}:${change.revision ?? 'local'}`"
         :to="`/keys/${encodeURIComponent(change.key)}`"
-        class="focus-ring grid grid-cols-[minmax(0,20rem)_6rem_1fr] items-center gap-4 border-b border-base px-4 py-1.5 transition-colors last:border-b-0 hover:bg-hover"
+        class="focus-ring grid grid-cols-[minmax(0,20rem)_10rem_1fr] items-center gap-4 border-b border-base px-4 py-1.5 transition-colors last:border-b-0 hover:bg-hover"
       >
         <span class="truncate font-mono text-xs">{{ change.key }}</span>
-        <span class="flex items-center gap-2 font-mono text-xs"><LocaleFlag :code="change.locale" />{{ change.locale }}</span>
+        <span class="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-mono text-xs"><span v-for="locale in change.locales" :key="locale" class="inline-flex items-center gap-1"><LocaleFlag :code="locale" />{{ locale }}</span></span>
         <ChangeInfo :change="change" />
       </NuxtLink>
     </UiSection>

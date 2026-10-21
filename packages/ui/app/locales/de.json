@@ -26,7 +26,9 @@
     "openInEditor": "Im Editor öffnen",
     "possible": "möglich",
     "usages": "Verwendungen ({count})",
-    "values": "Werte"
+    "values": "Werte",
+    "showAllLocales": "Alle Sprachen anzeigen",
+    "file": "Datei"
   },
   "edit": {
     "dismiss": "Schließen",

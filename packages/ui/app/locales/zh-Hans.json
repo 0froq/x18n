@@ -26,7 +26,9 @@
     "openInEditor": "在编辑器中打开",
     "possible": "可能",
     "usages": "引用（{count}）",
-    "values": "值"
+    "values": "值",
+    "showAllLocales": "显示所有语言",
+    "file": "文件"
   },
   "edit": {
     "dismiss": "关闭",

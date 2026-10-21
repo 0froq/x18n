@@ -26,7 +26,9 @@
     "openInEditor": "エディタで開く",
     "possible": "推定",
     "usages": "使用箇所 ({count})",
-    "values": "値"
+    "values": "値",
+    "showAllLocales": "すべてのロケールを表示",
+    "file": "ファイル"
   },
   "edit": {
     "dismiss": "閉じる",
