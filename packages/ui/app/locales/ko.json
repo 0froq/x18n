@@ -161,5 +161,11 @@
     "sourceNow": "현재 원본",
     "more": "외 {count}개",
     "locales": "로캘 {count}개"
+  },
+  "sidebar": {
+    "list": "목록 보기",
+    "tree": "트리 보기",
+    "filter": "키 필터",
+    "view": "키 목록 보기 방식"
   }
 }

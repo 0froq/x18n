@@ -161,5 +161,11 @@
     "sourceNow": "目前的來源",
     "more": "以及另外 {count} 個",
     "locales": "{count} 種語言"
+  },
+  "sidebar": {
+    "list": "清單檢視",
+    "tree": "樹狀檢視",
+    "filter": "篩選鍵",
+    "view": "鍵清單檢視"
   }
 }

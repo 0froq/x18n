@@ -33,5 +33,5 @@ const parts = computed(() => {
   <span v-if="value === undefined" class="font-mono text-[11px] uppercase tracking-[0.08em] color-error op-80">{{ t('value.missing') }}</span>
   <span v-else-if="value === ''" class="font-mono text-[11px] uppercase tracking-[0.08em] color-warn op-80">{{ t('value.empty') }}</span>
   <span v-else-if="typeof value !== 'string'" class="font-mono color-info">{{ JSON.stringify(value) }}</span>
-  <span v-else :class="inline ? 'whitespace-nowrap' : 'whitespace-pre-wrap break-words'"><template v-for="(part, i) in parts" :key="i"><span v-if="part.placeholder" class="border-b border-current font-mono color-info" data-placeholder>{{ part.text }}</span><template v-else>{{ part.text }}</template></template></span>
+  <span v-else :class="inline ? 'whitespace-nowrap' : 'whitespace-pre-wrap break-words'"><template v-for="(part, i) in parts" :key="i"><span v-if="part.placeholder" class="bg-gray:10 px0.8 py0.1 rounded text-gray-400 text-xs" data-placeholder>{{ part.text }}</span><template v-else>{{ part.text }}</template></template></span>
 </template>

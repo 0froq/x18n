@@ -161,5 +161,11 @@
     "sourceNow": "Source actuelle",
     "more": "et {count} de plus",
     "locales": "{count} langues"
+  },
+  "sidebar": {
+    "list": "Vue en liste",
+    "tree": "Vue en arbre",
+    "filter": "Filtrer les clés",
+    "view": "Affichage de la liste des clés"
   }
 }

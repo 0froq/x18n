@@ -161,5 +161,11 @@
     "sourceNow": "現在のソース",
     "more": "ほか {count} 件",
     "locales": "{count} ロケール"
+  },
+  "sidebar": {
+    "list": "リスト表示",
+    "tree": "ツリー表示",
+    "filter": "キーを絞り込む",
+    "view": "キー一覧の表示"
   }
 }

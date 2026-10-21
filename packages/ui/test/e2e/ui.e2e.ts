@@ -145,3 +145,30 @@ test('the static report renders keys without edit controls', async ({ page }) =>
     await dispose()
   }
 })
+
+test('a wide key page lists every key in a sidebar, as a tree or a list', async ({ page }) => {
+  const { root, dispose } = await fixture()
+  const outDir = join(root, '.x18n/report')
+  await buildReport(root, outDir)
+  const server = await serveStatic(outDir)
+  try {
+    await page.setViewportSize({ width: 1600, height: 900 })
+    await page.goto(`${server.url}#/keys/nav.home`)
+    const sidebar = page.locator('aside')
+    // The open key's folder is open, so its key shows.
+    await expect(sidebar.getByRole('link', { name: 'home', exact: true })).toHaveAttribute('aria-current', 'page')
+    await expect(sidebar.getByRole('link', { name: 'about', exact: true })).toBeVisible()
+
+    await sidebar.getByRole('button', { name: 'List view' }).click()
+    await expect(sidebar.getByRole('link', { name: 'nav.about', exact: true })).toBeVisible()
+    await sidebar.getByRole('link', { name: 'nav.about', exact: true }).click()
+    await expect(page.getByRole('heading', { name: 'nav.about' })).toBeVisible()
+
+    await page.setViewportSize({ width: 900, height: 900 })
+    await expect(sidebar).toBeHidden()
+  }
+  finally {
+    server.close()
+    await dispose()
+  }
+})

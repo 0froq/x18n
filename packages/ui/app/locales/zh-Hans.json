@@ -161,5 +161,11 @@
     "sourceNow": "现在的源文本",
     "more": "以及另外 {count} 个",
     "locales": "{count} 种语言"
+  },
+  "sidebar": {
+    "list": "列表视图",
+    "tree": "树状视图",
+    "filter": "筛选键",
+    "view": "键列表视图"
   }
 }
