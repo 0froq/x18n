@@ -23,6 +23,7 @@
     "typecheck": {
       "outputLogs": "new-only",
       "dependsOn": [
+        "^build",
         "codegen"
       ]
     },
