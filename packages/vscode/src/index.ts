@@ -3,13 +3,14 @@ import type { Annotations } from './annotations'
 import type { X18nClient } from './model/client'
 import { methods } from '@x18n/lsp'
 import { computed, defineExtension, shallowRef, useActiveTextEditor, useDisposable, useEventEmitter, useStatusBarItem, watch } from 'reactive-vscode'
-import { StatusBarAlignment, window } from 'vscode'
+import { StatusBarAlignment, window, workspace } from 'vscode'
 import { State } from 'vscode-languageclient/node'
 import { useAnnotations } from './annotations'
 import { createClient } from './client'
 import { useCommands } from './commands'
 import { config } from './config'
-import { commands } from './generated/meta'
+import { commands, version } from './generated/meta'
+import { createLog, useLog } from './log'
 import { migratableFolders, migrate } from './migrate'
 import { projectFor } from './model/client'
 import { useUiPanel } from './panel'
@@ -38,6 +39,10 @@ const { activate, deactivate } = defineExtension((context): X18nExtensionApi => 
       return client.sendRequest(method, params)
     },
   }
+  const log = createLog(client)
+  const folders = workspace.workspaceFolders?.map(f => f.name) ?? []
+  log(`x18n ${version} activated${folders.length ? ` in ${folders.join(', ')}` : ' without a workspace folder'}.`)
+  useLog(client, x18n, refresh.event, log)
   annotations = useAnnotations(x18n, refresh.event)
   useViews(x18n, refresh.event)
   const panel = useUiPanel(x18n)
@@ -53,22 +58,29 @@ const { activate, deactivate } = defineExtension((context): X18nExtensionApi => 
 
   watch(() => config.enabled, async (enabled) => {
     if (!enabled) {
+      log('Disabled by the `x18n.enabled` setting; stopping the language server.')
       await client.stop()
       return
     }
     try {
       await client.start()
     }
-    catch {
-      // The client reports start failures in its output channel.
+    catch (error) {
+      log(`The language server failed to start: ${error instanceof Error ? error.message : String(error)}`)
       return
     }
     void offerMigration()
   }, { immediate: true })
-  watch(() => [config.annotationMaxLength, config.codeLens], () => client.isRunning() && void client.restart())
+  watch(() => [config.annotationMaxLength, config.codeLens], () => {
+    if (!client.isRunning())
+      return
+    log('Annotation settings changed; restarting the language server.')
+    void client.restart()
+  })
   watch(() => [config.displayLocale, config.annotations, config.inPlace], () => {
     if (!client.isRunning())
       return
+    log(`Display locale: ${config.displayLocale || 'default'}.`)
     // Re-sending the locale also makes the server refresh inlay hints, which the in-place switch filters.
     void client.sendNotification(methods.setDisplayLocale, { locale: config.displayLocale || undefined })
     refresh.fire()

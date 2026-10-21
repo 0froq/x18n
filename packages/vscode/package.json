@@ -38,8 +38,7 @@
     "vscode": "^1.100.0"
   },
   "activationEvents": [
-    "workspaceContains:**/x18n.config.*",
-    "workspaceContains:**/package.json"
+    "onStartupFinished"
   ],
   "contributes": {
     "commands": [

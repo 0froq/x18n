@@ -8,6 +8,7 @@ import { displayName } from './generated/meta'
 import { hintCovered } from './model/inplace'
 import { findLocalServer } from './model/local-server'
 import { dedupeLocations } from './model/locations'
+import { stamp } from './model/log'
 
 export interface ClientHooks {
   /** Decorations of a document, for dropping inlay hints that in-place mode already shows. */
@@ -54,6 +55,6 @@ export function createClient(context: ExtensionContext, hooks: ClientHooks): Lan
     },
   }
   const client = new LanguageClient('x18n', displayName, serverOptions, clientOptions)
-  client.outputChannel.appendLine(local ? `Using the project's language server: ${local}` : 'Using the bundled language server.')
+  client.outputChannel.appendLine(stamp(local ? `Using the project's language server: ${local}` : 'Using the bundled language server.'))
   return client
 }
