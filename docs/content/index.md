@@ -106,14 +106,23 @@ Every surface reads the same config and reports the same diagnostics. The CLI in
 ---
 items:
   - icon: i-ph-list-duotone
-    title: See the project
-    description: Locales with coverage, and the counts of resources, keys and usages.
+    title: x18n
+    description: The status of the project. Locales with coverage, and the counts of resources, keys and usages.
   - icon: i-ph-check-circle
-    title: Check it
-    description: Missing, unused and broken keys. Exits with 1 on errors.
+    title: x18n check
+    description: Missing, unused and broken keys, like `tsc --noEmit`. Exits with 1 on errors.
+  - icon: i-ph-magnifying-glass-duotone
+    title: x18n get
+    description: The value of a key in every locale, and where the code uses it.
+  - icon: i-ph-pencil-simple-line-duotone
+    title: x18n rename
+    description: Rename a key in every locale and every usage. Add `--dry-run` to see the diff first.
+  - icon: i-ph-table-duotone
+    title: x18n ui
+    description: Browse and edit every key in the browser. It serves MCP for agents at the same time.
   - icon: i-ph-file-code-duotone
-    title: Write a config
-    description: x18n.config.ts from the detected presets and locale files.
+    title: x18n init
+    description: Write x18n.config.ts from the detected presets and locale files.
 ---
 
 #headline
@@ -126,19 +135,22 @@ No config to start
 Run x18n in the root of a project. It detects the i18n library from your dependencies and finds the locale files. [Read the guide](/guide/getting-started).
 
 #code-0
-  ```sh
-  pnpx @x18n/cli
-  ```
+  :x18n-terminal{name="status"}
 
 #code-1
-  ```sh
-  pnpx @x18n/cli check
-  ```
+  :x18n-terminal{name="check"}
 
 #code-2
-  ```sh
-  pnpx @x18n/cli init
-  ```
+  :x18n-terminal{name="get"}
+
+#code-3
+  :x18n-terminal{name="rename"}
+
+#code-4
+  :x18n-terminal{name="ui"}
+
+#code-5
+  :x18n-terminal{name="init"}
 ::
 
 ::landing-cta
