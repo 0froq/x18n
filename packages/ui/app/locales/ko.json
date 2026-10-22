@@ -127,7 +127,12 @@
     "problems": "문제",
     "resources": "리소스: {count}",
     "scanners": "스캐너",
-    "showAllPresets": "모든 프리셋 표시"
+    "showAllPresets": "모든 프리셋 표시",
+    "plugins": "플러그인",
+    "none": "찾은 항목이 없습니다",
+    "duplicates": "건너뛴 중복 리소스: {count}",
+    "skipped": "건너뛴 프리셋 및 플러그인",
+    "rawConfig": "원본 설정"
   },
   "prompt": {
     "copied": "복사됨",
@@ -167,5 +172,12 @@
     "tree": "트리 보기",
     "filter": "키 필터",
     "view": "키 목록 보기 방식"
+  },
+  "diagnostics": {
+    "all": "전체 ({count})",
+    "viewAll": "모두 보기",
+    "copyFix": "수정 프롬프트 복사",
+    "fixHint": "이 프로젝트의 모든 진단을 수정하는 LLM 또는 에이전트용 프롬프트를 복사합니다",
+    "fixCodeHint": "{code} 진단을 수정하는 LLM 또는 에이전트용 프롬프트를 복사합니다"
   }
 }

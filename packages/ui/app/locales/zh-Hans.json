@@ -127,7 +127,12 @@
     "problems": "问题",
     "resources": "资源：{count}",
     "scanners": "扫描器",
-    "showAllPresets": "显示所有预设"
+    "showAllPresets": "显示所有预设",
+    "plugins": "插件",
+    "none": "未找到任何内容",
+    "duplicates": "已跳过的重复资源：{count}",
+    "skipped": "已跳过的预设和插件",
+    "rawConfig": "原始配置"
   },
   "prompt": {
     "copied": "已复制",
@@ -167,5 +172,12 @@
     "tree": "树状视图",
     "filter": "筛选键",
     "view": "键列表视图"
+  },
+  "diagnostics": {
+    "all": "全部 ({count})",
+    "viewAll": "查看全部",
+    "copyFix": "复制修复提示词",
+    "fixHint": "复制提示词，供 LLM 或智能体修复此项目的所有诊断",
+    "fixCodeHint": "复制提示词，供 LLM 或智能体修复 {code} 诊断"
   }
 }

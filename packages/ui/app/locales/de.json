@@ -127,7 +127,12 @@
     "problems": "Probleme",
     "resources": "Ressourcen: {count}",
     "scanners": "Scanner",
-    "showAllPresets": "Alle Presets anzeigen"
+    "showAllPresets": "Alle Presets anzeigen",
+    "plugins": "Plugins",
+    "none": "Nichts gefunden",
+    "duplicates": "Übersprungene doppelte Ressourcen: {count}",
+    "skipped": "Übersprungene Presets und Plugins",
+    "rawConfig": "Rohe Konfiguration"
   },
   "prompt": {
     "copied": "Kopiert",
@@ -167,5 +172,12 @@
     "tree": "Baumansicht",
     "filter": "Schlüssel filtern",
     "view": "Ansicht der Schlüsselliste"
+  },
+  "diagnostics": {
+    "all": "Alle ({count})",
+    "viewAll": "Alle anzeigen",
+    "copyFix": "Prompt zur Behebung kopieren",
+    "fixHint": "Kopiert einen Prompt für ein LLM oder einen Agenten, der alle Diagnosen dieses Projekts behebt",
+    "fixCodeHint": "Kopiert einen Prompt für ein LLM oder einen Agenten, der die Diagnosen {code} behebt"
   }
 }

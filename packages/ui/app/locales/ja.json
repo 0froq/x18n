@@ -127,7 +127,12 @@
     "problems": "問題",
     "resources": "リソース: {count}",
     "scanners": "スキャナー",
-    "showAllPresets": "すべてのプリセットを表示"
+    "showAllPresets": "すべてのプリセットを表示",
+    "plugins": "プラグイン",
+    "none": "見つかりませんでした",
+    "duplicates": "スキップした重複リソース: {count}",
+    "skipped": "スキップしたプリセットとプラグイン",
+    "rawConfig": "生の設定"
   },
   "prompt": {
     "copied": "コピーしました",
@@ -167,5 +172,12 @@
     "tree": "ツリー表示",
     "filter": "キーを絞り込む",
     "view": "キー一覧の表示"
+  },
+  "diagnostics": {
+    "all": "すべて ({count})",
+    "viewAll": "すべて表示",
+    "copyFix": "修正プロンプトをコピー",
+    "fixHint": "このプロジェクトのすべての診断を修正する LLM やエージェント向けのプロンプトをコピーします",
+    "fixCodeHint": "{code} の診断を修正する LLM やエージェント向けのプロンプトをコピーします"
   }
 }

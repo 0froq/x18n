@@ -127,7 +127,12 @@
     "problems": "Problemas",
     "resources": "Recursos: {count}",
     "scanners": "Scanners",
-    "showAllPresets": "Mostrar todos os presets"
+    "showAllPresets": "Mostrar todos os presets",
+    "plugins": "Plugins",
+    "none": "Nada encontrado",
+    "duplicates": "Recursos duplicados ignorados: {count}",
+    "skipped": "Presets e plugins ignorados",
+    "rawConfig": "Configuração bruta"
   },
   "prompt": {
     "copied": "Copiado",
@@ -167,5 +172,12 @@
     "tree": "Visualização em árvore",
     "filter": "Filtrar chaves",
     "view": "Visualização da lista de chaves"
+  },
+  "diagnostics": {
+    "all": "Todos ({count})",
+    "viewAll": "Ver todos",
+    "copyFix": "Copiar prompt de correção",
+    "fixHint": "Copia um prompt para um LLM ou agente que corrige todos os diagnósticos deste projeto",
+    "fixCodeHint": "Copia um prompt para um LLM ou agente que corrige os diagnósticos {code}"
   }
 }

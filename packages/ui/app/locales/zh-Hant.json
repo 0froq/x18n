@@ -127,7 +127,12 @@
     "problems": "問題",
     "resources": "資源：{count}",
     "scanners": "掃描器",
-    "showAllPresets": "顯示所有預設"
+    "showAllPresets": "顯示所有預設",
+    "plugins": "外掛",
+    "none": "找不到任何內容",
+    "duplicates": "已略過的重複資源：{count}",
+    "skipped": "已略過的預設和外掛",
+    "rawConfig": "原始設定"
   },
   "prompt": {
     "copied": "已複製",
@@ -167,5 +172,12 @@
     "tree": "樹狀檢視",
     "filter": "篩選鍵",
     "view": "鍵清單檢視"
+  },
+  "diagnostics": {
+    "all": "全部 ({count})",
+    "viewAll": "檢視全部",
+    "copyFix": "複製修復提示詞",
+    "fixHint": "複製提示詞，供 LLM 或代理修復此專案的所有診斷",
+    "fixCodeHint": "複製提示詞，供 LLM 或代理修復 {code} 診斷"
   }
 }

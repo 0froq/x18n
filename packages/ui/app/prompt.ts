@@ -32,3 +32,16 @@ export function translatePrompt(targets: readonly PromptTarget[]): string {
     ...targets.map(target => `- ${target.locale}: \`${command(target)}\``),
   ].join('\n')
 }
+
+/** A prompt for an agent that fixes what `x18n check` reports, all of it or one diagnostic code. */
+export function fixPrompt(code?: string): string {
+  const project = (projectList.value?.projects.length ?? 0) > 1 ? projectName.value : undefined
+  const flags = `${code ? ` --only ${code}` : ''}${project ? ` --project ${project}` : ''}`
+  return [
+    code ? `Fix the \`${code}\` diagnostics of this project with the x18n CLI.` : 'Fix the diagnostics of this project with the x18n CLI.',
+    '',
+    `Run \`x18n check${flags}\` to list them. Fix each one at its source: edit the locale files or the code that uses the key, and use \`x18n\` commands to add, rename or remove keys instead of editing by hand where you can. Do not silence a diagnostic in the config.`,
+    '',
+    `Run \`x18n check${flags}\` again until it reports nothing.`,
+  ].join('\n')
+}

@@ -122,6 +122,13 @@
     "complete": "Every key is translated.",
     "outdated": "Outdated ({count})"
   },
+  "diagnostics": {
+    "all": "All ({count})",
+    "viewAll": "View all",
+    "copyFix": "Copy fix prompt",
+    "fixHint": "Copy a prompt for an LLM or agent that fixes every diagnostic of this project",
+    "fixCodeHint": "Copy a prompt for an LLM or agent that fixes the {code} diagnostics"
+  },
   "usages": {
     "missing": "Not defined ({count})",
     "unused": "Unused ({count})",
@@ -150,7 +157,12 @@
     "problems": "Problems",
     "conflict": ".{extension}: {winner} wins over {loser}",
     "config": "Config and where each value comes from",
-    "showAllPresets": "Show all presets"
+    "showAllPresets": "Show all presets",
+    "plugins": "Plugins",
+    "none": "Nothing found",
+    "duplicates": "Skipped duplicate resources: {count}",
+    "skipped": "Skipped presets and plugins",
+    "rawConfig": "Raw config"
   },
   "history": {
     "title": "History",

@@ -32,6 +32,9 @@ function toggle(change: ChangeGroup): void {
   flipped.value = next
 }
 
+const RECENT_LIMIT = 20
+const shownRecent = computed(() => recentKeys.value.slice(0, RECENT_LIMIT))
+
 // The title button covers every locale that has work left; with none, it says there is nothing to do.
 const translatable = computed(() => (project.value?.locales ?? []).filter(l => l.code !== project.value?.sourceLocale))
 const todo = computed(() => translatable.value.filter(l => l.missing + l.empty + l.outdated > 0))
@@ -87,17 +90,21 @@ const stats = computed(() => project.value && [
       <UiSection index="02" :title="t('overview.diagnostics')" class="md:border-r">
         <template #aside>
           <span class="flex-auto" />
+          <NuxtLink to="/diagnostics" class="focus-ring font-mono text-xs color-muted hover:underline">
+            {{ t('diagnostics.viewAll') }}
+          </NuxtLink>
           <span class="font-mono text-xs color-error tabular-nums">{{ t('overview.errors', { count: project.diagnostics.errors }) }}</span>
           <span class="font-mono text-xs color-warn tabular-nums">{{ t('overview.warnings', { count: project.diagnostics.warnings }) }}</span>
         </template>
         <p v-if="!project.diagnostics.byCode.length" class="px-4 py-3 color-muted">
           {{ t('overview.clean') }}
         </p>
-        <div v-for="d in project.diagnostics.byCode" :key="d.code" class="flex items-center gap-2 px-4 py-1.5">
+        <NuxtLink v-for="d in project.diagnostics.byCode" :key="d.code" :to="{ path: '/diagnostics', query: { code: d.code } }" class="focus-ring flex items-center gap-2 px-4 py-1.5 transition-colors hover:bg-hover">
           <span :class="d.severity === 'error' ? 'i-ph-x-circle-duotone color-error' : 'i-ph-warning-duotone color-warn'" />
           <span class="flex-auto font-mono text-xs">{{ d.code }}</span>
           <span class="font-mono tabular-nums">{{ d.count }}</span>
-        </div>
+          <span class="i-ph-caret-right-duotone text-xs color-muted" />
+        </NuxtLink>
       </UiSection>
 
       <div>
@@ -109,12 +116,13 @@ const stats = computed(() => project.value && [
         </UiSection>
         <UiSection index="04" :title="t('overview.recent')">
           <div class="flex flex-wrap gap-1 px-4 py-3">
-            <ChangedValues v-for="key in recentKeys" :key="key" :project="project.name" :key-name="key">
+            <ChangedValues v-for="key in shownRecent" :key="key" :project="project.name" :key-name="key">
               <NuxtLink :to="`/keys/${encodeURIComponent(key)}`" class="focus-ring border border-base px-1.5 font-mono text-xs hover:border-inverse">
                 {{ key }}
               </NuxtLink>
             </ChangedValues>
             <span v-if="!recentKeys.length" class="color-muted">{{ t('overview.noRecent') }}</span>
+            <span v-else-if="recentKeys.length > RECENT_LIMIT" class="color-muted">{{ t('history.more', { count: recentKeys.length - RECENT_LIMIT }) }}</span>
           </div>
         </UiSection>
       </div>
