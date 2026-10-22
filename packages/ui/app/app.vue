@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { NuxtLink, NuxtPage } from '#components'
+import { useHead, useRoute } from '#imports'
 import { pendingAuth, useBackend } from './backend'
 import LanguageMenu from './components/LanguageMenu.vue'
 import LocaleBar from './components/LocaleBar.vue'
@@ -16,6 +17,16 @@ const nav = computed(() => [
   { to: '/extract', label: t('nav.extract') },
   { to: '/project', label: t('nav.project') },
 ])
+
+// `Keys · my-app · x18n`: the page, then the project when there is a choice of projects.
+const route = useRoute()
+useHead({
+  title: computed(() => {
+    const page = nav.value.filter(item => item.to === '/' ? route.path === '/' : route.path.startsWith(item.to)).at(-1)?.label
+    const project = (projectList.value?.projects.length ?? 0) > 1 ? projectName.value : undefined
+    return [page, project, t('app.name')].filter(Boolean).join(' · ')
+  }),
+})
 
 const error = ref<string>()
 const code = ref('')

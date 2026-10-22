@@ -84,7 +84,16 @@ export default defineNuxtConfig({
     head: {
       title: 'x18n',
       viewport: 'width=device-width,initial-scale=1',
-      link: [{ rel: 'icon', href: './logo.svg', type: 'image/svg+xml' }],
+      meta: [
+        { name: 'description', content: 'View and maintain the i18n messages of your project: coverage, keys, usages, diagnostics and extraction.' },
+        { name: 'color-scheme', content: 'light dark' },
+        { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
+        { name: 'theme-color', content: '#0a0a0a', media: '(prefers-color-scheme: dark)' },
+      ],
+      link: [
+        { rel: 'icon', href: './logo.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: './apple-touch-icon.png' },
+      ],
       script: [{ innerHTML: stashOtp }],
     },
   },
