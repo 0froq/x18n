@@ -1,27 +1,13 @@
-<!-- The round flag of a locale. A project locale takes core's flag, which `localeInfo` in the config can set. -->
+<!-- The round flag of a locale. A project locale takes core's flag, which `localeInfo` in the config can set; locales without a country show their language icon. -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { flagSource, regionOfFlag, showFlags } from '../flags'
+import { flagCandidates, flagSource, showFlags } from '../flags'
 import { locales } from '../state'
 
 const { code } = defineProps<{ code: string }>()
 
-function regionOf(tag: string): string | undefined {
-  const flag = locales.value.find(l => l.code === tag)?.flag
-  if (flag)
-    return regionOfFlag(flag)
-  try {
-    return new Intl.Locale(tag).maximize().region
-  }
-  catch {
-    return undefined
-  }
-}
-
-const source = computed(() => {
-  const region = showFlags.value ? regionOf(code) : undefined
-  return region && flagSource(region)
-})
+const source = computed(() =>
+  showFlags.value ? flagSource(flagCandidates(code, locales.value.find(l => l.code === code)?.flag)) : undefined)
 </script>
 
 <template>
