@@ -866,6 +866,7 @@ exports[`rpc functions > explains the project 1`] = `
         "ignoreKeys": [],
         "ignoreLocales": [],
         "keyStyle": "auto",
+        "localeFallbacks": {},
         "name": "vue-i18n",
         "namespace": {
           "fromPath": "dot",

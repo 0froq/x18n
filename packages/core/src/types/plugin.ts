@@ -218,6 +218,8 @@ export interface CheckContext {
   readonly config: ResolvedConfig
   readonly sourceLocale: LocaleCode
   readonly locales: readonly LocaleCode[]
+  /** The locales a locale falls back to, nearest first. Empty for a locale without a fallback. */
+  readonly fallbacks: (locale: LocaleCode) => readonly LocaleCode[]
   readonly resources: readonly Resource[]
   /** Options from `[severity, options]` in config. */
   readonly options: JsonObject

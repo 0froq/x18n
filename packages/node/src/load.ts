@@ -86,6 +86,8 @@ function applyDefaults(draft: ConfigDraft, config: SerializableConfig): void {
     draft.sourceLocale = config.sourceLocale
   if (config.ignoreLocales)
     draft.ignoreLocales = [...draft.ignoreLocales, ...config.ignoreLocales]
+  if (config.localeFallbacks)
+    draft.localeFallbacks = draft.localeFallbacks === 'auto' || config.localeFallbacks === 'auto' ? config.localeFallbacks : { ...draft.localeFallbacks, ...config.localeFallbacks }
   if (config.resources)
     draft.resources = [...draft.resources, ...config.resources]
   if (config.formats)

@@ -32,6 +32,7 @@ A severity is `error`, `warning`, `info`, `hint` or `off`. `strict: true` (or `x
 | [missing-translation](/checks/missing-translation) | `warning` | A source-locale key that target locales lack. One diagnostic per key, at the source entry. |
 | [stale-translation](/checks/stale-translation) | `warning` | A translation that last changed before its source message, by the history providers (git). |
 | [empty-translation](/checks/empty-translation) | `warning` | A message with an empty string value. |
+| [redundant-translation](/checks/redundant-translation) | `warning` | A message in a locale with a fallback that equals the message it falls back to, so it can be removed. |
 | [unused-key](/checks/unused-key) | `warning` | A key with no usage, after keysInUse, derived keys and dynamic prefixes. |
 | [locale-code-conflict](/checks/locale-code-conflict) | `warning` | Locale codes that differ only in spelling, such as zh_CN and zh-CN. |
 | [dynamic-key](/checks/dynamic-key) | `off` | A fully dynamic key that no check can follow. |

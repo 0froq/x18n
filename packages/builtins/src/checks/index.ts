@@ -83,8 +83,35 @@ export const emptyTranslation: Check = {
   description: 'A message with an empty string value.',
   * run(ctx) {
     for (const message of ctx.messages()) {
-      if (message.value === '')
+      // An empty message in a locale with a fallback means "use the fallback".
+      if (message.value === '' && ctx.fallbacks(message.locale).length === 0)
         yield { key: message.key, locale: message.locale, message: `"${message.key}" is empty in ${message.locale}.` }
+    }
+  },
+}
+
+export const redundantTranslation: Check = {
+  id: 'redundant-translation',
+  defaultSeverity: 'warning',
+  description: 'A message in a locale with a fallback that equals the message it falls back to, so it can be removed.',
+  * run(ctx) {
+    for (const message of ctx.messages()) {
+      if (message.value === '')
+        continue
+      for (const code of ctx.fallbacks(message.locale)) {
+        const inherited = ctx.message(message.key, code)
+        if (!inherited || inherited.value === '')
+          continue
+        if (JSON.stringify(inherited.value) === JSON.stringify(message.value)) {
+          yield {
+            key: message.key,
+            locale: message.locale,
+            message: `"${message.key}" in ${message.locale} is the same as in ${code}, which it falls back to.`,
+            fixes: [{ title: `Remove "${message.key}" from ${message.locale}`, ops: [{ type: 'delete', key: message.key, locales: [message.locale] }] }],
+          }
+        }
+        break
+      }
     }
   },
 }
@@ -315,6 +342,7 @@ export const allChecks: readonly Check[] = [
   missingTranslation,
   staleTranslation,
   emptyTranslation,
+  redundantTranslation,
   unusedKey,
   localeCodeConflict,
   dynamicKey,

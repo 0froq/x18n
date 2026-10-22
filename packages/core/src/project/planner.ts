@@ -14,6 +14,7 @@ interface PlannerState {
   readonly revision: number
   readonly sourceLocale: LocaleCode
   readonly locales: readonly LocaleCode[]
+  readonly fallbacks: Readonly<Record<LocaleCode, LocaleCode>>
   readonly namespaced: boolean
   readonly resources: readonly ResourceState[]
   readonly fileTexts: ReadonlyMap<string, string>
@@ -485,7 +486,7 @@ class PlanBuilder {
           this.setValue(op.key, op.locale, op.value)
           if (this.config.write.keepFilled) {
             for (const locale of this.state.locales) {
-              if (locale !== op.locale && !this.options.message(op.key, locale))
+              if (locale !== op.locale && !this.state.fallbacks[locale] && !this.options.message(op.key, locale))
                 this.setValue(op.key, locale, '')
             }
           }

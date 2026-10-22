@@ -8,7 +8,7 @@ import type { ResourceState } from './analysis'
 import type { UsageResolver } from './usages'
 import { errors, isX18nError, toErrorInfo } from '../errors'
 import { isKeyUnder, joinKey, keyMatcher, pathMatcher } from '../keys'
-import { parseLocaleInfo } from '../locale'
+import { parseLocaleInfo, resolveFallbacks } from '../locale'
 import { isMessageLeaf, isMessageTree, pathId, walkLeaves } from '../message-tree'
 import { extensionOf } from '../plugins'
 import { hashText, rangeContains } from '../text'
@@ -63,6 +63,7 @@ export function createProject(options: CreateProjectOptions): Project {
   let revision = 0
   let namespaced = false
   let locales: LocaleCode[] = []
+  let fallbacks: Readonly<Record<LocaleCode, LocaleCode>> = {}
   let sourceLocale: LocaleCode = config.sourceLocale
   let resolver: UsageResolver
   let watcher: { dispose: () => void } | undefined
@@ -231,6 +232,7 @@ export function createProject(options: CreateProjectOptions): Project {
     locales = [sourceLocale, ...found.filter(code => code !== sourceLocale).sort()]
     if (!found.includes(sourceLocale) && found.length === 0)
       locales = [sourceLocale]
+    fallbacks = resolveFallbacks(config.localeFallbacks, locales, sourceLocale)
     resolver = createUsageResolver(config, namespaced, normalizers)
     resolved = new WeakMap()
     resourceIndex = undefined
@@ -471,6 +473,7 @@ export function createProject(options: CreateProjectOptions): Project {
       revision,
       sourceLocale,
       locales,
+      fallbacks,
       resources: [...resourceStates.values()],
       resourceErrors: [...resourceStates.values()].flatMap(s => s.error ? [{ error: s.error, path: s.resource.path }] : []),
       scanErrors: [...files].flatMap(([path, s]) => s.error ? [{ error: s.error, path }] : []),
@@ -642,7 +645,7 @@ export function createProject(options: CreateProjectOptions): Project {
     host,
     config,
     registry,
-    state: () => ({ revision, sourceLocale, locales, namespaced, resources: [...resourceStates.values()], fileTexts }),
+    state: () => ({ revision, sourceLocale, locales, fallbacks, namespaced, resources: [...resourceStates.values()], fileTexts }),
     message: (key, locale) => message(key, locale),
     messages: key => idx().messages.get(key),
     allKeys: () => [...idx().messages.keys()],

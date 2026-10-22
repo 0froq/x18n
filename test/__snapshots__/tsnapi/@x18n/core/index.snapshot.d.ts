@@ -58,6 +58,7 @@ export interface CheckContext {
   readonly config: ResolvedConfig;
   readonly sourceLocale: LocaleCode;
   readonly locales: readonly LocaleCode[];
+  readonly fallbacks: (_: LocaleCode) => readonly LocaleCode[];
   readonly resources: readonly Resource[];
   readonly options: JsonObject;
   readonly hasScanners: boolean;
@@ -659,6 +660,9 @@ export interface ResolvedConfig {
   readonly sourceLocale: string;
   readonly locales: readonly string[] | undefined;
   readonly ignoreLocales: readonly string[];
+  readonly localeFallbacks: "auto" | {
+    readonly [locale: string]: string;
+  };
   readonly resources: readonly ResourceSpec[];
   readonly formats: {
     readonly [extension: string]: string;
@@ -775,6 +779,9 @@ export interface SerializableConfig {
   readonly sourceLocale?: string | undefined;
   readonly locales?: readonly string[] | undefined;
   readonly ignoreLocales?: readonly string[] | undefined;
+  readonly localeFallbacks?: "auto" | {
+    readonly [locale: string]: string;
+  } | undefined;
   readonly presets?: "auto" | readonly PluginSpecifier[] | undefined;
   readonly plugins?: readonly PluginSpecifier[] | undefined;
   readonly resources?: readonly ResourceSpec[] | undefined;

@@ -238,6 +238,22 @@ exports[`schemas > config schema 1`] = `
       ],
       "type": "string",
     },
+    "localeFallbacks": {
+      "anyOf": [
+        {
+          "const": "auto",
+        },
+        {
+          "additionalProperties": {
+            "type": "string",
+          },
+          "propertyNames": {
+            "type": "string",
+          },
+          "type": "object",
+        },
+      ],
+    },
     "locales": {
       "items": {
         "type": "string",

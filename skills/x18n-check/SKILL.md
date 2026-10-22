@@ -36,6 +36,7 @@ Before you act on one of these, stop and ask, with your recommendation and the f
 | `invalid-syntax` | Fix the message syntax (ICU braces, linked messages) with `x18n set`. When a linked message does not exist, fix the link or add that key. |
 | `key-conflict` | A key is both a message and a parent, or is defined twice in one locale. Ask which one to keep, then `x18n rename` or `x18n delete` with `--dry-run` first. |
 | `unused-key` | Show the list from `x18n keys --unused --json` and delete only the keys the user confirms: `x18n delete <key> --dry-run --json`, then without `--dry-run`. Keys built at runtime go in `usage.keysInUse` in the config instead. |
+| `redundant-translation` | The message repeats what its fallback locale (`localeFallbacks`) already says. Delete it with `x18n delete <key> --locale <locale> --dry-run` first, then without `--dry-run`. |
 | `glossary` | Rewrite the message with the term from the glossary (`x18n doctor --json` lists it under `config.glossary`), with `x18n set`. |
 | `locale-code-conflict`, `dynamic-key`, `key-style`, `identical-to-source`, `hard-string` | Report them. Fix only when the user asks; `hard-string` is fixed with `x18n extract`, or silenced with an `x18n-ignore` control comment when the string is not UI text. |
 

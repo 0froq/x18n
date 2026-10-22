@@ -105,6 +105,7 @@ const configSchema = v.strictObject({
   sourceLocale: v.optional(v.string()),
   locales: v.optional(strings),
   ignoreLocales: v.optional(strings),
+  localeFallbacks: v.optional(v.union([v.literal('auto'), v.record(v.string(), v.string())])),
   presets: v.optional(v.union([v.literal('auto'), v.array(pluginSpecifier)])),
   plugins: v.optional(v.array(pluginSpecifier)),
   resources: v.optional(v.array(resourceSpec)),

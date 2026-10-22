@@ -33,6 +33,33 @@ const defaultRegions: Readonly<Record<string, string>> = {
   zh: 'CN',
 }
 
+/** The fallback of each locale: from the config map, or for `'auto'` the nearest parent language among `locales`. The source locale has none. */
+export function resolveFallbacks(setting: 'auto' | { readonly [locale: string]: string }, locales: readonly LocaleCode[], sourceLocale: LocaleCode): Readonly<Record<LocaleCode, LocaleCode>> {
+  if (setting !== 'auto')
+    return Object.fromEntries(Object.entries(setting).filter(([locale]) => locale !== sourceLocale))
+  const fallbacks: Record<LocaleCode, LocaleCode> = {}
+  for (const locale of locales) {
+    if (locale === sourceLocale)
+      continue
+    for (let cut = locale.search(/[-_][^-_]*$/); cut > 0; cut = locale.slice(0, cut).search(/[-_][^-_]*$/)) {
+      const parent = locales.find(code => code === locale.slice(0, cut))
+      if (parent) {
+        fallbacks[locale] = parent
+        break
+      }
+    }
+  }
+  return fallbacks
+}
+
+/** The locales a locale falls back to, nearest first. Stops at a cycle. */
+export function fallbackChain(fallbacks: Readonly<Record<LocaleCode, LocaleCode>>, locale: LocaleCode): LocaleCode[] {
+  const chain: LocaleCode[] = []
+  for (let next = fallbacks[locale]; next !== undefined && next !== locale && !chain.includes(next); next = fallbacks[next])
+    chain.push(next)
+  return chain
+}
+
 const pluralOrder: readonly Intl.LDMLPluralRule[] = ['zero', 'one', 'two', 'few', 'many', 'other']
 
 function flagOf(region: string): string | undefined {

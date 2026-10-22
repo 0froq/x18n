@@ -29,6 +29,48 @@ describe('project read path', () => {
     expect(text.slice(missing.location!.range.start, missing.location!.range.end)).toBe('subtitle')
   })
 
+  it('treats locales with a fallback as overrides', async () => {
+    const { project } = await createTestProject({
+      'locales/en.json': json({ color: 'Color', save: 'Save' }),
+      'locales/en-US.json': json({}),
+      'locales/en-GB.json': json({ color: 'Colour', save: '' }),
+      'locales/de.json': json({ color: 'Farbe' }),
+    }, {
+      resources: [{ pattern: 'locales/{locale}.json' }],
+      localeFallbacks: { 'en-US': 'en', 'en-GB': 'en-US' },
+    })
+    const analysis = project.analyze()
+    expect(analysis.coverage.map(c => [c.locale, c.translated, c.missing, c.empty])).toEqual([
+      ['en', 2, [], []],
+      ['de', 1, ['save'], []],
+      ['en-GB', 2, [], []],
+      ['en-US', 2, [], []],
+    ])
+    expect(analysis.diagnostics.map(d => `${d.code}:${d.key}`)).toEqual(['missing-translation:save'])
+  })
+
+  it('derives fallbacks from parent languages with "auto"', async () => {
+    const { project } = await createTestProject({
+      'locales/en.json': json({ color: 'Color', save: 'Save', cancel: 'Cancel' }),
+      'locales/en-US.json': json({ save: 'Save' }),
+      'locales/en-GB.json': json({ color: 'Colour', cancel: 'Cancel' }),
+      'locales/zh-Hant-TW.json': json({ color: '顏色' }),
+      'locales/pt-BR.json': json({ color: 'Cor' }),
+    }, { resources: [{ pattern: 'locales/{locale}.json' }], localeFallbacks: 'auto' })
+    const analysis = project.analyze()
+    expect(analysis.coverage.map(c => [c.locale, c.missing])).toEqual([
+      ['en', []],
+      ['en-GB', []],
+      ['en-US', []],
+      ['pt-BR', ['cancel', 'save']],
+      ['zh-Hant-TW', ['cancel', 'save']],
+    ])
+    const redundant = analysis.diagnostics.filter(d => d.code === 'redundant-translation')
+    expect(redundant.map(d => `${d.locale}:${d.key}`)).toEqual(['en-GB:cancel', 'en-US:save'])
+    expect(redundant[1]!.message).toBe('"save" in en-US is the same as in en, which it falls back to.')
+    expect(redundant[1]!.fixes[0]!.ops).toEqual([{ type: 'delete', key: 'save', locales: ['en-US'] }])
+  })
+
   it('reads namespaces from paths', async () => {
     const { project } = await createTestProject({
       'locales/en/common.json': json({ save: 'Save' }),

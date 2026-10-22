@@ -108,6 +108,7 @@ Detection uses the dependencies listed. "Parity" means the i18n-ally framework w
 | `stale-translation` | warning | A target message that last changed before its source message, by the history providers ([19-history.md](./19-history.md)). |
 | `missing-translation` | warning | Untranslated: a source-locale key that target locales lack. One diagnostic per key, at the source entry, listing the missing locales. |
 | `empty-translation` | warning | Untranslated: an empty string value. |
+| `redundant-translation` | warning | A message in a locale with a fallback (`localeFallbacks`) that equals the message it falls back to. The fix deletes it. |
 | `unused-key` | warning | A key with no usage, after `keysInUse`, derived keys and dynamic prefixes. Skipped when the project has no scanners. |
 | `locale-code-conflict` | warning | Two locale codes that differ only in spelling (`zh_CN` and `zh-CN`). |
 | `dynamic-key` | off | A fully dynamic key (`t(key)`) that no check can follow. |

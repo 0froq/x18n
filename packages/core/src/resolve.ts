@@ -60,6 +60,7 @@ function defaultDraft(): ConfigDraft {
     sourceLocale: 'en',
     locales: undefined,
     ignoreLocales: [],
+    localeFallbacks: {},
     resources: [],
     formats: {},
     keyStyle: 'auto',
@@ -92,6 +93,10 @@ function serializablePart(config: UserConfig): SerializableConfig {
   return { ...rest, history: options }
 }
 
+function mergeFallbacks(base: ResolvedConfig['localeFallbacks'], layer: ResolvedConfig['localeFallbacks']): ResolvedConfig['localeFallbacks'] {
+  return base === 'auto' || layer === 'auto' ? layer : { ...base, ...layer }
+}
+
 /** Applies a user config layer: scalars replace, lists of rules append. */
 function applyLayer(draft: ConfigDraft, layer: UserConfig, origin: ConfigOrigin, origins: Record<string, ConfigOrigin>): void {
   const mark = (key: string): void => {
@@ -108,6 +113,10 @@ function applyLayer(draft: ConfigDraft, layer: UserConfig, origin: ConfigOrigin,
   if (layer.ignoreLocales !== undefined) {
     draft.ignoreLocales = [...draft.ignoreLocales, ...layer.ignoreLocales]
     mark('ignoreLocales')
+  }
+  if (layer.localeFallbacks !== undefined) {
+    draft.localeFallbacks = mergeFallbacks(draft.localeFallbacks, layer.localeFallbacks)
+    mark('localeFallbacks')
   }
   if (layer.resources !== undefined) {
     draft.resources = layer.resources

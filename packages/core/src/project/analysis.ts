@@ -5,6 +5,7 @@ import type { Diagnostic, JsonObject, KeyString, LocaleCode, LocaleInfo, Message
 import type { Check, CheckContext, DiagnosticInput, HardString, LocaleCoverage, MessageChange, ScanResult } from '../types/plugin'
 import type { Analysis } from '../types/project'
 import { keyMatcher } from '../keys'
+import { fallbackChain } from '../locale'
 import { isOutdated } from './history'
 
 export interface ResourceState {
@@ -27,6 +28,7 @@ interface AnalyzerState {
   readonly revision: number
   readonly sourceLocale: LocaleCode
   readonly locales: readonly LocaleCode[]
+  readonly fallbacks: Readonly<Record<LocaleCode, LocaleCode>>
   readonly resources: readonly ResourceState[]
   readonly resourceErrors: readonly { readonly error: X18nError, readonly path: string }[]
   readonly scanErrors: readonly { readonly error: X18nError, readonly path: string }[]
@@ -61,17 +63,25 @@ function levelOf(setting: CheckSetting | undefined): { level: Severity | 'off', 
 function computeCoverage(state: AnalyzerState, reference: readonly KeyString[]): LocaleCoverage[] {
   const { messages, sourceLocale } = state
   return state.locales.map((locale) => {
+    const chain = fallbackChain(state.fallbacks, locale)
+    // A variant holds overrides only: what its fallbacks have is inherited, not missing.
+    const inherited = (key: KeyString): boolean => chain.some((code) => {
+      const value = messages.get(key)?.get(code)?.[0]?.value
+      return value !== undefined && value !== ''
+    })
     const missing: KeyString[] = []
     const empty: KeyString[] = []
     const outdated: KeyString[] = []
     for (const key of reference) {
       const value = messages.get(key)?.get(locale)?.[0]?.value
-      if (value === undefined)
-        missing.push(key)
-      else if (value === '')
-        empty.push(key)
-      else if (locale !== sourceLocale && isOutdated(state.history(key, sourceLocale), state.history(key, locale)))
+      if (value === undefined || value === '') {
+        if (inherited(key))
+          continue
+        (value === undefined ? missing : empty).push(key)
+      }
+      else if (locale !== sourceLocale && isOutdated(state.history(key, sourceLocale), state.history(key, locale))) {
         outdated.push(key)
+      }
     }
     return { locale, total: reference.length, translated: reference.length - missing.length - empty.length, missing, empty, outdated }
   })
@@ -203,6 +213,7 @@ export function createAnalyzer(options: AnalyzerOptions): { readonly analyze: ()
       config,
       sourceLocale,
       locales,
+      fallbacks: locale => fallbackChain(state.fallbacks, locale),
       resources: state.resources.map(s => s.resource),
       hasScanners,
       keys: () => allKeys,

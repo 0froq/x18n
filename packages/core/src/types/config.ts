@@ -130,6 +130,8 @@ export interface SerializableConfig {
   /** Locale codes as written in paths. Filters the found locales. */
   readonly locales?: readonly string[] | undefined
   readonly ignoreLocales?: readonly string[] | undefined
+  /** Locale to the locale it falls back to, such as `{ 'en-GB': 'en' }`. A locale with a fallback holds only overrides: a key it lacks or leaves empty is not missing when the fallback chain has it. `'auto'` falls back to the nearest parent language that exists: `en-US` to `en`, `zh-Hant-TW` to `zh-Hant` or `zh`. */
+  readonly localeFallbacks?: 'auto' | { readonly [locale: string]: string } | undefined
   /** `'auto'` detects built-in presets from the project's dependencies. */
   readonly presets?: 'auto' | readonly PluginSpecifier[] | undefined
   readonly plugins?: readonly PluginSpecifier[] | undefined
@@ -194,6 +196,7 @@ export interface ResolvedConfig {
   readonly sourceLocale: string
   readonly locales: readonly string[] | undefined
   readonly ignoreLocales: readonly string[]
+  readonly localeFallbacks: 'auto' | { readonly [locale: string]: string }
   readonly resources: readonly ResourceSpec[]
   readonly formats: { readonly [extension: string]: string }
   readonly keyStyle: 'auto' | 'nested' | 'flat'
