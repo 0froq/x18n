@@ -81,6 +81,7 @@
     "./reporters/pretty": "./dist/reporters/pretty.mjs",
     "./reporters/sarif": "./dist/reporters/sarif.mjs",
     "./scanners": "./dist/scanners.mjs",
+    "./scanners/astro": "./dist/scanners/astro.mjs",
     "./scanners/js": "./dist/scanners/js.mjs",
     "./scanners/regex": "./dist/scanners/regex.mjs",
     "./scanners/regex-scopes": "./dist/scanners/regex-scopes.mjs",
