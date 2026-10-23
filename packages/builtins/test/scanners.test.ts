@@ -1,7 +1,9 @@
 import type { CallSpec, ScanResult } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { reactI18next, reactIntl, vueI18n } from '../src/presets'
-import { loadParser, scanSource } from '../src/scanners/js'
+import { reactI18next } from '../src/presets/react-i18next'
+import { reactIntl } from '../src/presets/react-intl'
+import { vueI18n } from '../src/presets/vue-i18n'
+import { loadParser, scanSource } from '../src/scanners/shared/js'
 import { createTestProject, json } from './_utils'
 
 const calls: CallSpec[] = [

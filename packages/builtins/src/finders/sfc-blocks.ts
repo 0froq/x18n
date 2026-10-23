@@ -1,7 +1,9 @@
 import type { Format, MessageTree, NodeRange, Plugin, ResourceCandidate } from '@x18n/core'
 import { isMessageLeaf, pathId } from '@x18n/core'
-import { json, json5, yaml } from '../formats'
-import { loadVueCompiler } from '../scanners/vue'
+import { json } from '../formats/json'
+import { json5 } from '../formats/json5'
+import { yaml } from '../formats/yaml'
+import { loadVueCompiler } from '../scanners/shared/vue-compiler'
 
 const formatOfLang: Readonly<Record<string, string>> = { json: 'json', json5: 'json5', yaml: 'yaml', yml: 'yaml' }
 

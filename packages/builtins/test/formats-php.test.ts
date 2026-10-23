@@ -1,7 +1,7 @@
 import type { MessageOp } from '@x18n/core'
 import { applyTextEdits, isX18nError, pathId } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { php } from '../src/formats'
+import { php } from '../src/formats/php'
 import { createTestProject } from './_utils'
 
 const format = php().formats![0]!

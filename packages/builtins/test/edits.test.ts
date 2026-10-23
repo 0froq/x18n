@@ -1,6 +1,7 @@
 import type { Project } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { reactI18next, vueI18n } from '../src/presets'
+import { reactI18next } from '../src/presets/react-i18next'
+import { vueI18n } from '../src/presets/vue-i18n'
 import { createTestProject, json } from './_utils'
 
 async function write(project: Project, ops: Parameters<Project['plan']>[0]): Promise<ReturnType<Project['plan']>> {

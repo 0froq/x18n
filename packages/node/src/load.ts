@@ -3,13 +3,13 @@ import type { NodeHost } from './host'
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { createBuiltins } from '@x18n/builtins'
-import { compileYamlPlugin } from '@x18n/builtins/yaml-plugin'
 import { createProject, errors, resolveConfig } from '@x18n/core'
 import { glob } from 'tinyglobby'
 import { createPluginLoader, findConfigFile, findConfigsBelow, findConfigUpward, loadConfigFile, manifestRootsOf } from './config'
 import { gitHistory } from './git-history'
 import { createNodeHost, findGitRoot } from './host'
 import { readI18nAllyConfig } from './migrate'
+import { compileYamlPlugin } from './yaml-plugin'
 
 export interface LoadOptions {
   /** Where to look for a config file (upward). Default: the process cwd. */
@@ -157,7 +157,7 @@ export async function loadWorkspace(options: LoadOptions): Promise<Workspace> {
     : options.upward === false ? findConfigFile(resolve(options.cwd)) : findConfigUpward(options.cwd)
   const { root, specs } = await projectSpecs(configFile, options.cwd, options.upward !== false)
   const gitRoot = findGitRoot(root)
-  const defaults = options.builtins ?? createBuiltins()
+  const defaults = options.builtins ?? await createBuiltins()
   const builtins = gitRoot ? { ...defaults, plugins: [...defaults.plugins, gitHistory()] } : defaults
   const loaded: LoadedProject[] = []
   const names: string[] = []

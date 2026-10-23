@@ -1,7 +1,7 @@
 import type { MessageOp } from '@x18n/core'
 import { applyTextEdits, isX18nError, pathId } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { ecmascript } from '../src/formats'
+import { ecmascript } from '../src/formats/ecmascript'
 import { createTestProject } from './_utils'
 
 const format = ecmascript().formats![0]!

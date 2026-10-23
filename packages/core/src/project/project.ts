@@ -202,6 +202,17 @@ export function createProject(options: CreateProjectOptions): Project {
     return new Map([...walkLeaves(state.tree)].map(leaf => [keyFor(state.resource, leaf.path), leaf.value]))
   }
 
+  /** A path for a new resource, from the locale finders. */
+  function newResourcePath(locale: LocaleCode, namespace: string | undefined): string | undefined {
+    const ctx = { host, config, extensions: [...new Set(registry.formats.flatMap(format => format.extensions))] }
+    for (const finder of registry.finders) {
+      const path = finder.resolveNew?.({ locale, namespace }, ctx)
+      if (path)
+        return path
+    }
+    return undefined
+  }
+
   async function loadResources(candidates: readonly Candidate[], reread: ReadonlySet<string> | 'all'): Promise<void> {
     const next = new Map<string, ResourceState>()
     const paths = [...new Set(candidates.map(c => c.path))]
@@ -215,6 +226,7 @@ export function createProject(options: CreateProjectOptions): Project {
       }
     }))
     namespaced = config.namespace.separator !== '.' && candidates.some(c => c.namespace !== undefined)
+    await Promise.all(candidates.map(candidate => registry.loadFormatFor(candidate.path, candidate.format)))
     for (const candidate of candidates) {
       const text = fileTexts.get(candidate.path)
       if (text === undefined)
@@ -242,6 +254,12 @@ export function createProject(options: CreateProjectOptions): Project {
     resolver = createUsageResolver(config, namespaced, normalizers)
     resolved = new WeakMap()
     resourceIndex = undefined
+    // The planner is synchronous: a new file's format has to be loaded before it asks for it.
+    const namespaces = new Set([undefined, ...[...resourceStates.values()].map(state => state.resource.namespace)])
+    await Promise.all([...namespaces].map((namespace) => {
+      const path = newResourcePath(sourceLocale, namespace)
+      return path ? registry.loadFormatFor(path) : undefined
+    }))
   }
 
   // ---- Scanning ----
@@ -252,7 +270,7 @@ export function createProject(options: CreateProjectOptions): Project {
     const keySlots: TextRange[] = []
     const hardStrings: HardString[] = []
     const calls = config.usage.calls.filter(spec => ![spec.callee].flat().some(name => config.usage.ignoreCallees.includes(name)))
-    for (const scanner of registry.scannersFor(file.path)) {
+    for (const scanner of await registry.loadScannersFor(file.path)) {
       const result = await scanner.scan(file, { config, calls })
       usages.push(...result.usages)
       scopes.push(...result.scopes ?? [])
@@ -625,7 +643,7 @@ export function createProject(options: CreateProjectOptions): Project {
       const paths = new Set(events.map(event => event.path))
       const resourcePaths = new Set([...resourceStates.values()].map(state => state.resource.path))
       // An edited source file stays a source file; only other files with a format may have become resources.
-      const maybeResource = (path: string): boolean => !resourcePaths.has(path) && registry.formatFor(path) !== undefined && !usageEligible(path)
+      const maybeResource = (path: string): boolean => !resourcePaths.has(path) && registry.formatIdFor(path) !== undefined && !usageEligible(path)
       const structural = events.some(event => event.type !== 'change' || maybeResource(event.path))
       const touchesResources = structural || [...paths].some(path => resourcePaths.has(path))
       if (touchesResources) {
@@ -660,15 +678,7 @@ export function createProject(options: CreateProjectOptions): Project {
     text: path => fileTexts.get(path) ?? files.get(path)?.text,
     basesOf,
     toStored: (target, path) => storedPathOf(target)(path),
-    resolveNew(locale, namespace) {
-      const ctx = { host, config, extensions: [...new Set(registry.formats.flatMap(format => format.extensions))] }
-      for (const finder of registry.finders) {
-        const path = finder.resolveNew?.({ locale, namespace }, ctx)
-        if (path)
-          return path
-      }
-      return undefined
-    },
+    resolveNew: newResourcePath,
     update,
   })
 

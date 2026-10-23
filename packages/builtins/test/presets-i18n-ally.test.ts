@@ -1,6 +1,6 @@
 import type { Project } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { phpGettext } from '../src/presets'
+import { phpGettext } from '../src/presets/php-gettext'
 import { createTestProject, json } from './_utils'
 
 const pkg = (...deps: string[]): string => json({ dependencies: Object.fromEntries(deps.map(dep => [dep, '*'])) })

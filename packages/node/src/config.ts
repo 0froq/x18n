@@ -4,11 +4,11 @@ import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { compileYamlPlugin } from '@x18n/builtins/yaml-plugin'
 import { errors, isX18nError, PluginFileSchema, validate } from '@x18n/core'
 import { createJiti } from 'jiti'
 import { glob } from 'tinyglobby'
 import { parse as parseYaml } from 'yaml'
+import { compileYamlPlugin } from './yaml-plugin'
 
 export const configFileNames: readonly string[] = [
   'x18n.config.ts',

@@ -117,7 +117,7 @@ function ejectPlugin(data: PluginFile): string {
   if (data.placeholders)
     lines.push(`import { placeholderFromShape } from '@x18n/builtins/placeholders'`)
   if (data.scopes)
-    lines.push(`import { regexScopes } from '@x18n/builtins/scanners'`)
+    lines.push(`import regexScopes from '@x18n/builtins/scanners/regex-scopes'`)
   lines.push('', `const plugin = definePlugin({`, ...fields, `})`, '')
   const plugins = `[plugin${data.scopes ? `, regexScopes(${literal(data.scopes.regex)})` : ''}]`
   if (data.detect) {

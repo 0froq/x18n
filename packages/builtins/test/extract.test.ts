@@ -1,7 +1,10 @@
 import type { Project } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
 import { extractableHardStrings, extractItems, findCandidates, shouldExtract, slugify } from '../src/extractors'
-import { reactI18next, reactIntl, svelteI18n, vueI18n } from '../src/presets'
+import { reactI18next } from '../src/presets/react-i18next'
+import { reactIntl } from '../src/presets/react-intl'
+import { svelteI18n } from '../src/presets/svelte-i18n'
+import { vueI18n } from '../src/presets/vue-i18n'
 import { createTestProject, json } from './_utils'
 
 async function extractAll(project: Project): Promise<void> {

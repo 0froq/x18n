@@ -2,7 +2,7 @@ import type { PluginRegistry } from './plugins'
 import type { ConfigDraft, ConfigOrigin, PluginOption, PresetOption, ResolvedConfig, SerializableConfig, UserConfig } from './types/config'
 import type { Host } from './types/host'
 import type { JsonObject } from './types/model'
-import type { ConfigContext, DetectContext, ManifestReader, Plugin, Preset, PresetFactory } from './types/plugin'
+import type { ConfigContext, DetectContext, ManifestReader, Plugin, Preset, PresetEntry } from './types/plugin'
 import { errors } from './errors'
 import { createRegistry, isPreset } from './plugins'
 import { ConfigSchema, validate } from './schema'
@@ -10,7 +10,7 @@ import { ConfigSchema, validate } from './schema'
 /** Plugins that are always on, and presets that `'auto'` and names refer to. Passed in by the caller. */
 export interface Builtins {
   readonly plugins: readonly Plugin[]
-  readonly presets: { readonly [name: string]: PresetFactory }
+  readonly presets: { readonly [name: string]: PresetEntry }
 }
 
 export interface ResolveConfigOptions {
@@ -249,9 +249,9 @@ function createLoader(options: ResolveConfigOptions): (option: PresetOption | Pl
     if (typeof option === 'object' && !Array.isArray(option))
       return option as Loaded // the only object members of the option unions are plugins and presets
     const [specifier, pluginOptions] = typeof option === 'string' ? [option, undefined] : [option[0], option[1]]
-    const factory = options.builtins.presets[specifier]
-    if (factory)
-      return factory(pluginOptions)
+    const entry = options.builtins.presets[specifier]
+    if (entry)
+      return (await entry.load()).default(pluginOptions)
     if (!options.loadPlugin)
       throw errors.X18N1003({ preset: specifier })
     return options.loadPlugin(specifier, pluginOptions)
@@ -268,8 +268,14 @@ async function loadAll(load: (option: PresetOption | PluginOption) => Promise<Lo
   return out
 }
 
+/** A built-in preset that is not loaded yet: only its `detect` has run. */
+interface LazyPreset {
+  readonly name: string
+  readonly entry: PresetEntry
+}
+
 /** Expands presets depth-first: listed presets always apply, others only when detected; an exclusive one stops the rest. */
-async function expandPresets(presets: readonly Preset[], userPlugins: readonly Loaded[], listed: boolean, detectCtx: DetectContext): Promise<{ plugins: Plugin[], explanations: PresetExplanation[] }> {
+async function expandPresets(presets: readonly (Preset | LazyPreset)[], userPlugins: readonly Loaded[], listed: boolean, detectCtx: DetectContext): Promise<{ plugins: Plugin[], explanations: PresetExplanation[] }> {
   const explanations: PresetExplanation[] = []
   const plugins: Plugin[] = []
   const flatten = async (item: Loaded, force: boolean): Promise<boolean> => {
@@ -289,10 +295,22 @@ async function expandPresets(presets: readonly Preset[], userPlugins: readonly L
   }
   let stopped = false
   for (const preset of presets) {
-    if (stopped)
+    if (stopped) {
       explanations.push({ name: preset.name, reason: 'after-exclusive' })
-    else
+    }
+    else if ('entry' in preset) {
+      const applies = listed || (preset.entry.detect ? await preset.entry.detect(detectCtx) : false)
+      explanations.push({ name: preset.name, reason: applies ? (listed ? 'listed' : 'detected') : 'not-detected' })
+      if (!applies)
+        continue
+      const loaded = (await preset.entry.load()).default()
+      for (const child of loaded.plugins)
+        await flatten(child, false)
+      stopped = preset.entry.exclusive === true || loaded.exclusive === true
+    }
+    else {
       stopped = await flatten(preset, listed)
+    }
   }
   for (const plugin of userPlugins)
     await flatten(plugin, true)
@@ -322,7 +340,7 @@ export async function resolveConfig(options: ResolveConfigOptions): Promise<Setu
   const presetOption = user.presets ?? options.parent?.presets ?? 'auto'
   const auto = presetOption === 'auto'
   const presets = auto
-    ? Object.values(builtins.presets).map(factory => factory())
+    ? Object.entries(builtins.presets).map(([name, entry]): LazyPreset => ({ name, entry }))
     : (await loadAll(load, presetOption)).map(item => isPreset(item) ? item : { name: item.name, plugins: [item] })
 
   const readers = [...builtins.plugins, ...userPlugins].flatMap(item => isPreset(item) ? [] : item.manifests ?? [])

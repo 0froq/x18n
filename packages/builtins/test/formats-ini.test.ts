@@ -1,7 +1,7 @@
 import type { MessageOp } from '@x18n/core'
 import { applyTextEdits, pathId } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { ini } from '../src/formats'
+import { ini } from '../src/formats/ini'
 import { createTestProject } from './_utils'
 
 const format = ini().formats![0]!

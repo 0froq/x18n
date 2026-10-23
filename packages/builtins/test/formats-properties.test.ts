@@ -1,7 +1,7 @@
 import type { MessageOp } from '@x18n/core'
 import { applyTextEdits, pathId } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { properties } from '../src/formats'
+import { properties } from '../src/formats/properties'
 import { createTestProject } from './_utils'
 
 const format = properties().formats![0]!

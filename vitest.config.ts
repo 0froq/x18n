@@ -8,7 +8,8 @@ const src = (path: string): string => fileURLToPath(new URL(`./packages/${path}`
 const alias = [
   { find: /^@x18n\/core$/, replacement: src('core/src/index.ts') },
   { find: /^@x18n\/builtins$/, replacement: src('builtins/src/index.ts') },
-  { find: /^@x18n\/builtins\/(.*)$/, replacement: src('builtins/src/$1/index.ts') },
+  { find: /^@x18n\/builtins\/([^/]+)$/, replacement: src('builtins/src/$1/index.ts') },
+  { find: /^@x18n\/builtins\/([^/]+\/.+)$/, replacement: src('builtins/src/$1') },
   { find: /^@x18n\/node$/, replacement: src('node/src/index.ts') },
   { find: /^@x18n\/lsp$/, replacement: src('lsp/src/index.ts') },
   { find: /^@x18n\/ui$/, replacement: src('ui/src/node/index.ts') },

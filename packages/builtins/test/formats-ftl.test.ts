@@ -1,7 +1,7 @@
 import type { MessageOp } from '@x18n/core'
 import { applyTextEdits, pathId } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
-import { ftl } from '../src/formats'
+import { ftl } from '../src/formats/ftl'
 import { createTestProject } from './_utils'
 
 const format = ftl().formats![0]!

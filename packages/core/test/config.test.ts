@@ -1,4 +1,4 @@
-import type { Format, Plugin, Preset } from '../src'
+import type { Format, Plugin, Preset, PresetEntry } from '../src'
 import { toJsonSchema } from '@valibot/to-json-schema'
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { buildJsonSchema } from '../scripts/schema'
@@ -6,6 +6,12 @@ import { createMemoryHost, defineConfig, definePlugin, definePreset, isX18nError
 import { ConfigSchema, PluginFileSchema } from '../src/schema'
 
 const format = (id: string, extensions: string[]): Format => ({ id, extensions, parse: () => ({ tree: {} }) })
+
+/** A preset entry whose `detect` is the preset's own, as built-ins split them. */
+function loader(factory: () => Preset): PresetEntry {
+  const preset = factory()
+  return { detect: preset.detect, exclusive: preset.exclusive, load: async () => ({ default: factory }) }
+}
 
 describe('resolveConfig', () => {
   it('orders plugins: builtins, presets, user; pre and post by enforce', async () => {
@@ -15,11 +21,50 @@ describe('resolveConfig', () => {
       config: { plugins: [{ name: 'user' }, { name: 'early', enforce: 'pre' }] },
       builtins: {
         plugins: [{ name: 'builtin', manifests: [{ id: 'pkg', file: 'package.json', read: text => Object.keys(JSON.parse(text).dependencies) }] }],
-        presets: { lib: () => preset, other: () => ({ name: 'other', detect: () => false, plugins: [{ name: 'other-plugin' }] }) },
+        presets: { lib: loader(() => preset), other: loader(() => ({ name: 'other', detect: () => false, plugins: [{ name: 'other-plugin' }] })) },
       },
     })
     expect(setup.registry.plugins.map(p => p.name)).toEqual(['early', 'builtin', 'lib-plugin', 'user'])
     expect(setup.presets).toEqual([{ name: 'lib', reason: 'detected' }, { name: 'other', reason: 'not-detected' }])
+  })
+
+  it('loads a preset module only when its detect passes', async () => {
+    const loaded: string[] = []
+    const entry = (name: string, detect: boolean): PresetEntry => ({
+      detect: () => detect,
+      load: async () => {
+        loaded.push(name)
+        return { default: () => ({ name, plugins: [{ name: `${name}-plugin` }] }) }
+      },
+    })
+    const setup = await resolveConfig({
+      host: createMemoryHost(),
+      config: {},
+      builtins: { plugins: [], presets: { hit: entry('hit', true), miss: entry('miss', false) } },
+    })
+    expect(loaded).toEqual(['hit'])
+    expect(setup.presets).toEqual([{ name: 'hit', reason: 'detected' }, { name: 'miss', reason: 'not-detected' }])
+    expect(setup.registry.plugins.map(p => p.name)).toEqual(['hit-plugin'])
+  })
+
+  it('loads a lazy format once, when a file of it is read', async () => {
+    let loads = 0
+    const lazy = { id: 'lazy', extensions: ['lz'], load: async () => ({ default: () => ({ name: 'lazy-format', formats: [format('lazy', ['lz'])] }) satisfies Plugin }) }
+    const counted = {
+      ...lazy,
+      load: () => {
+        loads++
+        return lazy.load()
+      },
+    }
+    const setup = await resolveConfig({ host: createMemoryHost(), config: {}, builtins: { plugins: [{ name: 'p', lazyFormats: [counted] }], presets: {} } })
+    expect(loads).toBe(0)
+    expect(setup.registry.formatFor('a.lz')).toBeUndefined()
+    expect(setup.registry.formatIdFor('a.lz')).toBe('lazy')
+    expect((await setup.registry.loadFormatFor('a.lz'))?.id).toBe('lazy')
+    await setup.registry.loadFormatFor('b.lz')
+    expect(loads).toBe(1)
+    expect(setup.registry.formatFor('a.lz')?.id).toBe('lazy')
   })
 
   it('stops after an exclusive preset', async () => {
@@ -29,8 +74,8 @@ describe('resolveConfig', () => {
       builtins: {
         plugins: [],
         presets: {
-          a: () => ({ name: 'a', exclusive: true, detect: () => true, plugins: [] }),
-          b: () => ({ name: 'b', detect: () => true, plugins: [] }),
+          a: loader(() => ({ name: 'a', exclusive: true, detect: () => true, plugins: [] })),
+          b: loader(() => ({ name: 'b', detect: () => true, plugins: [] })),
         },
       },
     })
