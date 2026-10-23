@@ -1,9 +1,11 @@
 import type { Project } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
 import { extractableHardStrings, extractItems, findCandidates, shouldExtract, slugify } from '../src/extractors'
+import { paraglide } from '../src/presets/paraglide'
 import { reactI18next } from '../src/presets/react-i18next'
 import { reactIntl } from '../src/presets/react-intl'
 import { svelteI18n } from '../src/presets/svelte-i18n'
+import { typesafeI18n } from '../src/presets/typesafe-i18n'
 import { vueI18n } from '../src/presets/vue-i18n'
 import { createTestProject, json } from './_utils'
 
@@ -295,6 +297,50 @@ describe('extraction per preset', () => {
     })
     await extractAll(project)
     expect(files.get('src/App.tsx')).toBe('import { FormattedMessage } from \'react-intl\'\nconst A = () => <button><FormattedMessage id="saveChanges" /></button>\n')
+  })
+
+  it('typesafe-i18n: LL calls and the TS locale file', async () => {
+    const { project, files } = await createTestProject({
+      'src/i18n/en/index.ts': 'const en = {\n  title: \'Title\',\n} satisfies BaseTranslation\nexport default en\n',
+      'src/App.tsx': 'const A = () => <button>Save changes</button>\nconst msg = `Signed in as ${user.name}`\n', // eslint-disable-line no-template-curly-in-string
+      'src/Page.svelte': '<p>Welcome back home</p>\n',
+    }, {
+      presets: [
+        typesafeI18n(),
+      ],
+    })
+    await extractAll(project)
+    expect(files.get('src/App.tsx')).toBe('const A = () => <button>{LL.saveChanges()}</button>\nconst msg = LL.signedInAs({ name: user.name })\n')
+    expect(files.get('src/Page.svelte')).toBe('<p>{$LL.welcomeBackHome()}</p>\n')
+    expect(files.get('src/i18n/en/index.ts')).toBe([
+      'const en = {',
+      '  title: \'Title\',',
+      '  saveChanges: \'Save changes\',',
+      '  signedInAs: \'Signed in as {name}\',',
+      '  welcomeBackHome: \'Welcome back home\',',
+      '} satisfies BaseTranslation',
+      'export default en',
+      '',
+    ].join('\n'))
+    expect(project.keys()).toEqual([
+      'saveChanges',
+      'signedInAs',
+      'title',
+      'welcomeBackHome',
+    ])
+  })
+
+  it('paraglide: arguments are the first argument of the message function', async () => {
+    const { project, files } = await createTestProject({
+      'messages/en.json': json({}),
+      'src/greet.ts': 'export const msg = `Signed in as ${user.name}`\n', // eslint-disable-line no-template-curly-in-string
+    }, {
+      presets: [
+        paraglide(),
+      ],
+    })
+    await extractAll(project)
+    expect(files.get('src/greet.ts')).toBe('import { m } from \'$lib/paraglide/messages\'\nexport const msg = m.signedInAs({ name: user.name })\n')
   })
 
   it('refuses a plan whose source changed', async () => {

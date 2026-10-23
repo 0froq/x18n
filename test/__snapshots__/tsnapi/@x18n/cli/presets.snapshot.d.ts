@@ -31,6 +31,7 @@ export { rubyRails }
 export { solidPrimitivesI18n }
 export { svelteI18n }
 export { transloco }
+export { typesafeI18n }
 export { ui5 }
 export { vscodeExtension }
 export { vueI18n }

@@ -27,6 +27,7 @@ import rubyRails from './ruby-rails/entry'
 import solidPrimitivesI18n from './solid-primitives-i18n/entry'
 import svelteI18n from './svelte-i18n/entry'
 import transloco from './transloco/entry'
+import typesafeI18n from './typesafe-i18n/entry'
 import ui5 from './ui5/entry'
 import vscodeExtension from './vscode-extension/entry'
 import vueI18n from './vue-i18n/entry'
@@ -52,6 +53,7 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'svelte-i18n': svelteI18n,
   'solid-primitives-i18n': solidPrimitivesI18n,
   'paraglide': paraglide,
+  'typesafe-i18n': typesafeI18n,
   'ngx-translate': ngxTranslate,
   'transloco': transloco,
   'lingui': lingui,

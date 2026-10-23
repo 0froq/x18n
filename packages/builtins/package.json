@@ -60,6 +60,7 @@
     "./presets/solid-primitives-i18n": "./dist/presets/solid-primitives-i18n.mjs",
     "./presets/svelte-i18n": "./dist/presets/svelte-i18n.mjs",
     "./presets/transloco": "./dist/presets/transloco.mjs",
+    "./presets/typesafe-i18n": "./dist/presets/typesafe-i18n.mjs",
     "./presets/ui5": "./dist/presets/ui5.mjs",
     "./presets/vscode-extension": "./dist/presets/vscode-extension.mjs",
     "./presets/vue-i18n": "./dist/presets/vue-i18n.mjs",

@@ -33,6 +33,7 @@ export default defineConfig({
     'presets/svelte-i18n': 'src/presets/svelte-i18n/index.ts',
     'presets/solid-primitives-i18n': 'src/presets/solid-primitives-i18n/index.ts',
     'presets/paraglide': 'src/presets/paraglide/index.ts',
+    'presets/typesafe-i18n': 'src/presets/typesafe-i18n/index.ts',
     'presets/ngx-translate': 'src/presets/ngx-translate/index.ts',
     'presets/transloco': 'src/presets/transloco/index.ts',
     'presets/lingui': 'src/presets/lingui/index.ts',
