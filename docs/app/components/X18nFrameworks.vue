@@ -36,6 +36,12 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
     to: '/presets/python-gettext',
     mono: true,
   },
+  {
+    name: 'Rust',
+    icon: 'logos:rust',
+    to: '/presets/cargo-i18n',
+    mono: true,
+  },
   { name: 'Chrome', icon: 'logos:chrome', to: '/presets/chrome-extension' },
   { name: 'Firefox', icon: 'logos:firefox', to: '/presets/chrome-extension' },
   { name: 'VS Code', icon: 'logos:visual-studio-code', to: '/presets/vscode-extension' },

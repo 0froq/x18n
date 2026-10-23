@@ -1,3 +1,4 @@
+export { cargoI18n } from '@x18n/builtins/presets/cargo-i18n'
 export { chromeExtension } from '@x18n/builtins/presets/chrome-extension'
 export { easyLocalization } from '@x18n/builtins/presets/easy-localization'
 export { emberIntl } from '@x18n/builtins/presets/ember-intl'

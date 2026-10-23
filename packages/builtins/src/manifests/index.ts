@@ -101,6 +101,38 @@ export const requirementsTxt: ManifestReader = {
     : requirementName(line)),
 }
 
+const cargoSection = /^\[\s*((?:workspace\.|target\.[^\]]+\.)?(?:dev-|build-)?dependencies)(?:\.([\w-]+))?\s*\]/
+// `name = ...` or a dotted key: `name.workspace = true`, `"name".version = "1"`.
+const cargoKey = /^\s*"?([\w-]+)"?\s*[.=]/
+
+/**
+ * Dependency names from `[dependencies]`, `[dev-dependencies]`, `[build-dependencies]`, `[workspace.dependencies]`
+ * and target tables, and `[dependencies.name]` headers. A renamed dependency reports its alias, not `package`. TOML puts each key on its own line, so a line scan is enough.
+ */
+export const cargoToml: ManifestReader = {
+  id: 'Cargo.toml',
+  file: 'Cargo.toml',
+  read(text) {
+    const names: string[] = []
+    let inDependencies = false
+    for (const line of text.split('\n')) {
+      if (line.trimStart().startsWith('[')) {
+        const section = cargoSection.exec(line.trim())
+        inDependencies = section !== null && section[2] === undefined
+        if (section?.[2])
+          names.push(section[2])
+        continue
+      }
+      const name = inDependencies
+        ? cargoKey.exec(line)?.[1]
+        : undefined
+      if (name)
+        names.push(name)
+    }
+    return names
+  },
+}
+
 export function manifests(): Plugin {
   return {
     name: 'x18n:manifests',
@@ -111,6 +143,7 @@ export function manifests(): Plugin {
       gemfile,
       pyprojectToml,
       requirementsTxt,
+      cargoToml,
     ],
   }
 }

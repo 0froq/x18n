@@ -1,4 +1,5 @@
 import type { PresetEntry } from '@x18n/core'
+import cargoI18n from './cargo-i18n/entry'
 import chromeExtension from './chrome-extension/entry'
 import easyLocalization from './easy-localization/entry'
 import emberIntl from './ember-intl/entry'
@@ -82,5 +83,6 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'flutter-translate': flutterTranslate,
   'python-gettext': pythonGettext,
   'i18nice': i18nice,
+  'cargo-i18n': cargoI18n,
   'general': general,
 }

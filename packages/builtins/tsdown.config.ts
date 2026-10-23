@@ -56,6 +56,7 @@ export default defineConfig({
     'presets/flutter-translate': 'src/presets/flutter-translate/index.ts',
     'presets/python-gettext': 'src/presets/python-gettext/index.ts',
     'presets/i18nice': 'src/presets/i18nice/index.ts',
+    'presets/cargo-i18n': 'src/presets/cargo-i18n/index.ts',
     'presets/general': 'src/presets/general/index.ts',
     'reporters': 'src/reporters/index.ts',
     'reporters/pretty': 'src/reporters/pretty.ts',
