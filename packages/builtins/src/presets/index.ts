@@ -11,6 +11,7 @@ import i18nJs from './i18n-js/entry'
 import i18nTag from './i18n-tag/entry'
 import i18nextShopify from './i18next-shopify/entry'
 import i18next from './i18next/entry'
+import i18nice from './i18nice/entry'
 import jekyll from './jekyll/entry'
 import laravelVueI18n from './laravel-vue-i18n/entry'
 import laravel from './laravel/entry'
@@ -24,6 +25,7 @@ import paraglide from './paraglide/entry'
 import phpGettext from './php-gettext/entry'
 import phpJoomla from './php-joomla/entry'
 import polyglot from './polyglot/entry'
+import pythonGettext from './python-gettext/entry'
 import reactI18next from './react-i18next/entry'
 import reactIntl from './react-intl/entry'
 import rubyRails from './ruby-rails/entry'
@@ -78,5 +80,7 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'flutter': flutter,
   'easy-localization': easyLocalization,
   'flutter-translate': flutterTranslate,
+  'python-gettext': pythonGettext,
+  'i18nice': i18nice,
   'general': general,
 }
