@@ -49,6 +49,7 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
     to: '/presets/cargo-i18n',
     mono: true,
   },
+  { name: '.NET', icon: 'logos:dotnet', to: '/presets/dotnet-resx' },
   { name: 'Chrome', icon: 'logos:chrome', to: '/presets/chrome-extension' },
   { name: 'Firefox', icon: 'logos:firefox', to: '/presets/chrome-extension' },
   { name: 'VS Code', icon: 'logos:visual-studio-code', to: '/presets/vscode-extension' },

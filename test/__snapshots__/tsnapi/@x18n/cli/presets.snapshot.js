@@ -4,6 +4,7 @@
 // #region Other
 export { cargoI18n }
 export { chromeExtension }
+export { dotnetResx }
 export { easyLocalization }
 export { emberIntl }
 export { fluentReact }

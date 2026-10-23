@@ -8,6 +8,7 @@ import jsonc from './jsonc/entry'
 import php from './php/entry'
 import po from './po/entry'
 import properties from './properties/entry'
+import resx from './resx/entry'
 import yaml from './yaml/entry'
 
 /**
@@ -21,6 +22,7 @@ export const formats: { readonly [id: string]: FormatEntry } = {
   yaml,
   po,
   properties,
+  resx,
   ftl,
   ini,
   php,

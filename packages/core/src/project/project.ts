@@ -280,7 +280,7 @@ export function createProject(options: CreateProjectOptions): Project {
   }
 
   /** A path for a new resource, from the locale finders. */
-  function newResourcePath(locale: LocaleCode, namespace: string | undefined): string | undefined {
+  function newResourcePath(locale: LocaleCode, namespace: string | undefined, model: Resource | undefined): string | undefined {
     const ctx = {
       host,
       config,
@@ -289,7 +289,7 @@ export function createProject(options: CreateProjectOptions): Project {
       ],
     }
     for (const finder of registry.finders) {
-      const path = finder.resolveNew?.({ locale, namespace }, ctx)
+      const path = finder.resolveNew?.({ locale, namespace, model }, ctx)
       if (path)
         return path
     }
@@ -358,7 +358,7 @@ export function createProject(options: CreateProjectOptions): Project {
       ].map(state => state.resource.namespace),
     ])
     await Promise.all([...namespaces].map((namespace) => {
-      const path = newResourcePath(sourceLocale, namespace)
+      const path = newResourcePath(sourceLocale, namespace, undefined)
       return path
         ? registry.loadFormatFor(path)
         : undefined

@@ -331,6 +331,7 @@ export interface LocaleFinder {
   readonly resolveNew?: ((_: {
     readonly locale: LocaleCode;
     readonly namespace: string | undefined;
+    readonly model: Resource | undefined;
   }, _: FinderContext) => string | undefined) | undefined;
 }
 export interface LocaleInfo {

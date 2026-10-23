@@ -1,5 +1,6 @@
 export { cargoI18n } from '@x18n/builtins/presets/cargo-i18n'
 export { chromeExtension } from '@x18n/builtins/presets/chrome-extension'
+export { dotnetResx } from '@x18n/builtins/presets/dotnet-resx'
 export { easyLocalization } from '@x18n/builtins/presets/easy-localization'
 export { emberIntl } from '@x18n/builtins/presets/ember-intl'
 export { fluentReact } from '@x18n/builtins/presets/fluent-react'

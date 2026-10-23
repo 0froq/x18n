@@ -1000,6 +1000,13 @@ exports[`rpc functions > explains the project 1`] = `
         },
         {
           "extensions": [
+            "resx",
+          ],
+          "id": "resx",
+          "resources": 0,
+        },
+        {
+          "extensions": [
             "ftl",
           ],
           "id": "ftl",
@@ -1056,6 +1063,7 @@ exports[`rpc functions > explains the project 1`] = `
         "x18n:format-yaml",
         "x18n:format-po",
         "x18n:format-properties",
+        "x18n:format-resx",
         "x18n:format-ftl",
         "x18n:format-ini",
         "x18n:format-php",
@@ -1235,6 +1243,10 @@ exports[`rpc functions > explains the project 1`] = `
         },
         {
           "name": "cargo-i18n",
+          "reason": "not-detected",
+        },
+        {
+          "name": "dotnet-resx",
           "reason": "not-detected",
         },
         {
