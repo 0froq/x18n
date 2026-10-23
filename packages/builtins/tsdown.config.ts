@@ -25,6 +25,7 @@ export default defineConfig({
     'presets/fluent-vue': 'src/presets/fluent-vue/index.ts',
     'presets/i18next-shopify': 'src/presets/i18next-shopify/index.ts',
     'presets/react-i18next': 'src/presets/react-i18next/index.ts',
+    'presets/svelte-i18next': 'src/presets/svelte-i18next/index.ts',
     'presets/next-translate': 'src/presets/next-translate/index.ts',
     'presets/next-international': 'src/presets/next-international/index.ts',
     'presets/i18next': 'src/presets/i18next/index.ts',

@@ -36,6 +36,7 @@ export { reactIntl }
 export { rubyRails }
 export { solidPrimitivesI18n }
 export { svelteI18n }
+export { svelteI18next }
 export { transloco }
 export { typesafeI18n }
 export { ui5 }
