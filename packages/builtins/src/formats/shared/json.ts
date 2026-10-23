@@ -38,24 +38,41 @@ export function createJsonFormat(id: string, extensions: readonly string[], allo
         throw errors.X18N2002({ path: ctx.path, reason: `${printParseErrorCode(first.error)} at offset ${first.offset}` })
       }
       if (!root || root.type !== 'object') {
-        if (text.trim() === '')
-          return { tree: {}, ranges: new Map() }
+        if (text.trim() === '') {
+          return {
+            tree: {},
+            ranges: new Map(),
+          }
+        }
         throw errors.X18N2003({ path: ctx.path })
       }
       const ranges = new Map<string, NodeRange>()
-      return { tree: readTree(root, [], ranges), ranges }
+      return {
+        tree: readTree(root, [], ranges),
+        ranges,
+      }
     },
     edit(text, ops, ctx) {
       const indent = detectIndent(text, ctx.indent ?? defaultIndent)
-      const formattingOptions = { ...indent, eol: detectEol(text) }
-      let next = text.trim() === '' ? '{}\n' : text
-      for (const op of ops)
-        next = applyEdits(next, modify(next, [...op.path], op.type === 'set' ? op.value : undefined, { formattingOptions }))
+      const formattingOptions = {
+        ...indent,
+        eol: detectEol(text),
+      }
+      let next = text.trim() === ''
+        ? '{}\n'
+        : text
+      for (const op of ops) {
+        next = applyEdits(next, modify(next, [...op.path], op.type === 'set'
+          ? op.value
+          : undefined, { formattingOptions }))
+      }
       return diffText(text, next)
     },
     serialize(tree, ctx) {
       const indent = ctx.indent ?? defaultIndent ?? 2
-      return `${JSON.stringify(tree, null, indent === 'tab' ? '\t' : indent)}\n`
+      return `${JSON.stringify(tree, null, indent === 'tab'
+        ? '\t'
+        : indent)}\n`
     },
   }
 }

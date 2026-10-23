@@ -12,7 +12,17 @@ interface Item {
   readonly value: Value
 }
 
-const doubleEscapes: Record<string, string> = { 'n': '\n', 't': '\t', 'r': '\r', 'v': '\v', 'e': '\x1B', 'f': '\f', '\\': '\\', '$': '$', '"': '"' }
+const doubleEscapes: Record<string, string> = {
+  'n': '\n',
+  't': '\t',
+  'r': '\r',
+  'v': '\v',
+  'e': '\x1B',
+  'f': '\f',
+  '\\': '\\',
+  '$': '$',
+  '"': '"',
+}
 
 type Fail = (code: 'X18N2002' | 'X18N2003' | 'X18N2004', reason: string) => never
 
@@ -54,17 +64,28 @@ function parseFile(text: string, path: string): Value | undefined {
 
   const parseString = (quote: string): Value => {
     const start = pos
-    const match = (quote === '\'' ? /^'(?:[^'\\]|\\[\s\S])*'/ : /^"(?:[^"\\]|\\[\s\S])*"/).exec(text.slice(pos))
+    const match = (quote === '\''
+      ? /^'(?:[^'\\]|\\[\s\S])*'/
+      : /^"(?:[^"\\]|\\[\s\S])*"/).exec(text.slice(pos))
     if (!match)
       return fail('X18N2002', 'unterminated string')
     pos += match[0].length
     const raw = match[0].slice(1, -1)
-    const value = quote === '\'' ? raw.replace(/\\([\\'])/g, '$1') : decodeDouble(raw, fail)
-    return { kind: 'scalar', range: { start, end: pos }, value, quote }
+    const value = quote === '\''
+      ? raw.replace(/\\([\\'])/g, '$1')
+      : decodeDouble(raw, fail)
+    return {
+      kind: 'scalar',
+      range: { start, end: pos },
+      value,
+      quote,
+    }
   }
 
   const parseArray = (start: number, close: string): Value => {
-    const closing = close === ']' ? /^\]/ : /^\)/
+    const closing = close === ']'
+      ? /^\]/
+      : /^\)/
     const items: Item[] = []
     while (!eat(closing)) {
       const key = parseValue()
@@ -74,7 +95,9 @@ function parseFile(text: string, path: string): Value | undefined {
         return fail('X18N2004', 'array keys must be strings or integers')
       items.push({
         key: String(key.value),
-        keyRange: key.quote ? { start: key.range.start + 1, end: key.range.end - 1 } : key.range,
+        keyRange: key.quote
+          ? { start: key.range.start + 1, end: key.range.end - 1 }
+          : key.range,
         value: parseValue(),
       })
       if (eat(/^,/))
@@ -84,7 +107,11 @@ function parseFile(text: string, path: string): Value | undefined {
       if (text[pos] !== close)
         return fail('X18N2004', `expected "," or "${close}"; expressions are not static`)
     }
-    return { kind: 'array', range: { start, end: pos }, items }
+    return {
+      kind: 'array',
+      range: { start, end: pos },
+      items,
+    }
   }
 
   function parseValue(): Value {
@@ -100,8 +127,19 @@ function parseFile(text: string, path: string): Value | undefined {
     if (literal === undefined)
       return fail('X18N2004', `"${text.slice(pos, pos + 20).split('\n')[0]}" is not a static value`)
     const lower = literal.toLowerCase()
-    const value = lower === 'null' ? null : lower === 'true' ? true : lower === 'false' ? false : Number(literal)
-    return { kind: 'scalar', range: { start, end: pos }, value, quote: undefined }
+    const value = lower === 'null'
+      ? null
+      : lower === 'true'
+        ? true
+        : lower === 'false'
+          ? false
+          : Number(literal)
+    return {
+      kind: 'scalar',
+      range: { start, end: pos },
+      value,
+      quote: undefined,
+    }
   }
 
   eat(/^<\?php\b/i)
@@ -127,14 +165,24 @@ function readTree(value: Value, path: readonly string[], ranges: Map<string, Nod
     return out
   for (const item of value.items) {
     const childPath = [...path, item.key]
-    const inner = item.value.kind === 'scalar' && item.value.quote ? { start: item.value.range.start + 1, end: item.value.range.end - 1 } : item.value.range
+    const inner = item.value.kind === 'scalar' && item.value.quote
+      ? { start: item.value.range.start + 1, end: item.value.range.end - 1 }
+      : item.value.range
     ranges.set(pathId(childPath), { key: item.keyRange, value: inner })
-    out[item.key] = item.value.kind === 'array' ? readTree(item.value, childPath, ranges) : item.value.value
+    out[item.key] = item.value.kind === 'array'
+      ? readTree(item.value, childPath, ranges)
+      : item.value.value
   }
   return out
 }
 
-const doubleEncodings: Record<string, string> = { '\n': '\\n', '\t': '\\t', '\r': '\\r', '\v': '\\v', '\f': '\\f' }
+const doubleEncodings: Record<string, string> = {
+  '\n': '\\n',
+  '\t': '\\t',
+  '\r': '\\r',
+  '\v': '\\v',
+  '\f': '\\f',
+}
 
 function literal(value: MessageLeaf, quote: string | undefined): string {
   if (typeof value !== 'string')
@@ -150,21 +198,29 @@ function arrayText(tree: MessageTree, unit: string, depth: number): string {
   if (entries.length === 0)
     return '[]'
   const pad = unit.repeat(depth + 1)
-  const lines = entries.map(([key, child]) => `${pad}${literal(key, '\'')} => ${isMessageLeaf(child) ? literal(child, '\'') : arrayText(child, unit, depth + 1)},\n`)
+  const lines = entries.map(([key, child]) => `${pad}${literal(key, '\'')} => ${isMessageLeaf(child)
+    ? literal(child, '\'')
+    : arrayText(child, unit, depth + 1)},\n`)
   return `[\n${lines.join('')}${unit.repeat(depth)}]`
 }
 
 function find(root: Value, path: readonly string[]): Value | undefined {
   let node: Value | undefined = root
-  for (const segment of path)
-    node = node?.kind === 'array' ? node.items.findLast(item => item.key === segment)?.value : undefined
+  for (const segment of path) {
+    node = node?.kind === 'array'
+      ? node.items.findLast(item => item.key === segment)?.value
+      : undefined
+  }
   return node
 }
 
 /** Indent unit: configured, else the file's (first indented item), else 4 spaces. */
 function unitOf(text: string, indent: number | 'tab' | undefined): string {
-  if (indent !== undefined)
-    return indent === 'tab' ? '\t' : ' '.repeat(indent)
+  if (indent !== undefined) {
+    return indent === 'tab'
+      ? '\t'
+      : ' '.repeat(indent)
+  }
   return /^([ \t]+)['"\]]/m.exec(text)?.[1] ?? '    '
 }
 
@@ -173,31 +229,44 @@ function applyOp(text: string, op: MessageOp, path: string, unit: string): strin
   const node = root && find(root, op.path)
   if (op.type === 'set' && node?.kind === 'scalar')
     return splice(text, node.range, literal(op.value, node.quote))
-  const tree = applyMessageOps(root ? readTree(root, [], new Map()) : {}, [op])
+  const tree = applyMessageOps(root
+    ? readTree(root, [], new Map())
+    : {}, [op])
   // Structural changes rewrite the returned array and keep the rest of the file.
-  return root ? splice(text, root.range, arrayText(tree, unit, 0)) : `${text.trim() === '' ? '<?php' : text.trimEnd()}\n\nreturn ${arrayText(tree, unit, 0)};\n`
+  return root
+    ? splice(text, root.range, arrayText(tree, unit, 0))
+    : `${text.trim() === ''
+      ? '<?php'
+      : text.trimEnd()}\n\nreturn ${arrayText(tree, unit, 0)};\n`
 }
 
 export function php(): Plugin {
   return {
     name: 'x18n:format-php',
-    formats: [{
-      id: 'php',
-      extensions: ['php'],
-      parse(text, ctx) {
-        const root = parseFile(text, ctx.path)
-        const ranges = new Map<string, NodeRange>()
-        return { tree: root ? readTree(root, [], ranges) : {}, ranges }
+    formats: [
+      {
+        id: 'php',
+        extensions: ['php'],
+        parse(text, ctx) {
+          const root = parseFile(text, ctx.path)
+          const ranges = new Map<string, NodeRange>()
+          return {
+            tree: root
+              ? readTree(root, [], ranges)
+              : {},
+            ranges,
+          }
+        },
+        edit(text, ops, ctx) {
+          const unit = unitOf(text, ctx.indent)
+          let next = text
+          for (const op of ops)
+            next = applyOp(next, op, ctx.path, unit)
+          return diffText(text, next)
+        },
+        serialize: (tree, ctx) => `<?php\n\nreturn ${arrayText(tree, unitOf('', ctx.indent), 0)};\n`,
       },
-      edit(text, ops, ctx) {
-        const unit = unitOf(text, ctx.indent)
-        let next = text
-        for (const op of ops)
-          next = applyOp(next, op, ctx.path, unit)
-        return diffText(text, next)
-      },
-      serialize: (tree, ctx) => `<?php\n\nreturn ${arrayText(tree, unitOf('', ctx.indent), 0)};\n`,
-    }],
+    ],
   }
 }
 

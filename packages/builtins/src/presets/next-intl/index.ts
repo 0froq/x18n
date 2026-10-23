@@ -10,14 +10,48 @@ export function nextIntl(): Preset {
       createLibraryPlugin({
         name: 'x18n:next-intl',
         calls: [
-          { callee: ['useTranslations', 'getTranslations'], factory: true, returns: ['t', 't.rich', 't.markup', 't.raw', 't.has'], keyPrefix: { arg: 0 } },
-          { callee: 'getTranslations', factory: true, returns: ['t', 't.rich', 't.markup', 't.raw', 't.has'], keyPrefix: { arg: 0, property: 'namespace' } },
+          {
+            callee: ['useTranslations', 'getTranslations'],
+            factory: true,
+            returns: [
+              't',
+              't.rich',
+              't.markup',
+              't.raw',
+              't.has',
+            ],
+            keyPrefix: { arg: 0 },
+          },
+          {
+            callee: 'getTranslations',
+            factory: true,
+            returns: [
+              't',
+              't.rich',
+              't.markup',
+              't.raw',
+              't.has',
+            ],
+            keyPrefix: { arg: 0, property: 'namespace' },
+          },
         ],
-        resources: [{ pattern: 'messages/{locale}.json' }, { pattern: 'src/messages/{locale}.json' }],
+        resources: [
+          { pattern: 'messages/{locale}.json' },
+          { pattern: 'src/messages/{locale}.json' },
+        ],
         templates: [
-          { template: '{t(\'{key}\'{args})}', kinds: ['jsx-text'] },
-          { template: '{attr}={t(\'{key}\'{args})}', kinds: ['jsx-attribute'] },
-          { template: 't(\'{key}\'{args})', kinds: ['js-string', 'js-template'] },
+          {
+            template: '{t(\'{key}\'{args})}',
+            kinds: ['jsx-text'],
+          },
+          {
+            template: '{attr}={t(\'{key}\'{args})}',
+            kinds: ['jsx-attribute'],
+          },
+          {
+            template: 't(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
         ],
         placeholders: [icu],
       }),

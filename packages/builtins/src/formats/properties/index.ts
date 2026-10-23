@@ -60,8 +60,11 @@ function read(text: string, path: string): Entry[] {
       i++
     const end = lines[i]!.end
     const keyStart = p
-    while (p < end && !'=: \t\f'.includes(text[p]!))
-      p += text[p] === '\\' ? 2 : 1
+    while (p < end && !'=: \t\f'.includes(text[p]!)) {
+      p += text[p] === '\\'
+        ? 2
+        : 1
+    }
     const keyEnd = Math.min(p, end)
     while (isSpace(text[p]))
       p++
@@ -73,14 +76,23 @@ function read(text: string, path: string): Entry[] {
     entries.push({
       key: unescape(text.slice(keyStart, keyEnd), path),
       value: unescape(text.slice(valueStart, end), path),
-      range: { key: { start: keyStart, end: keyEnd }, value: { start: valueStart, end } },
+      range: {
+        key: { start: keyStart, end: keyEnd },
+        value: { start: valueStart, end },
+      },
       line: { start: lineStart, end: lines[i]!.next },
     })
   }
   return entries
 }
 
-const encodings: Record<string, string> = { '\\': '\\\\', '\t': '\\t', '\n': '\\n', '\r': '\\r', '\f': '\\f' }
+const encodings: Record<string, string> = {
+  '\\': '\\\\',
+  '\t': '\\t',
+  '\n': '\\n',
+  '\r': '\\r',
+  '\f': '\\f',
+}
 const escapeText = (text: string): string => text.replace(/[\\\n\r\t\f]/g, char => encodings[char]!)
 
 const escapeKey = (key: string): string => escapeText(key).replace(/[=: #!]/g, '\\$&')
@@ -90,41 +102,52 @@ function applyOp(text: string, op: MessageOp, path: string): string {
   const key = op.path.join('.')
   const entries = read(text, path)
   const entry = entries.findLast(e => e.key === key)
-  if (op.type === 'delete')
-    return entry ? splice(text, entry.line, '') : text
+  if (op.type === 'delete') {
+    return entry
+      ? splice(text, entry.line, '')
+      : text
+  }
   const value = escapeValue(leafText(op.value))
   if (entry)
     return splice(text, entry.range.value, value)
   const last = entries.findLast(e => e.value !== '')
-  const separator = last ? text.slice(last.range.key.end, last.range.value.start) : ''
-  return appendLines(text, `${escapeKey(key)}${/[=:\s]/.test(separator) ? separator : '='}${value}\n`)
+  const separator = last
+    ? text.slice(last.range.key.end, last.range.value.start)
+    : ''
+  return appendLines(text, `${escapeKey(key)}${/[=:\s]/.test(separator)
+    ? separator
+    : '='}${value}\n`)
 }
 
 export function properties(): Plugin {
   return {
     name: 'x18n:format-properties',
-    formats: [{
-      id: 'properties',
-      extensions: ['properties'],
-      parse(text, ctx) {
-        const tree: Record<string, string> = {}
-        const ranges = new Map<string, NodeRange>()
-        for (const entry of read(text, ctx.path)) {
-          tree[entry.key] = entry.value
-          ranges.set(pathId([entry.key]), entry.range)
-        }
-        return { tree, ranges }
+    formats: [
+      {
+        id: 'properties',
+        extensions: ['properties'],
+        parse(text, ctx) {
+          const tree: Record<string, string> = {}
+          const ranges = new Map<string, NodeRange>()
+          for (const entry of read(text, ctx.path)) {
+            tree[entry.key] = entry.value
+            ranges.set(pathId([entry.key]), entry.range)
+          }
+          return { tree, ranges }
+        },
+        edit(text, ops, ctx) {
+          let next = text
+          for (const op of ops)
+            next = applyOp(next, op, ctx.path)
+          return diffText(text, next)
+        },
+        serialize: (tree: MessageTree) => [
+          ...walkLeaves(tree),
+        ]
+          .map(leaf => `${escapeKey(leaf.path.join('.'))}=${escapeValue(leafText(leaf.value))}\n`)
+          .join(''),
       },
-      edit(text, ops, ctx) {
-        let next = text
-        for (const op of ops)
-          next = applyOp(next, op, ctx.path)
-        return diffText(text, next)
-      },
-      serialize: (tree: MessageTree) => [...walkLeaves(tree)]
-        .map(leaf => `${escapeKey(leaf.path.join('.'))}=${escapeValue(leafText(leaf.value))}\n`)
-        .join(''),
-    }],
+    ],
   }
 }
 

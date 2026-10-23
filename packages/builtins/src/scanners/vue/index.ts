@@ -36,7 +36,13 @@ class TemplateScan {
     if (!content.trim())
       return
     try {
-      merge(this.out, scanSource(this.parse, content, { calls: this.calls, offset, filename: 'template.ts', expression: true, hardStrings: false }))
+      merge(this.out, scanSource(this.parse, content, {
+        calls: this.calls,
+        offset,
+        filename: 'template.ts',
+        expression: true,
+        hardStrings: false,
+      }))
     }
     catch {
       // `v-for` and `v-slot` expressions are not plain JS; they hold no keys.
@@ -47,9 +53,19 @@ class TemplateScan {
   keyExpression(content: string, offset: number): void {
     const callee = '__x18nKey('
     try {
-      const result = scanSource(this.parse, `${callee}${content})`, { calls: [{ callee: '__x18nKey' }], offset: offset - callee.length, filename: 'template.ts', hardStrings: false })
+      const result = scanSource(this.parse, `${callee}${content})`, {
+        calls: [
+          { callee: '__x18nKey' },
+        ],
+        offset: offset - callee.length,
+        filename: 'template.ts',
+        hardStrings: false,
+      })
       // The call is synthetic: there is no call in the file to hide.
-      merge(this.out, { ...result, usages: result.usages.map(({ expression: _, ...usage }) => usage) })
+      merge(this.out, {
+        ...result,
+        usages: result.usages.map(({ expression: _, ...usage }) => usage),
+      })
     }
     catch {}
   }
@@ -65,7 +81,12 @@ class TemplateScan {
       return
     const start = offset + exp.content.indexOf(literal[2]!, literal.index)
     const range = { start, end: start + literal[2]!.length }
-    this.out.usages.push({ raw: literal[2]!, range, kind: 'call', dynamic: false })
+    this.out.usages.push({
+      raw: literal[2]!,
+      range,
+      kind: 'call',
+      dynamic: false,
+    })
     this.out.keySlots.push(range)
   }
 
@@ -76,11 +97,21 @@ class TemplateScan {
         return
       const range = { start: value.loc.start.offset + 1, end: value.loc.end.offset - 1 }
       if (isKeyAttribute(element.tag, prop.name)) {
-        this.out.usages.push({ raw: value.content, range, kind: 'call', dynamic: false })
+        this.out.usages.push({
+          raw: value.content,
+          range,
+          kind: 'call',
+          dynamic: false,
+        })
         this.out.keySlots.push(range)
       }
       else if (isTextAttribute(prop.name, this.textAttributes) && /\p{L}/u.test(value.content)) {
-        this.out.hardStrings.push({ text: value.content, range: { start: prop.loc.start.offset, end: prop.loc.end.offset }, kind: 'vue-attribute', attribute: prop.name })
+        this.out.hardStrings.push({
+          text: value.content,
+          range: { start: prop.loc.start.offset, end: prop.loc.end.offset },
+          kind: 'vue-attribute',
+          attribute: prop.name,
+        })
       }
       return
     }
@@ -105,7 +136,11 @@ class TemplateScan {
       const text = node.content.trim()
       if (text && /\p{L}/u.test(text)) {
         const start = node.loc.start.offset + node.content.indexOf(text)
-        this.out.hardStrings.push({ text, range: { start, end: start + text.length }, kind: 'vue-template-text' })
+        this.out.hardStrings.push({
+          text,
+          range: { start, end: start + text.length },
+          kind: 'vue-template-text',
+        })
       }
     }
     if (node.type === ELEMENT) {
@@ -127,21 +162,37 @@ export function vue(): Plugin {
     id: 'vue',
     extensions: ['vue'],
     async scan(file, ctx) {
-      const [{ parse }, parseJs] = await Promise.all([loadVueCompiler(), loadParser()])
+      const [{ parse }, parseJs] = await Promise.all([
+        loadVueCompiler(),
+        loadParser(),
+      ])
       const { descriptor } = parse(file.text, { filename: file.path, sourceMap: false, ignoreEmpty: false })
       const template = new TemplateScan(parseJs, ctx.calls, ctx.config.extract.attributes)
       for (const script of [descriptor.script, descriptor.scriptSetup]) {
         if (!script)
           continue
         const lang = script.lang ?? 'js'
-        merge(template.out, scanSource(parseJs, script.content, { calls: ctx.calls, ignoreCallees: ctx.config.extract.ignoreCallees, textAttributes: ctx.config.extract.attributes, offset: script.loc.start.offset, filename: `script.${lang === 'tsx' || lang === 'jsx' ? lang : lang === 'ts' ? 'ts' : 'js'}` }))
+        merge(template.out, scanSource(parseJs, script.content, {
+          calls: ctx.calls,
+          ignoreCallees: ctx.config.extract.ignoreCallees,
+          textAttributes: ctx.config.extract.attributes,
+          offset: script.loc.start.offset,
+          filename: `script.${lang === 'tsx' || lang === 'jsx'
+            ? lang
+            : lang === 'ts'
+              ? 'ts'
+              : 'js'}`,
+        }))
       }
       if (descriptor.template?.ast)
         template.node(descriptor.template.ast)
       return template.out
     },
   }
-  return { name: 'x18n:scanner-vue', scanners: [scanner] }
+  return {
+    name: 'x18n:scanner-vue',
+    scanners: [scanner],
+  }
 }
 
 export default vue

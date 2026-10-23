@@ -13,13 +13,37 @@ export function reactI18next(): Preset {
       createLibraryPlugin({
         name: 'x18n:react-i18next',
         calls: [
-          { callee: 'useTranslation', factory: true, returns: ['t'], namespace: { arg: 0 }, keyPrefix: { arg: 1, property: 'keyPrefix' } },
-          { callee: 'Trans', key: { arg: 0, property: 'i18nKey' }, namespace: { arg: 0, property: 'ns' } },
-          { callee: 'Translation', factory: true, returns: ['t'], namespace: { arg: 0, property: 'ns' }, keyPrefix: { arg: 0, property: 'keyPrefix' } },
+          {
+            callee: 'useTranslation',
+            factory: true,
+            returns: ['t'],
+            namespace: { arg: 0 },
+            keyPrefix: { arg: 1, property: 'keyPrefix' },
+          },
+          {
+            callee: 'Trans',
+            key: { arg: 0, property: 'i18nKey' },
+            namespace: { arg: 0, property: 'ns' },
+          },
+          {
+            callee: 'Translation',
+            factory: true,
+            returns: ['t'],
+            namespace: { arg: 0, property: 'ns' },
+            keyPrefix: { arg: 0, property: 'keyPrefix' },
+          },
         ],
         templates: [
-          { template: '<Trans i18nKey="{key}" />', kinds: ['jsx-text'], imports: ['import { Trans } from \'react-i18next\''] },
-          { template: '{attr}={i18next.t(\'{key}\'{args})}', kinds: ['jsx-attribute'], imports: ['import i18next from \'i18next\''] },
+          {
+            template: '<Trans i18nKey="{key}" />',
+            kinds: ['jsx-text'],
+            imports: ['import { Trans } from \'react-i18next\''],
+          },
+          {
+            template: '{attr}={i18next.t(\'{key}\'{args})}',
+            kinds: ['jsx-attribute'],
+            imports: ['import i18next from \'i18next\''],
+          },
         ],
       }),
       // `withTranslation('ns', { keyPrefix })(Component)` passes `t` through props, usually below the component.

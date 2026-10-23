@@ -11,14 +11,29 @@ export function ui5(): Preset {
       createLibraryPlugin({
         name: 'x18n:ui5',
         regex: [
-          { extensions: ['xml', 'json', ...scriptExtensions], patterns: ['\\{i18n>({key})\\}'] },
-          { extensions: scriptExtensions, patterns: ['getResourceBundle\\(\\)\\.getText\\(\\s*[\'"`]({key})[\'"`]'] },
+          {
+            extensions: ['xml', 'json', ...scriptExtensions],
+            patterns: ['\\{i18n>({key})\\}'],
+          },
+          {
+            extensions: scriptExtensions,
+            patterns: ['getResourceBundle\\(\\)\\.getText\\(\\s*[\'"`]({key})[\'"`]'],
+          },
         ],
-        resources: [{ pattern: 'webapp/i18n/i18n_{locale}.properties' }, { pattern: 'webapp/i18n/i18n.properties' }],
+        resources: [
+          { pattern: 'webapp/i18n/i18n_{locale}.properties' },
+          { pattern: 'webapp/i18n/i18n.properties' },
+        ],
         keyStyle: 'flat',
         templates: [
-          { template: '{i18n>{key}}', files: ['**/*.xml'] },
-          { template: 'this.getResourceBundle().getText(\'{key}\')', kinds: ['js-string', 'js-template'] },
+          {
+            template: '{i18n>{key}}',
+            files: ['**/*.xml'],
+          },
+          {
+            template: 'this.getResourceBundle().getText(\'{key}\')',
+            kinds: ['js-string', 'js-template'],
+          },
         ],
         placeholders: [braces],
       }),

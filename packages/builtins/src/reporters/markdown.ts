@@ -11,7 +11,12 @@ export const markdownReporter: Reporter = {
   id: 'markdown',
   report(inputs, ctx) {
     const sum = totals(inputs)
-    const out = ['## x18n check', '', `**${plural(sum.errors, 'error')}**, ${plural(sum.warnings, 'warning')} in ${plural(sum.files, 'file')}.`, '']
+    const out = [
+      '## x18n check',
+      '',
+      `**${plural(sum.errors, 'error')}**, ${plural(sum.warnings, 'warning')} in ${plural(sum.files, 'file')}.`,
+      '',
+    ]
     for (const input of inputs) {
       if (inputs.length > 1)
         out.push(`### ${input.project}`, '')
@@ -23,8 +28,12 @@ export const markdownReporter: Reporter = {
         continue
       out.push('| Severity | Check | Location | Message |', '| --- | --- | --- | --- |')
       for (const d of input.diagnostics.slice(0, 200)) {
-        const line = d.location ? createLineIndex(input.text(d.location.path) ?? '').position(d.location.range.start).line + 1 : undefined
-        const where = d.location ? `\`${ctx.displayPath(d.location.path, input.project)}:${line}\`` : ''
+        const line = d.location
+          ? createLineIndex(input.text(d.location.path) ?? '').position(d.location.range.start).line + 1
+          : undefined
+        const where = d.location
+          ? `\`${ctx.displayPath(d.location.path, input.project)}:${line}\``
+          : ''
         out.push(`| ${d.severity} | \`${d.code}\` | ${where} | ${escapeCell(d.message)} |`)
       }
       if (input.diagnostics.length > 200)

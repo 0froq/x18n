@@ -11,7 +11,23 @@ interface Binding {
 /** A value read from call arguments: an AST node, or the props of a JSX element seen as one object argument. */
 type ArgValue = Node | { readonly props: ReadonlyMap<string, Node> }
 
-const textAttributeWords = new Set(['title', 'subtitle', 'label', 'text', 'placeholder', 'alt', 'content', 'description', 'caption', 'message', 'tooltip', 'hint', 'summary', 'heading', 'headline'])
+const textAttributeWords = new Set([
+  'title',
+  'subtitle',
+  'label',
+  'text',
+  'placeholder',
+  'alt',
+  'content',
+  'description',
+  'caption',
+  'message',
+  'tooltip',
+  'hint',
+  'summary',
+  'heading',
+  'headline',
+])
 
 /**
  * Markup attributes whose values users read: those whose last word is a text word (`title`, `aria-label`,
@@ -39,7 +55,9 @@ function innerRange(node: Node): TextRange {
 function unwrap(node: Node): Node {
   let current = node
   while (current.type === 'TSAsExpression' || current.type === 'TSSatisfiesExpression' || current.type === 'TSNonNullExpression' || current.type === 'ParenthesizedExpression' || current.type === 'AwaitExpression' || current.type === 'ChainExpression') {
-    current = current.type === 'AwaitExpression' ? current.argument : current.expression
+    current = current.type === 'AwaitExpression'
+      ? current.argument
+      : current.expression
   }
   return current
 }
@@ -55,7 +73,9 @@ function calleeName(node: Node): string | undefined {
     const object = calleeName(target.object)
     if (object === undefined)
       return undefined
-    return object === 'this' ? target.property.name : `${object}.${target.property.name}`
+    return object === 'this'
+      ? target.property.name
+      : `${object}.${target.property.name}`
   }
   return undefined
 }
@@ -64,8 +84,14 @@ function jsxName(node: JSXOpeningElement['name']): string | undefined {
   if (node.type === 'JSXIdentifier')
     return node.name
   if (node.type === 'JSXMemberExpression') {
-    const object = node.object.type === 'JSXIdentifier' ? node.object.name : node.object.type === 'JSXMemberExpression' ? jsxName(node.object) : undefined
-    return object ? `${object}.${node.property.name}` : undefined
+    const object = node.object.type === 'JSXIdentifier'
+      ? node.object.name
+      : node.object.type === 'JSXMemberExpression'
+        ? jsxName(node.object)
+        : undefined
+    return object
+      ? `${object}.${node.property.name}`
+      : undefined
   }
   return undefined
 }
@@ -90,7 +116,10 @@ class FileScan {
   readonly usages: UsageCandidate[] = []
   readonly keySlots: TextRange[] = []
   readonly hardStrings: HardString[] = []
-  readonly frames: Map<string, Binding>[] = [new Map()]
+  readonly frames: Map<string, Binding>[] = [
+    new Map(),
+  ]
+
   readonly constants = new Map<string, Node>()
   /** Several specs may share a callee, for example lingui `t('id')` and `t({ id })`. */
   readonly declared = new Map<string, CallSpec[]>()
@@ -174,7 +203,9 @@ class FileScan {
       return this.stringArg(node.expression)
     if (node.type === 'Identifier') {
       const constant = this.constants.get(node.name)
-      return constant && isStringLiteral(constant) ? constant.value : undefined
+      return constant && isStringLiteral(constant)
+        ? constant.value
+        : undefined
     }
     return undefined
   }
@@ -183,31 +214,53 @@ class FileScan {
   namespaceArg(args: readonly ArgValue[], source: CallSpec['namespace'], fallback: number): string | undefined {
     if (typeof source === 'string')
       return source
-    return source ? this.stringArg(this.argValues(args, source, fallback)[0]) : undefined
+    return source
+      ? this.stringArg(this.argValues(args, source, fallback)[0])
+      : undefined
   }
 
   argValues(args: readonly ArgValue[], source: ArgSource | number | undefined, fallback: number): ArgValue[] {
-    const index = typeof source === 'number' ? source : source?.arg ?? fallback
+    const index = typeof source === 'number'
+      ? source
+      : source?.arg ?? fallback
     const arg = args[index]
-    const property = typeof source === 'object' ? source.property : undefined
-    if (!arg || property === undefined)
-      return arg ? [arg] : []
+    const property = typeof source === 'object'
+      ? source.property
+      : undefined
+    if (!arg || property === undefined) {
+      return arg
+        ? [arg]
+        : []
+    }
     return property.split('.').reduce<ArgValue[]>((values, segment) => values.flatMap((value) => {
       if ('props' in value) {
         const prop = value.props.get(segment)
-        return prop ? [prop] : []
+        return prop
+          ? [prop]
+          : []
       }
       const node = unwrap(value)
-      if (node.type === 'JSXExpressionContainer' && node.expression.type === 'ObjectExpression')
-        return segment === '*' ? this.allValues(node.expression) : [objectProperty(node.expression, segment)].filter(isNode)
+      if (node.type === 'JSXExpressionContainer' && node.expression.type === 'ObjectExpression') {
+        return segment === '*'
+          ? this.allValues(node.expression)
+          : [
+              objectProperty(node.expression, segment),
+            ].filter(isNode)
+      }
       if (node.type !== 'ObjectExpression')
         return []
-      return segment === '*' ? this.allValues(node) : [objectProperty(node, segment)].filter(isNode)
+      return segment === '*'
+        ? this.allValues(node)
+        : [
+            objectProperty(node, segment),
+          ].filter(isNode)
     }), [arg])
   }
 
   allValues(object: ObjectExpression): Node[] {
-    return object.properties.flatMap(p => p.type === 'Property' ? [p.value] : [])
+    return object.properties.flatMap(p => p.type === 'Property'
+      ? [p.value]
+      : [])
   }
 
   /** ---- Usages ---- */
@@ -217,11 +270,22 @@ class FileScan {
       return
     const node = unwrap(value)
     const base = { namespace: namespace ?? binding.namespace, keyPrefix: binding.keyPrefix }
-    const call = expression ? { expression: this.range(expression) } : {}
+    const call = expression
+      ? {
+          expression: this.range(expression),
+        }
+      : {}
     if (isStringLiteral(node)) {
       this.consumed.add(node.start)
       this.keySlots.push(this.range(innerRange(node)))
-      this.usages.push({ ...base, ...call, raw: node.value, range: this.range(innerRange(node)), kind: 'call', dynamic: false })
+      this.usages.push({
+        ...base,
+        ...call,
+        raw: node.value,
+        range: this.range(innerRange(node)),
+        kind: 'call',
+        dynamic: false,
+      })
       return
     }
     if (node.type === 'JSXExpressionContainer') {
@@ -234,7 +298,16 @@ class FileScan {
       const raw = first.value.cooked ?? first.value.raw
       this.consumed.add(node.start)
       const range = this.range({ start: node.start + 1, end: node.start + 1 + raw.length })
-      this.usages.push({ ...base, ...call, raw, range, kind: 'call', dynamic: node.expressions.length === 0 ? false : raw ? 'prefix' : 'unknown' })
+      this.usages.push({
+        ...base,
+        ...call,
+        raw,
+        range,
+        kind: 'call',
+        dynamic: node.expressions.length === 0
+          ? false
+          : raw ? 'prefix' : 'unknown',
+      })
       return
     }
     if (node.type === 'ConditionalExpression') {
@@ -244,12 +317,28 @@ class FileScan {
     }
     if (node.type === 'ArrowFunctionExpression' && node.params[0]?.type === 'Identifier')
       return this.addSelector(node.params[0].name, node.body, base)
-    const constant = node.type === 'Identifier' ? this.constants.get(node.name) : node.type === 'MemberExpression' ? this.memberConstant(node) : undefined
+    const constant = node.type === 'Identifier'
+      ? this.constants.get(node.name)
+      : node.type === 'MemberExpression'
+        ? this.memberConstant(node)
+        : undefined
     if (constant && isStringLiteral(constant)) {
-      this.usages.push({ ...base, raw: constant.value, range: this.range(innerRange(constant)), kind: 'constant', dynamic: false })
+      this.usages.push({
+        ...base,
+        raw: constant.value,
+        range: this.range(innerRange(constant)),
+        kind: 'constant',
+        dynamic: false,
+      })
       return
     }
-    this.usages.push({ ...base, raw: this.text.slice(node.start, node.end), range: this.range({ start: node.start, end: node.end }), kind: 'call', dynamic: 'unknown' })
+    this.usages.push({
+      ...base,
+      raw: this.text.slice(node.start, node.end),
+      range: this.range({ start: node.start, end: node.end }),
+      kind: 'call',
+      dynamic: 'unknown',
+    })
   }
 
   /** i18next `t($ => $.a.b)`. */
@@ -265,14 +354,22 @@ class FileScan {
       return
     const start = node.end + 1
     end = Math.max(end, start)
-    this.usages.push({ ...base, raw: segments.join('.'), range: this.range({ start, end }), kind: 'selector', dynamic: false })
+    this.usages.push({
+      ...base,
+      raw: segments.join('.'),
+      range: this.range({ start, end }),
+      kind: 'selector',
+      dynamic: false,
+    })
   }
 
   memberConstant(node: Extract<Node, { type: 'MemberExpression' }>): Node | undefined {
     if (node.computed || node.property.type !== 'Identifier' || node.object.type !== 'Identifier')
       return undefined
     const object = this.constants.get(node.object.name)
-    return object && object.type === 'ObjectExpression' ? objectProperty(object, node.property.name) : undefined
+    return object && object.type === 'ObjectExpression'
+      ? objectProperty(object, node.property.name)
+      : undefined
   }
 
   handleCall(name: string, args: readonly ArgValue[], expression?: TextRange): boolean {
@@ -309,16 +406,23 @@ class FileScan {
 
   jsx(node: JSXOpeningElement): void {
     const name = jsxName(node.name)
-    if (name && this.lookup(name))
-      this.handleCall(name, [this.jsxProps(node)])
+    if (name && this.lookup(name)) {
+      this.handleCall(name, [
+        this.jsxProps(node),
+      ])
+    }
   }
 
   jsxElement(node: JSXElement): void {
     const name = jsxName(node.openingElement.name)
-    const specs = name ? this.factories.get(name) : undefined
+    const specs = name
+      ? this.factories.get(name)
+      : undefined
     if (!specs)
       return
-    const binding = this.pickFactory([this.jsxProps(node.openingElement)], specs)
+    const binding = this.pickFactory([
+      this.jsxProps(node.openingElement),
+    ], specs)
     for (const child of node.children) {
       if (child.type === 'JSXExpressionContainer' && (child.expression.type === 'ArrowFunctionExpression' || child.expression.type === 'FunctionExpression'))
         this.renderProps.set(child.expression.start, binding)
@@ -334,7 +438,9 @@ class FileScan {
       this.constants.set(id.name, value)
     if (value.type === 'CallExpression') {
       const factory = calleeName(value.callee)
-      const specs = factory ? this.factories.get(factory) : undefined
+      const specs = factory
+        ? this.factories.get(factory)
+        : undefined
       if (specs)
         this.bindFactory(id, value.arguments, specs)
       return
@@ -342,7 +448,9 @@ class FileScan {
     // `const tt = t`
     if (id.type === 'Identifier' && (value.type === 'Identifier' || value.type === 'MemberExpression')) {
       const name = calleeName(value)
-      const binding = name ? this.lookup(name) : undefined
+      const binding = name
+        ? this.lookup(name)
+        : undefined
       if (binding)
         this.bind(id.name, binding)
     }
@@ -352,9 +460,18 @@ class FileScan {
   pickFactory(args: readonly ArgValue[], specs: readonly CallSpec[]): Binding {
     const resolved = specs.map((spec) => {
       const namespace = this.namespaceArg(args, spec.namespace, 0)
-      const keyPrefix = spec.keyPrefix ? this.stringArg(this.argValues(args, spec.keyPrefix, 0)[0]) : undefined
+      const keyPrefix = spec.keyPrefix
+        ? this.stringArg(this.argValues(args, spec.keyPrefix, 0)[0])
+        : undefined
       const complete = (!spec.namespace || namespace !== undefined) && (!spec.keyPrefix || keyPrefix !== undefined)
-      return { binding: { spec: { callee: spec.callee, returns: spec.returns }, namespace, keyPrefix }, complete }
+      return {
+        binding: {
+          spec: { callee: spec.callee, returns: spec.returns },
+          namespace,
+          keyPrefix,
+        },
+        complete,
+      }
     })
     return (resolved.find(r => r.complete) ?? resolved[0]!).binding
   }
@@ -384,8 +501,12 @@ class FileScan {
   /** Parameters typed as a translate function (`t: TFunction<'ns'>`), also as destructured props. */
   params(params: readonly Node[]): void {
     for (const param of params) {
-      const target = param.type === 'TSParameterProperty' ? param.parameter : param
-      const annotation = target.type === 'Identifier' || target.type === 'ObjectPattern' ? target.typeAnnotation?.typeAnnotation : undefined
+      const target = param.type === 'TSParameterProperty'
+        ? param.parameter
+        : param
+      const annotation = target.type === 'Identifier' || target.type === 'ObjectPattern'
+        ? target.typeAnnotation?.typeAnnotation
+        : undefined
       if (!annotation)
         continue
       if (target.type === 'Identifier')
@@ -399,14 +520,18 @@ class FileScan {
   props(pattern: Extract<Node, { type: 'ObjectPattern' }>, annotation: Node): void {
     const members = annotation.type === 'TSTypeLiteral'
       ? annotation.members
-      : annotation.type === 'TSTypeReference' && annotation.typeName.type === 'Identifier' ? this.typeMembers.get(annotation.typeName.name) ?? [] : []
+      : annotation.type === 'TSTypeReference' && annotation.typeName.type === 'Identifier'
+        ? this.typeMembers.get(annotation.typeName.name) ?? []
+        : []
     for (const property of pattern.properties) {
       if (property.type !== 'Property')
         continue
       const local = unwrap(property.value)
       const name = propertyName(property.key)
       const member = members.find(m => m.type === 'TSPropertySignature' && !m.computed && propertyName(m.key) === name)
-      const type = member?.type === 'TSPropertySignature' ? member.typeAnnotation?.typeAnnotation : undefined
+      const type = member?.type === 'TSPropertySignature'
+        ? member.typeAnnotation?.typeAnnotation
+        : undefined
       if (local.type === 'Identifier' && type)
         this.bindTyped(local.name, type)
     }
@@ -420,14 +545,23 @@ class FileScan {
     if (!spec)
       return
     const arg = annotation.typeArguments?.params[0]
-    const first = arg?.type === 'TSTupleType' ? arg.elementTypes[0] : arg
-    const namespace = first?.type === 'TSLiteralType' && isStringLiteral(first.literal) ? first.literal.value : undefined
-    this.bind(name, { spec: { ...spec, types: undefined }, namespace })
+    const first = arg?.type === 'TSTupleType'
+      ? arg.elementTypes[0]
+      : arg
+    const namespace = first?.type === 'TSLiteralType' && isStringLiteral(first.literal)
+      ? first.literal.value
+      : undefined
+    this.bind(name, {
+      spec: { ...spec, types: undefined },
+      namespace,
+    })
   }
 
   types(program: Program): void {
     for (const statement of program.body) {
-      const node = statement.type === 'ExportNamedDeclaration' && statement.declaration ? statement.declaration : statement
+      const node = statement.type === 'ExportNamedDeclaration' && statement.declaration
+        ? statement.declaration
+        : statement
       if (node.type === 'TSInterfaceDeclaration')
         this.typeMembers.set(node.id.name, node.body.body)
       else if (node.type === 'TSTypeAliasDeclaration' && node.typeAnnotation.type === 'TSTypeLiteral')
@@ -436,7 +570,9 @@ class FileScan {
   }
 
   importSpecifier(node: Extract<Node, { type: 'ImportSpecifier' }>): void {
-    const imported = node.imported.type === 'Identifier' ? node.imported.name : node.imported.value
+    const imported = node.imported.type === 'Identifier'
+      ? node.imported.name
+      : node.imported.value
     const spec = this.declared.get(imported)?.[0]
     if (spec && imported !== node.local.name)
       this.bind(node.local.name, { spec })
@@ -446,7 +582,14 @@ class FileScan {
   hard(text: string, range: TextRange, kind: string, attribute?: string): void {
     if (!this.collectHardStrings || !/\p{L}/u.test(text))
       return
-    this.hardStrings.push({ text, range: this.range(range), kind, ...attribute ? { attribute } : {} })
+    this.hardStrings.push({
+      text,
+      range: this.range(range),
+      kind,
+      ...attribute
+        ? { attribute }
+        : {},
+    })
   }
 
   ignoredCall(name: string | undefined): boolean {
@@ -519,7 +662,9 @@ class FileScan {
     if (this.consumed.has(node.start) || !parent)
       return
     if (parent.type === 'JSXAttribute') {
-      const name = parent.name.type === 'JSXIdentifier' ? parent.name.name : ''
+      const name = parent.name.type === 'JSXIdentifier'
+        ? parent.name.name
+        : ''
       // The range covers the whole attribute, which templates such as `{attr}={t('{key}')}` replace.
       if (isStringLiteral(node) && isTextAttribute(name, this.textAttributes))
         this.hard(node.value, { start: parent.start, end: parent.end }, 'jsx-attribute', name)
@@ -544,12 +689,24 @@ class FileScan {
       return
     const args = node.expressions.map((expression, i) => {
       const source = this.text.slice(expression.start, expression.end)
-      const name = expression.type === 'Identifier' ? expression.name : expression.type === 'MemberExpression' && expression.property.type === 'Identifier' ? expression.property.name : `arg${i}`
+      const name = expression.type === 'Identifier'
+        ? expression.name
+        : expression.type === 'MemberExpression' && expression.property.type === 'Identifier'
+          ? expression.property.name
+          : `arg${i}`
       return { name, expression: source }
     })
-    const text = node.quasis.map((q, i) => `${q.value.cooked ?? q.value.raw}${i < args.length ? `{${i}}` : ''}`).join('')
-    if (/\p{L}/u.test(text))
-      this.hardStrings.push({ text, range: this.range({ start: node.start, end: node.end }), kind: 'js-template', args })
+    const text = node.quasis.map((q, i) => `${q.value.cooked ?? q.value.raw}${i < args.length
+      ? `{${i}}`
+      : ''}`).join('')
+    if (/\p{L}/u.test(text)) {
+      this.hardStrings.push({
+        text,
+        range: this.range({ start: node.start, end: node.end }),
+        kind: 'js-template',
+        args,
+      })
+    }
   }
 
   markers(program: Program, comments: readonly Comment[]): void {
@@ -560,10 +717,20 @@ class FileScan {
       const next = this.firstAfter(program, comment.end)
       if (!next)
         continue
-      const literals = marker === '@x18n-keys' ? this.literalsIn(next) : isStringLiteral(next) ? [next] : []
+      const literals = marker === '@x18n-keys'
+        ? this.literalsIn(next)
+        : isStringLiteral(next)
+          ? [next]
+          : []
       for (const literal of literals) {
-        if (isStringLiteral(literal))
-          this.usages.push({ raw: literal.value, range: this.range(innerRange(literal)), kind: 'marker', dynamic: false })
+        if (isStringLiteral(literal)) {
+          this.usages.push({
+            raw: literal.value,
+            range: this.range(innerRange(literal)),
+            kind: 'marker',
+            dynamic: false,
+          })
+        }
       }
     }
   }
@@ -594,8 +761,11 @@ class FileScan {
   literalsIn(node: Node): Node[] {
     if (isStringLiteral(node))
       return [node]
-    if (node.type === 'ArrayExpression')
-      return node.elements.flatMap(element => element ? this.literalsIn(element) : [])
+    if (node.type === 'ArrayExpression') {
+      return node.elements.flatMap(element => element
+        ? this.literalsIn(element)
+        : [])
+    }
     if (node.type === 'ObjectExpression')
       return this.allValues(node).flatMap(value => this.literalsIn(value))
     return []
@@ -631,8 +801,12 @@ export interface ScanSourceOptions {
 }
 
 export function scanSource(parse: ParseSync, text: string, options: ScanSourceOptions): ScanResult {
-  const source = options.expression ? `(${text})` : text
-  const shift = options.expression ? -1 : 0
+  const source = options.expression
+    ? `(${text})`
+    : text
+  const shift = options.expression
+    ? -1
+    : 0
   const result = parse(options.filename, source, { sourceType: 'module', range: false })
   const scan = new FileScan(source, (options.offset ?? 0) + shift, options.calls, options.hardStrings !== false, new Set(options.ignoreCallees), options.textAttributes)
   scan.types(result.program)

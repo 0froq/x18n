@@ -11,19 +11,50 @@ export function lingui(): Preset {
       createLibraryPlugin({
         name: 'x18n:lingui',
         calls: [
-          { callee: ['i18n._', 'i18n.t', 't', '_'] },
-          { callee: ['t', 'msg', 'defineMessage', 'i18n._', 'Trans'], key: { arg: 0, property: 'id' } },
-          { callee: 'useLingui', factory: true, returns: ['t', '_'] },
+          {
+            callee: ['i18n._', 'i18n.t', 't', '_'],
+          },
+          {
+            callee: [
+              't',
+              'msg',
+              'defineMessage',
+              'i18n._',
+              'Trans',
+            ],
+            key: { arg: 0, property: 'id' },
+          },
+          {
+            callee: 'useLingui',
+            factory: true,
+            returns: ['t', '_'],
+          },
         ],
-        regex: [{ extensions: scriptExtensions, patterns: ['\\bt`({key})`', '<Trans>[\\s]*({key})[\\s]*<\\/Trans>'] }],
-        resources: [{ pattern: 'src/locales/{locale}/messages.po' }, { pattern: 'locales/{locale}/messages.po' }],
+        regex: [
+          {
+            extensions: scriptExtensions,
+            patterns: ['\\bt`({key})`', '<Trans>[\\s]*({key})[\\s]*<\\/Trans>'],
+          },
+        ],
+        resources: [
+          { pattern: 'src/locales/{locale}/messages.po' },
+          { pattern: 'locales/{locale}/messages.po' },
+        ],
         // Lingui keys are source messages.
         extra: (draft) => {
           draft.extract = { keygen: 'source', ...draft.extract }
         },
         templates: [
-          { template: '<Trans>{key}</Trans>', kinds: ['jsx-text'], imports: ['import { Trans } from \'@lingui/react/macro\''] },
-          { template: 't`{key}`', kinds: ['js-string', 'js-template'], imports: ['import { t } from \'@lingui/core/macro\''] },
+          {
+            template: '<Trans>{key}</Trans>',
+            kinds: ['jsx-text'],
+            imports: ['import { Trans } from \'@lingui/react/macro\''],
+          },
+          {
+            template: 't`{key}`',
+            kinds: ['js-string', 'js-template'],
+            imports: ['import { t } from \'@lingui/core/macro\''],
+          },
         ],
         placeholders: [icu],
       }),

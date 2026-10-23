@@ -11,10 +11,22 @@ export function nextInternational(): Preset {
       createLibraryPlugin({
         name: 'x18n:next-international',
         calls: [
-          { callee: ['useI18n', 'getI18n'], factory: true, returns: ['t'] },
-          { callee: ['useScopedI18n', 'getScopedI18n'], factory: true, returns: ['t'], keyPrefix: { arg: 0 } },
+          {
+            callee: ['useI18n', 'getI18n'],
+            factory: true,
+            returns: ['t'],
+          },
+          {
+            callee: ['useScopedI18n', 'getScopedI18n'],
+            factory: true,
+            returns: ['t'],
+            keyPrefix: { arg: 0 },
+          },
         ],
-        resources: [{ pattern: 'locales/{locale}.{ext}' }, { pattern: 'src/locales/{locale}.{ext}' }],
+        resources: [
+          { pattern: 'locales/{locale}.{ext}' },
+          { pattern: 'src/locales/{locale}.{ext}' },
+        ],
         templates: jsxTemplates,
         placeholders: [braces],
       }),

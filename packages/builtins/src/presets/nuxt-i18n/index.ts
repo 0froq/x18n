@@ -11,9 +11,16 @@ export function nuxtI18n(): Preset {
         name: 'x18n:nuxt-i18n',
         async config(draft, ctx) {
           const nuxtConfig = await ctx.host.readFile('nuxt.config.ts') ?? await ctx.host.readFile('nuxt.config.js')
-          const langDir = nuxtConfig ? /langDir:\s*['"]([^'"]+)['"]/.exec(nuxtConfig)?.[1]?.replace(/^\.\/|\/$/g, '') : undefined
-          const dirs = langDir ? [`i18n/${langDir}`, langDir] : ['i18n/locales', 'locales', 'lang']
-          draft.resources = [...draft.resources, ...dirs.map(dir => ({ pattern: `${dir}/{locale}.{ext}` }))]
+          const langDir = nuxtConfig
+            ? /langDir:\s*['"]([^'"]+)['"]/.exec(nuxtConfig)?.[1]?.replace(/^\.\/|\/$/g, '')
+            : undefined
+          const dirs = langDir
+            ? [`i18n/${langDir}`, langDir]
+            : ['i18n/locales', 'locales', 'lang']
+          draft.resources = [
+            ...draft.resources,
+            ...dirs.map(dir => ({ pattern: `${dir}/{locale}.{ext}` })),
+          ]
         },
       },
     ],

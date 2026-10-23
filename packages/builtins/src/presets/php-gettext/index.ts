@@ -10,12 +10,22 @@ export function phpGettext(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:php-gettext',
-        regex: [{ extensions: ['php'], patterns: ['[^\\w\\d](?:gettext|_|__)\\(\\s*[\'"`]({key})[\'"`]'] }],
-        resources: [{ pattern: 'locale/{locale}/LC_MESSAGES/*.po' }, { pattern: 'locales/{locale}.po' }],
+        regex: [
+          {
+            extensions: ['php'],
+            patterns: ['[^\\w\\d](?:gettext|_|__)\\(\\s*[\'"`]({key})[\'"`]'],
+          },
+        ],
+        resources: [
+          { pattern: 'locale/{locale}/LC_MESSAGES/*.po' },
+          { pattern: 'locales/{locale}.po' },
+        ],
         extra: (draft) => {
           draft.extract = { keygen: 'source', ...draft.extract }
         },
-        templates: [{ template: 'gettext(\'{key}\')' }],
+        templates: [
+          { template: 'gettext(\'{key}\')' },
+        ],
         placeholders: [printf],
       }),
     ],

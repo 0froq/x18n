@@ -11,15 +11,45 @@ export function fluentVue(): Preset {
       createLibraryPlugin({
         name: 'x18n:fluent-vue',
         calls: [
-          { callee: ['$t', '$ta', 'fluent.format', 'fluent.formatAttrs', 'this.$t', 'this.$ta'] },
-          { callee: 'useFluent', factory: true, returns: ['$t', '$ta', 'format', 'formatAttrs'] },
+          {
+            callee: [
+              '$t',
+              '$ta',
+              'fluent.format',
+              'fluent.formatAttrs',
+              'this.$t',
+              'this.$ta',
+            ],
+          },
+          {
+            callee: 'useFluent',
+            factory: true,
+            returns: ['$t', '$ta', 'format', 'formatAttrs'],
+          },
         ],
-        regex: [{ extensions: ['vue'], patterns: ['v-t:({key})[\\s\\n=>]', '<i18n[\\s\\n]+path=[\'"`]({key})[\'"`]'] }],
-        resources: [{ pattern: 'locales/{locale}.ftl' }, { pattern: 'src/locales/{locale}.ftl' }],
+        regex: [
+          {
+            extensions: ['vue'],
+            patterns: ['v-t:({key})[\\s\\n=>]', '<i18n[\\s\\n]+path=[\'"`]({key})[\'"`]'],
+          },
+        ],
+        resources: [
+          { pattern: 'locales/{locale}.ftl' },
+          { pattern: 'src/locales/{locale}.ftl' },
+        ],
         templates: [
-          { template: '{{ $t(\'{key}\'{args}) }}', kinds: ['vue-template-text'] },
-          { template: ':{attr}="$t(\'{key}\'{args})"', kinds: ['vue-attribute'] },
-          { template: '$t(\'{key}\'{args})', kinds: ['js-string', 'js-template'] },
+          {
+            template: '{{ $t(\'{key}\'{args}) }}',
+            kinds: ['vue-template-text'],
+          },
+          {
+            template: ':{attr}="$t(\'{key}\'{args})"',
+            kinds: ['vue-attribute'],
+          },
+          {
+            template: '$t(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
         ],
         placeholders: [fluent],
       }),

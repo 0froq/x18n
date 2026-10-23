@@ -26,8 +26,12 @@ function readMap(node: YamlNode, path: string[], ranges: Map<string, NodeRange>)
     const key = String(keyNode.value)
     const childPath = [...path, key]
     const keyRange = scalarTextRange(keyNode)
-    const value = isNode(pair.value) ? pair.value : undefined
-    const valueRange = value && value.range ? { start: value.range[0], end: value.range[1] } : undefined
+    const value = isNode(pair.value)
+      ? pair.value
+      : undefined
+    const valueRange = value && value.range
+      ? { start: value.range[0], end: value.range[1] }
+      : undefined
     if (keyRange)
       ranges.set(pathId(childPath), { key: keyRange, value: valueRange ?? keyRange })
     if (value === undefined) {
@@ -78,7 +82,10 @@ export function yaml(): Plugin {
         return { tree: {}, ranges }
       if (!isMap(doc.contents))
         throw errors.X18N2003({ path: ctx.path })
-      return { tree: readMap(doc.contents, [], ranges), ranges }
+      return {
+        tree: readMap(doc.contents, [], ranges),
+        ranges,
+      }
     },
     edit(text, ops, ctx) {
       let next = text
@@ -87,7 +94,12 @@ export function yaml(): Plugin {
         const current = doc.getIn(op.path, true)
         // A single-line scalar keeps its quote style and everything around it.
         if (op.type === 'set' && isScalar(current) && current.range && current.type !== Scalar.BLOCK_FOLDED && current.type !== Scalar.BLOCK_LITERAL) {
-          next = applyTextEdits(next, [{ range: { start: current.range[0], end: current.range[1] }, text: scalarText(op.value, current.type) }])
+          next = applyTextEdits(next, [
+            {
+              range: { start: current.range[0], end: current.range[1] },
+              text: scalarText(op.value, current.type),
+            },
+          ])
           continue
         }
         if (doc.contents === null)
@@ -96,13 +108,21 @@ export function yaml(): Plugin {
           doc.setIn(op.path, op.value)
         else
           doc.deleteIn(op.path)
-        next = doc.toString({ indent: indentOf(text), lineWidth: 0 })
+        next = doc.toString({
+          indent: indentOf(text),
+          lineWidth: 0,
+        })
       }
       return diffText(text, next)
     },
-    serialize: (tree: MessageTree) => Object.keys(tree).length === 0 ? '{}\n' : stringify(tree, { lineWidth: 0 }),
+    serialize: (tree: MessageTree) => Object.keys(tree).length === 0
+      ? '{}\n'
+      : stringify(tree, { lineWidth: 0 }),
   }
-  return { name: 'x18n:format-yaml', formats: [format] }
+  return {
+    name: 'x18n:format-yaml',
+    formats: [format],
+  }
 }
 
 export default yaml

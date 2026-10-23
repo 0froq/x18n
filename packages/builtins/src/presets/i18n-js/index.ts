@@ -9,8 +9,17 @@ export function i18nJs(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:i18n-js',
-        calls: [{ callee: ['I18n.t', 'i18n.t'] }],
-        templates: [{ template: 'i18n.t(\'{key}\'{args})', kinds: ['js-string', 'js-template'] }],
+        calls: [
+          {
+            callee: ['I18n.t', 'i18n.t'],
+          },
+        ],
+        templates: [
+          {
+            template: 'i18n.t(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
+        ],
         placeholders: [percentBraces],
       }),
     ],

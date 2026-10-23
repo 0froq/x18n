@@ -11,12 +11,30 @@ import { manifests } from './manifests'
 
 /** Plugins that are always on, and the presets that `'auto'` detects. Formats, scanners and presets load on demand; `regex` and the reporters are always loaded. */
 export async function createBuiltins(): Promise<Builtins> {
-  const formatPlugins: Plugin[] = Object.entries(formats).map(([id, entry]) => ({ name: `x18n:format-${id}`, lazyFormats: [{ id, ...entry }] }))
-  const scannerPlugins: Plugin[] = Object.entries(scanners).map(([id, entry]) => ({ name: `x18n:scanner-${id}`, lazyScanners: [{ id, ...entry }] }))
+  const formatPlugins: Plugin[] = Object.entries(formats).map(([id, entry]) => ({
+    name: `x18n:format-${id}`,
+    lazyFormats: [
+      { id, ...entry },
+    ],
+  }))
+  const scannerPlugins: Plugin[] = Object.entries(scanners).map(([id, entry]) => ({
+    name: `x18n:scanner-${id}`,
+    lazyScanners: [
+      { id, ...entry },
+    ],
+  }))
   const reporterList = await Promise.all(Object.values(reporters).map(async load => (await load()).default))
   const reporterPlugin: Plugin = { name: 'x18n:reporters', reporters: reporterList }
   return {
-    plugins: [manifests(), ...formatPlugins, pattern(), ...scannerPlugins, regex(), recommended(), reporterPlugin],
+    plugins: [
+      manifests(),
+      ...formatPlugins,
+      pattern(),
+      ...scannerPlugins,
+      regex(),
+      recommended(),
+      reporterPlugin,
+    ],
     presets,
   }
 }

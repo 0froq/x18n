@@ -10,13 +10,34 @@ export function reactIntl(): Preset {
       createLibraryPlugin({
         name: 'x18n:react-intl',
         calls: [
-          { callee: ['intl.formatMessage', 'formatMessage', 'defineMessage', 'FormattedMessage'], key: { arg: 0, property: 'id' } },
-          { callee: 'defineMessages', key: { arg: 0, property: '*.id' } },
+          {
+            callee: [
+              'intl.formatMessage',
+              'formatMessage',
+              'defineMessage',
+              'FormattedMessage',
+            ],
+            key: { arg: 0, property: 'id' },
+          },
+          {
+            callee: 'defineMessages',
+            key: { arg: 0, property: '*.id' },
+          },
         ],
         templates: [
-          { template: '<FormattedMessage id="{key}" />', kinds: ['jsx-text'], imports: ['import { FormattedMessage } from \'react-intl\''] },
-          { template: '{attr}={intl.formatMessage({ id: \'{key}\' }{args})}', kinds: ['jsx-attribute'] },
-          { template: 'intl.formatMessage({ id: \'{key}\' }{args})', kinds: ['js-string', 'js-template'] },
+          {
+            template: '<FormattedMessage id="{key}" />',
+            kinds: ['jsx-text'],
+            imports: ['import { FormattedMessage } from \'react-intl\''],
+          },
+          {
+            template: '{attr}={intl.formatMessage({ id: \'{key}\' }{args})}',
+            kinds: ['jsx-attribute'],
+          },
+          {
+            template: 'intl.formatMessage({ id: \'{key}\' }{args})',
+            kinds: ['js-string', 'js-template'],
+          },
         ],
         placeholders: [icu],
       }),

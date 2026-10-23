@@ -5,4 +5,13 @@ export function dependsOn(names: readonly string[], prefixes: readonly string[] 
 }
 
 /** Extensions of JS and TS sources. */
-export const scriptExtensions: readonly string[] = ['js', 'jsx', 'mjs', 'cjs', 'ts', 'tsx', 'mts', 'cts']
+export const scriptExtensions: readonly string[] = [
+  'js',
+  'jsx',
+  'mjs',
+  'cjs',
+  'ts',
+  'tsx',
+  'mts',
+  'cts',
+]

@@ -6,10 +6,14 @@ import { defaultTemplates } from '../../extractors'
 export function general(): Preset {
   return {
     name: 'general',
-    plugins: [{
-      name: 'x18n:general',
-      extractors: [{ id: 'general', templates: defaultTemplates }],
-    }],
+    plugins: [
+      {
+        name: 'x18n:general',
+        extractors: [
+          { id: 'general', templates: defaultTemplates },
+        ],
+      },
+    ],
   }
 }
 

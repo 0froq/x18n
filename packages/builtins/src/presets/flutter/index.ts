@@ -10,15 +10,22 @@ export function flutter(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:flutter',
-        regex: [{
-          extensions: ['dart'],
-          patterns: [
-            '[^\\w\\d]FlutterI18n\\.(?:plural|translate)\\(\\s*[\\w\\d.]+,\\s*[\'"`]({key})[\'"`]',
-            '[^\\w\\d]I18n(?:Plural|Text)\\(\\s*[\'"`]({key})[\'"`]',
-          ],
-        }],
-        resources: [{ pattern: 'assets/flutter_i18n/{locale}.{ext}' }, { pattern: 'assets/i18n/{locale}.{ext}' }],
-        templates: [{ template: 'FlutterI18n.translate(context, \'{key}\')' }],
+        regex: [
+          {
+            extensions: ['dart'],
+            patterns: [
+              '[^\\w\\d]FlutterI18n\\.(?:plural|translate)\\(\\s*[\\w\\d.]+,\\s*[\'"`]({key})[\'"`]',
+              '[^\\w\\d]I18n(?:Plural|Text)\\(\\s*[\'"`]({key})[\'"`]',
+            ],
+          },
+        ],
+        resources: [
+          { pattern: 'assets/flutter_i18n/{locale}.{ext}' },
+          { pattern: 'assets/i18n/{locale}.{ext}' },
+        ],
+        templates: [
+          { template: 'FlutterI18n.translate(context, \'{key}\')' },
+        ],
         placeholders: [braces],
       }),
     ],

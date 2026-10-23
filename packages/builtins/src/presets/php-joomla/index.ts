@@ -10,10 +10,20 @@ export function phpJoomla(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:php-joomla',
-        regex: [{ extensions: ['php'], patterns: ['J?Text::(?:_|[\\w]+)\\(\\s*[\'"]({key})[\'"]'] }],
-        resources: [{ pattern: 'language/{locale}/*.ini' }, { pattern: 'administrator/language/{locale}/*.ini' }],
+        regex: [
+          {
+            extensions: ['php'],
+            patterns: ['J?Text::(?:_|[\\w]+)\\(\\s*[\'"]({key})[\'"]'],
+          },
+        ],
+        resources: [
+          { pattern: 'language/{locale}/*.ini' },
+          { pattern: 'administrator/language/{locale}/*.ini' },
+        ],
         keyStyle: 'flat',
-        templates: [{ template: 'Text::_(\'{key}\')' }],
+        templates: [
+          { template: 'Text::_(\'{key}\')' },
+        ],
         placeholders: [printf],
       }),
     ],

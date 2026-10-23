@@ -16,7 +16,11 @@ export const githubReporter: Reporter = {
     const out: string[] = []
     for (const input of inputs) {
       for (const d of input.diagnostics) {
-        const level = d.severity === 'error' ? 'error' : d.severity === 'warning' ? 'warning' : 'notice'
+        const level = d.severity === 'error'
+          ? 'error'
+          : d.severity === 'warning'
+            ? 'warning'
+            : 'notice'
         const props = [`title=${escapeProperty(`x18n ${d.code}`)}`]
         if (d.location) {
           const wire = toWireDiagnostic(input.project, d, input.text).range!
@@ -25,7 +29,9 @@ export const githubReporter: Reporter = {
         out.push(`::${level} ${props.join(',')}::${escapeData(d.message)}`)
       }
     }
-    return out.length ? `${out.join('\n')}\n` : ''
+    return out.length
+      ? `${out.join('\n')}\n`
+      : ''
   },
 }
 

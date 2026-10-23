@@ -59,11 +59,17 @@ export interface PluginRegistry {
 export function extensionOf(path: string): string {
   const base = path.slice(path.lastIndexOf('/') + 1)
   const dot = base.lastIndexOf('.')
-  return dot <= 0 ? '' : base.slice(dot + 1).toLowerCase()
+  return dot <= 0
+    ? ''
+    : base.slice(dot + 1).toLowerCase()
 }
 
 function sortByEnforce(plugins: readonly Plugin[]): Plugin[] {
-  const rank = (plugin: Plugin): number => plugin.enforce === 'pre' ? 0 : plugin.enforce === 'post' ? 2 : 1
+  const rank = (plugin: Plugin): number => plugin.enforce === 'pre'
+    ? 0
+    : plugin.enforce === 'post'
+      ? 2
+      : 1
   return [...plugins].sort((a, b) => rank(a) - rank(b))
 }
 
@@ -79,9 +85,17 @@ function uniqueById<T extends { readonly id: string, readonly override?: boolean
 
 export function createRegistry(input: readonly Plugin[], config: Pick<ResolvedConfig, 'formats'>): PluginRegistry {
   const plugins = sortByEnforce(input)
-  const formats = plugins.flatMap(plugin => [...plugin.formats ?? [], ...plugin.lazyFormats ?? []])
-  const scanners = plugins.flatMap(plugin => [...plugin.scanners ?? [], ...plugin.lazyScanners ?? []])
-  const finders = [...uniqueById(plugins.flatMap(plugin => plugin.localeFinders ?? []), 'Locale finder').values()]
+  const formats = plugins.flatMap(plugin => [
+    ...plugin.formats ?? [],
+    ...plugin.lazyFormats ?? [],
+  ])
+  const scanners = plugins.flatMap(plugin => [
+    ...plugin.scanners ?? [],
+    ...plugin.lazyScanners ?? [],
+  ])
+  const finders = [
+    ...uniqueById(plugins.flatMap(plugin => plugin.localeFinders ?? []), 'Locale finder').values(),
+  ]
   const checks = uniqueById(plugins.flatMap(plugin => plugin.checks ?? []), 'Check')
   const reporters = uniqueById(plugins.flatMap(plugin => plugin.reporters ?? []), 'Reporter')
   const conflicts: CapabilityConflict[] = []
@@ -90,10 +104,17 @@ export function createRegistry(input: readonly Plugin[], config: Pick<ResolvedCo
   for (const format of formats) {
     for (const extension of format.extensions) {
       const winner = byExtension.get(extension)
-      if (winner)
-        conflicts.push({ capability: 'format', extension, winner: winner.id, loser: format.id })
-      else
+      if (winner) {
+        conflicts.push({
+          capability: 'format',
+          extension,
+          winner: winner.id,
+          loser: format.id,
+        })
+      }
+      else {
         byExtension.set(extension, format)
+      }
     }
   }
   const isLazy = (format: Format | LazyFormat): format is LazyFormat => 'load' in format
@@ -152,7 +173,9 @@ export function createRegistry(input: readonly Plugin[], config: Pick<ResolvedCo
     const extension = extensionOf(path)
     let list = scannerCache.get(extension)
     if (!list) {
-      list = extension ? scanners.filter(scanner => scanner.extensions.includes(extension) || scanner.extensions.includes('*')) : []
+      list = extension
+        ? scanners.filter(scanner => scanner.extensions.includes(extension) || scanner.extensions.includes('*'))
+        : []
       scannerCache.set(extension, list)
     }
     return list
@@ -174,11 +197,15 @@ export function createRegistry(input: readonly Plugin[], config: Pick<ResolvedCo
     formatIdFor,
     formatFor(path, hint) {
       const id = formatIdFor(path, hint)
-      return id === undefined ? undefined : formatById(id)
+      return id === undefined
+        ? undefined
+        : formatById(id)
     },
     async loadFormatFor(path, hint) {
       const id = formatIdFor(path, hint)
-      return id === undefined ? undefined : loadFormat(id)
+      return id === undefined
+        ? undefined
+        : loadFormat(id)
     },
     scannersFor,
     async loadScannersFor(path) {

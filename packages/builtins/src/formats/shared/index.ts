@@ -13,7 +13,9 @@ export function detectIndent(text: string, fallback: number | 'tab' | undefined)
 }
 
 export function detectEol(text: string): string {
-  return text.includes('\r\n') ? '\r\n' : '\n'
+  return text.includes('\r\n')
+    ? '\r\n'
+    : '\n'
 }
 
 export function toLeaf(value: unknown): MessageLeaf | undefined {
@@ -25,7 +27,9 @@ export function toLeaf(value: unknown): MessageLeaf | undefined {
 }
 
 export function leafText(value: MessageLeaf): string {
-  return value === null ? '' : String(value)
+  return value === null
+    ? ''
+    : String(value)
 }
 
 export function splice(text: string, range: TextRange, insert: string): string {
@@ -35,7 +39,9 @@ export function splice(text: string, range: TextRange, insert: string): string {
 /** Appends `chunk` on a line of its own, in the file's line endings. */
 export function appendLines(text: string, chunk: string): string {
   const eol = detectEol(text)
-  const base = text === '' || text.endsWith('\n') ? text : text + eol
+  const base = text === '' || text.endsWith('\n')
+    ? text
+    : text + eol
   return base + chunk.replace(/\n/g, eol)
 }
 
@@ -52,8 +58,14 @@ export function splitLines(text: string): TextLine[] {
   let start = 0
   while (start < text.length) {
     const lf = text.indexOf('\n', start)
-    const next = lf === -1 ? text.length : lf + 1
-    const end = lf === -1 ? text.length : lf > start && text[lf - 1] === '\r' ? lf - 1 : lf
+    const next = lf === -1
+      ? text.length
+      : lf + 1
+    const end = lf === -1
+      ? text.length
+      : lf > start && text[lf - 1] === '\r'
+        ? lf - 1
+        : lf
     out.push({ start, end, next })
     start = next
   }

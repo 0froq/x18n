@@ -22,8 +22,22 @@ interface Entry {
   readonly block: TextRange
 }
 
-const decodings: Record<string, string> = { n: '\n', t: '\t', r: '\r', a: '\x07', b: '\b', f: '\f', v: '\v' }
-const encodings: Record<string, string> = { '\\': '\\\\', '"': '\\"', '\n': '\\n', '\t': '\\t', '\r': '\\r' }
+const decodings: Record<string, string> = {
+  n: '\n',
+  t: '\t',
+  r: '\r',
+  a: '\x07',
+  b: '\b',
+  f: '\f',
+  v: '\v',
+}
+const encodings: Record<string, string> = {
+  '\\': '\\\\',
+  '"': '\\"',
+  '\n': '\\n',
+  '\t': '\\t',
+  '\r': '\\r',
+}
 
 /** Reads one `"..."` string starting at `start`; returns its value and the offset after the closing quote. */
 function readString(text: string, start: number, end: number, fail: (message: string) => never): { value: string, end: number } {
@@ -44,7 +58,9 @@ function readString(text: string, start: number, end: number, fail: (message: st
     const escape = /^(?:[0-7]{1,3}|x[0-9a-f]{1,2}|[\s\S])/i.exec(text.slice(i + 1, end))?.[0] ?? ''
     value += /^[0-7]/.test(escape)
       ? String.fromCharCode(Number.parseInt(escape, 8))
-      : escape.length > 1 ? String.fromCharCode(Number.parseInt(escape.slice(1), 16)) : decodings[escape] ?? escape
+      : escape.length > 1
+        ? String.fromCharCode(Number.parseInt(escape.slice(1), 16))
+        : decodings[escape] ?? escape
     i += escape.length
   }
   return fail('unterminated string')
@@ -55,8 +71,11 @@ interface Draft { start: number, end: number, fields: Field[] }
 function toEntry(text: string, draft: Draft, fail: (message: string) => never): Entry | undefined {
   const field = (name: string): Field | undefined => draft.fields.find(f => f.name === name)
   const msgid = field('msgid')
-  if (!msgid)
-    return draft.fields.length > 0 ? fail('entry without msgid') : undefined
+  if (!msgid) {
+    return draft.fields.length > 0
+      ? fail('entry without msgid')
+      : undefined
+  }
   const msgctxt = field('msgctxt')
   const msgstr = field('msgstr') ?? field('msgstr[0]')
   if (!msgstr)
@@ -66,9 +85,14 @@ function toEntry(text: string, draft: Draft, fail: (message: string) => never): 
     return undefined
   const inner = (f: Field): TextRange => ({ start: f.range.start + 1, end: f.range.end - 1 })
   return {
-    key: msgctxt ? `${msgctxt.value}${CONTEXT_SEPARATOR}${msgid.value}` : msgid.value,
+    key: msgctxt
+      ? `${msgctxt.value}${CONTEXT_SEPARATOR}${msgid.value}`
+      : msgid.value,
     value: msgstr.value,
-    range: { key: inner(msgid), value: inner(msgstr) },
+    range: {
+      key: inner(msgid),
+      value: inner(msgstr),
+    },
     source: msgstr.range,
     block: withBlankLines(text, { start: draft.start, end: draft.end }),
   }
@@ -106,12 +130,18 @@ function read(text: string, path: string): Entry[] {
       field = undefined
       continue
     }
-    const stringStart = keyword ? offset + keyword[0].length : offset
+    const stringStart = keyword
+      ? offset + keyword[0].length
+      : offset
     if (!keyword && (!field || !content.startsWith('"')))
       fail(`unexpected "${content.slice(0, 20)}"`)
     const string = readString(text, stringStart, line.end, fail)
     if (keyword) {
-      field = { name: keyword[1]!, range: { start: stringStart, end: string.end }, value: string.value }
+      field = {
+        name: keyword[1]!,
+        range: { start: stringStart, end: string.end },
+        value: string.value,
+      }
       draft.fields.push(field)
     }
     else {
@@ -129,20 +159,28 @@ const quote = (value: string): string => `"${value.replace(/[\\"\n\t\r]/g, char 
 function encode(value: string, eol: string): string {
   if (!value.slice(0, -1).includes('\n'))
     return quote(value)
-  return ['""', ...value.split(/(?<=\n)/).map(quote)].join(eol)
+  return [
+    '""',
+    ...value.split(/(?<=\n)/).map(quote),
+  ].join(eol)
 }
 
 function entryText(key: string, value: string): string {
   const index = key.indexOf(CONTEXT_SEPARATOR)
-  const context = index === -1 ? '' : `msgctxt ${quote(key.slice(0, index))}\n`
+  const context = index === -1
+    ? ''
+    : `msgctxt ${quote(key.slice(0, index))}\n`
   return `${context}msgid ${encode(key.slice(index + 1), '\n')}\nmsgstr ${encode(value, '\n')}\n`
 }
 
 function applyOp(text: string, op: MessageOp, path: string): string {
   const key = op.path.join('.')
   const entry = read(text, path).findLast(e => e.key === key)
-  if (op.type === 'delete')
-    return entry ? splice(text, entry.block, '') : text
+  if (op.type === 'delete') {
+    return entry
+      ? splice(text, entry.block, '')
+      : text
+  }
   const value = leafText(op.value)
   if (entry)
     return splice(text, entry.source, encode(value, detectEol(text)))
@@ -153,29 +191,36 @@ function applyOp(text: string, op: MessageOp, path: string): string {
 export function po(): Plugin {
   return {
     name: 'x18n:format-po',
-    formats: [{
-      id: 'po',
-      extensions: ['po', 'pot'],
-      parse(text, ctx) {
-        const tree: Record<string, string> = {}
-        const ranges = new Map<string, NodeRange>()
-        for (const entry of read(text, ctx.path)) {
-          tree[entry.key] = entry.value
-          ranges.set(pathId([entry.key]), entry.range)
-        }
-        return { tree, ranges }
+    formats: [
+      {
+        id: 'po',
+        extensions: ['po', 'pot'],
+        parse(text, ctx) {
+          const tree: Record<string, string> = {}
+          const ranges = new Map<string, NodeRange>()
+          for (const entry of read(text, ctx.path)) {
+            tree[entry.key] = entry.value
+            ranges.set(pathId([entry.key]), entry.range)
+          }
+          return { tree, ranges }
+        },
+        edit(text, ops, ctx) {
+          let next = text
+          for (const op of ops)
+            next = applyOp(next, op, ctx.path)
+          return diffText(text, next)
+        },
+        serialize(tree: MessageTree, ctx) {
+          const header = `msgid ""\nmsgstr ""\n"Language: ${ctx.locale}\\n"\n"MIME-Version: 1.0\\n"\n"Content-Type: text/plain; charset=UTF-8\\n"\n"Content-Transfer-Encoding: 8bit\\n"\n`
+          return [
+            header,
+            ...[
+              ...walkLeaves(tree),
+            ].map(leaf => entryText(leaf.path.join('.'), leafText(leaf.value))),
+          ].join('\n')
+        },
       },
-      edit(text, ops, ctx) {
-        let next = text
-        for (const op of ops)
-          next = applyOp(next, op, ctx.path)
-        return diffText(text, next)
-      },
-      serialize(tree: MessageTree, ctx) {
-        const header = `msgid ""\nmsgstr ""\n"Language: ${ctx.locale}\\n"\n"MIME-Version: 1.0\\n"\n"Content-Type: text/plain; charset=UTF-8\\n"\n"Content-Transfer-Encoding: 8bit\\n"\n`
-        return [header, ...[...walkLeaves(tree)].map(leaf => entryText(leaf.path.join('.'), leafText(leaf.value)))].join('\n')
-      },
-    }],
+    ],
   }
 }
 

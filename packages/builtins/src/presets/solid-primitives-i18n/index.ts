@@ -9,11 +9,24 @@ export function solidPrimitivesI18n(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:solid-primitives-i18n',
-        calls: [{ callee: ['t', 'i18n.t'] }],
+        calls: [
+          {
+            callee: ['t', 'i18n.t'],
+          },
+        ],
         templates: [
-          { template: '{t(\'{key}\'{args})}', kinds: ['jsx-text'] },
-          { template: '{attr}={t(\'{key}\'{args})}', kinds: ['jsx-attribute'] },
-          { template: 't(\'{key}\'{args})', kinds: ['js-string', 'js-template'] },
+          {
+            template: '{t(\'{key}\'{args})}',
+            kinds: ['jsx-text'],
+          },
+          {
+            template: '{attr}={t(\'{key}\'{args})}',
+            kinds: ['jsx-attribute'],
+          },
+          {
+            template: 't(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
         ],
         placeholders: [doubleBraces],
       }),

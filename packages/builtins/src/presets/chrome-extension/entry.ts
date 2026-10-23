@@ -9,6 +9,9 @@ async function hasDefaultLocale(ctx: DetectContext): Promise<boolean> {
   return false
 }
 
-const entry: PresetEntry = { detect: hasDefaultLocale, load: () => import('./index') }
+const entry: PresetEntry = {
+  detect: hasDefaultLocale,
+  load: () => import('./index'),
+}
 
 export default entry

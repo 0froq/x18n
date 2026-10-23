@@ -9,10 +9,26 @@ export function globalize(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:globalize',
-        calls: [{ callee: ['Globalize.messageFormatter', 'Globalize.formatMessage', 'globalize.messageFormatter', 'globalize.formatMessage'] }],
+        calls: [
+          {
+            callee: [
+              'Globalize.messageFormatter',
+              'Globalize.formatMessage',
+              'globalize.messageFormatter',
+              'globalize.formatMessage',
+            ],
+          },
+        ],
         // Globalize paths use `/` (`greetings/hello`).
-        normalizeKey: raw => raw.includes('/') ? raw.replace(/\//g, '.') : undefined,
-        templates: [{ template: 'Globalize.formatMessage(\'{key}\'{args})', kinds: ['js-string', 'js-template'] }],
+        normalizeKey: raw => raw.includes('/')
+          ? raw.replace(/\//g, '.')
+          : undefined,
+        templates: [
+          {
+            template: 'Globalize.formatMessage(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
+        ],
         placeholders: [icu],
       }),
     ],

@@ -3,12 +3,19 @@ import type { Color } from './shared'
 import { createLineIndex } from '@x18n/core'
 import { codes, paint, plural, totals } from './shared'
 
-const severityColor: Record<Diagnostic['severity'], Color> = { error: 'red', warning: 'yellow', info: 'blue', hint: 'gray' }
+const severityColor: Record<Diagnostic['severity'], Color> = {
+  error: 'red',
+  warning: 'yellow',
+  info: 'blue',
+  hint: 'gray',
+}
 
 /** The severity as a highlighted label, like ` ERROR `. */
 function badge(ctx: ReporterContext, severity: Diagnostic['severity']): string {
   const label = ` ${severity.toUpperCase()} `
-  return ctx.color ? `\u001B[1;7;${codes[severityColor[severity]]}m${label}\u001B[0m` : label
+  return ctx.color
+    ? `\u001B[1;7;${codes[severityColor[severity]]}m${label}\u001B[0m`
+    : label
 }
 
 /** The marked line with one line of context on each side, and `~` under the range. */
@@ -20,11 +27,15 @@ function codeFrame(text: string, start: number, end: number, severity: Diagnosti
   const last = Math.min(index.lineCount - 1, from.line + 1)
   const pad = String(last + 1).length
   const gutter = (n: string): string => `${paint(ctx, 'gray', n.padStart(pad))} ${paint(ctx, 'gray', '│')} `
-  const width = Math.max(1, (to.line === from.line ? to.character : index.line(from.line).length) - from.character)
+  const width = Math.max(1, (to.line === from.line
+    ? to.character
+    : index.line(from.line).length) - from.character)
   const lines: string[] = []
   for (let n = first; n <= last; n++) {
     const line = index.line(n)
-    lines.push(`${gutter(String(n + 1))}${n === from.line ? line : paint(ctx, 'gray', line)}`)
+    lines.push(`${gutter(String(n + 1))}${n === from.line
+      ? line
+      : paint(ctx, 'gray', line)}`)
     if (n === from.line)
       lines.push(`${gutter('')}${' '.repeat(from.character)}${paint(ctx, severityColor[severity], '~'.repeat(width))}`)
   }
@@ -58,8 +69,12 @@ export const prettyReporter: Reporter = {
     }
     else {
       const parts = [
-        sum.errors ? paint(ctx, 'red', `✖ ${plural(sum.errors, 'error')}`) : '',
-        sum.warnings ? paint(ctx, 'yellow', `⚠ ${plural(sum.warnings, 'warning')}`) : '',
+        sum.errors
+          ? paint(ctx, 'red', `✖ ${plural(sum.errors, 'error')}`)
+          : '',
+        sum.warnings
+          ? paint(ctx, 'yellow', `⚠ ${plural(sum.warnings, 'warning')}`)
+          : '',
         paint(ctx, 'gray', plural(sum.files, 'file')),
       ].filter(Boolean)
       blocks.push(parts.join('  '))

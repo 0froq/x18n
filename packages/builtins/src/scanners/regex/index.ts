@@ -6,7 +6,9 @@ const keyPattern = '[\\w\\d\\. \\-\\[\\]\\/:]+?'
 
 /** Turns a pattern with a `{key}` placeholder into a regex whose first group is the key. */
 export function compileUsagePattern(pattern: string): RegExp {
-  const source = pattern.includes('{key}') ? pattern.replace('{key}', keyPattern) : pattern
+  const source = pattern.includes('{key}')
+    ? pattern.replace('{key}', keyPattern)
+    : pattern
   return new RegExp(source, 'dg')
 }
 
@@ -19,7 +21,12 @@ export function scanWithRegex(text: string, regexes: readonly RegExp[]): UsageCa
       const raw = match[1]
       if (!indices || raw === undefined)
         continue
-      out.push({ raw, range: { start: indices[0], end: indices[1] }, kind: 'call', dynamic: false })
+      out.push({
+        raw,
+        range: { start: indices[0], end: indices[1] },
+        kind: 'call',
+        dynamic: false,
+      })
     }
   }
   return out
@@ -37,22 +44,35 @@ export function regex(specs: readonly RegexScannerSpec[] = [], id = 'regex'): Pl
     }
     return list
   }
-  let extensions: string[] = [...new Set(specs.flatMap(spec => spec.extensions))]
+  let extensions: string[] = [
+    ...new Set(specs.flatMap(spec => spec.extensions)),
+  ]
   const scanner: Scanner = {
     id,
     get extensions() {
       return extensions
     },
     scan(file, ctx) {
-      const all = [...specs, ...ctx.config.usage.regex]
+      const all = [
+        ...specs,
+        ...ctx.config.usage.regex,
+      ]
       const usages = scanWithRegex(file.text, regexesFor(file.extension, all))
-      return { usages, keySlots: usages.map(usage => usage.range) }
+      return {
+        usages,
+        keySlots: usages.map(usage => usage.range),
+      }
     },
   }
   return {
     name: `x18n:scanner-${id}`,
     configResolved(config) {
-      extensions = [...new Set([...specs, ...config.usage.regex].flatMap(spec => spec.extensions))]
+      extensions = [
+        ...new Set([
+          ...specs,
+          ...config.usage.regex,
+        ].flatMap(spec => spec.extensions)),
+      ]
     },
     scanners: [scanner],
   }

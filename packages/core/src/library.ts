@@ -36,15 +36,28 @@ export function createLibraryPlugin(options: LibraryOptions): Plugin {
         }
       }
       // Defaults of every detected library add up; a user `resources` replaces them all.
-      if (options.resources)
-        draft.resources = [...draft.resources, ...options.resources.filter(spec => !draft.resources.some(r => r.pattern === spec.pattern))]
+      if (options.resources) {
+        draft.resources = [
+          ...draft.resources,
+          ...options.resources.filter(spec => !draft.resources.some(r => r.pattern === spec.pattern)),
+        ]
+      }
       if (options.keyStyle && draft.keyStyle === 'auto' && !ctx.user.keyStyle)
         draft.keyStyle = options.keyStyle
       draft.usage = {
         ...draft.usage,
-        calls: [...draft.usage.calls, ...options.calls ?? []],
-        regex: [...draft.usage.regex, ...options.regex ?? []],
-        derivedKeys: [...draft.usage.derivedKeys, ...options.derivedKeys ?? []],
+        calls: [
+          ...draft.usage.calls,
+          ...options.calls ?? [],
+        ],
+        regex: [
+          ...draft.usage.regex,
+          ...options.regex ?? [],
+        ],
+        derivedKeys: [
+          ...draft.usage.derivedKeys,
+          ...options.derivedKeys ?? [],
+        ],
       }
       await options.extra?.(draft, ctx)
     },
@@ -53,6 +66,10 @@ export function createLibraryPlugin(options: LibraryOptions): Plugin {
     normalizeKey: options.normalizeKey,
     transformResource: options.transformResource,
     translatePrompt: options.translatePrompt,
-    extractors: options.templates ? [{ id: options.name, templates: options.templates }] : undefined,
+    extractors: options.templates
+      ? [
+          { id: options.name, templates: options.templates },
+        ]
+      : undefined,
   }
 }

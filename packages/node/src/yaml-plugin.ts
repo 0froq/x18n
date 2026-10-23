@@ -7,7 +7,10 @@ import regexScopes from '@x18n/builtins/scanners/regex-scopes'
  * options of a built-in factory, so moving to a TS plugin is a small change.
  */
 export function compileYamlPlugin(data: PluginFile): Plugin | Preset {
-  const replacements = (data.normalizeKey ?? []).map(rule => ({ from: new RegExp(rule.replace.pattern, 'g'), to: rule.replace.with }))
+  const replacements = (data.normalizeKey ?? []).map(rule => ({
+    from: new RegExp(rule.replace.pattern, 'g'),
+    to: rule.replace.with,
+  }))
   const localeInfo = data.localeInfo
   const plugin: Plugin = {
     name: data.name,
@@ -26,17 +29,33 @@ export function compileYamlPlugin(data: PluginFile): Plugin | Preset {
           separator: defaults.namespace.separator ?? draft.namespace.separator,
           default: defaults.namespace.default ?? draft.namespace.default,
           fallback: defaults.namespace.fallback ?? draft.namespace.fallback,
-          byFile: { ...draft.namespace.byFile, ...defaults.namespace.byFile },
+          byFile: {
+            ...draft.namespace.byFile,
+            ...defaults.namespace.byFile,
+          },
           fromPath: defaults.namespace.fromPath ?? draft.namespace.fromPath,
         }
       }
       draft.usage = {
         ...draft.usage,
-        calls: [...draft.usage.calls, ...data.scanners?.calls ?? []],
-        regex: [...draft.usage.regex, ...data.scanners?.regex ?? []],
+        calls: [
+          ...draft.usage.calls,
+          ...data.scanners?.calls ?? [],
+        ],
+        regex: [
+          ...draft.usage.regex,
+          ...data.scanners?.regex ?? [],
+        ],
       }
-      if (data.extract?.templates)
-        draft.extract = { ...draft.extract, templates: [...draft.extract.templates ?? [], ...data.extract.templates] }
+      if (data.extract?.templates) {
+        draft.extract = {
+          ...draft.extract,
+          templates: [
+            ...draft.extract.templates ?? [],
+            ...data.extract.templates,
+          ],
+        }
+      }
     },
     derivedKeys: data.derivedKeys,
     placeholders: data.placeholders?.map(placeholderFromShape),
@@ -46,14 +65,33 @@ export function compileYamlPlugin(data: PluginFile): Plugin | Preset {
     localeInfo: localeInfo
       ? (code): Partial<LocaleInfo> | undefined => {
           const info = localeInfo[code]
-          return info ? { ...info.flag ? { flag: info.flag } : {}, ...info.displayName ? { displayName: info.displayName } : {} } : undefined
+          return info
+            ? {
+                ...info.flag
+                  ? { flag: info.flag }
+                  : {},
+                ...info.displayName
+                  ? { displayName: info.displayName }
+                  : {},
+              }
+            : undefined
         }
       : undefined,
   }
-  const plugins: Plugin[] = [plugin, ...data.scopes ? [regexScopes(data.scopes.regex, `${data.name}-scopes`)] : []]
+  const plugins: Plugin[] = [
+    plugin,
+    ...data.scopes
+      ? [
+          regexScopes(data.scopes.regex, `${data.name}-scopes`),
+        ]
+      : [],
+  ]
   const detect = data.detect
-  if (!detect)
-    return plugins.length === 1 ? plugin : { name: data.name, plugins }
+  if (!detect) {
+    return plugins.length === 1
+      ? plugin
+      : { name: data.name, plugins }
+  }
   return {
     name: data.name,
     exclusive: data.exclusive,

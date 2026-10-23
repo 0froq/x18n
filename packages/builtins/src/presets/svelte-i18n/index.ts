@@ -9,10 +9,31 @@ export function svelteI18n(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:svelte-i18n',
-        calls: [{ callee: ['$_', '$t', '$format', '_', 't', 'format', '$json', 'json'] }],
+        calls: [
+          {
+            callee: [
+              '$_',
+              '$t',
+              '$format',
+              '_',
+              't',
+              'format',
+              '$json',
+              'json',
+            ],
+          },
+        ],
         templates: [
-          { template: '{$_(\'{key}\'{args})}', kinds: ['svelte-text'], imports: ['import { _ } from \'svelte-i18n\''] },
-          { template: '{attr}={$_(\'{key}\'{args})}', kinds: ['svelte-attribute'], imports: ['import { _ } from \'svelte-i18n\''] },
+          {
+            template: '{$_(\'{key}\'{args})}',
+            kinds: ['svelte-text'],
+            imports: ['import { _ } from \'svelte-i18n\''],
+          },
+          {
+            template: '{attr}={$_(\'{key}\'{args})}',
+            kinds: ['svelte-attribute'],
+            imports: ['import { _ } from \'svelte-i18n\''],
+          },
         ],
         placeholders: [icu],
       }),

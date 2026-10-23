@@ -11,11 +11,31 @@ export function paraglide(): Preset {
       createLibraryPlugin({
         name: 'x18n:paraglide',
         // Messages are functions: `m.hello_world({ name })` or `m['hello.world']()`.
-        regex: [{ extensions: [...scriptExtensions, 'vue', 'svelte', 'astro'], patterns: ['\\bm\\.({key})\\(', '\\bm\\[\\s*[\'"`]({key})[\'"`]\\s*\\]\\('] }],
-        resources: [{ pattern: 'messages/{locale}.json' }],
+        regex: [
+          {
+            extensions: [
+              ...scriptExtensions,
+              'vue',
+              'svelte',
+              'astro',
+            ],
+            patterns: ['\\bm\\.({key})\\(', '\\bm\\[\\s*[\'"`]({key})[\'"`]\\s*\\]\\('],
+          },
+        ],
+        resources: [
+          { pattern: 'messages/{locale}.json' },
+        ],
         templates: [
-          { template: '{m.{key}({args})}', kinds: ['jsx-text', 'svelte-text'], imports: ['import { m } from \'$lib/paraglide/messages\''] },
-          { template: 'm.{key}({args})', kinds: ['js-string', 'js-template'], imports: ['import { m } from \'$lib/paraglide/messages\''] },
+          {
+            template: '{m.{key}({args})}',
+            kinds: ['jsx-text', 'svelte-text'],
+            imports: ['import { m } from \'$lib/paraglide/messages\''],
+          },
+          {
+            template: 'm.{key}({args})',
+            kinds: ['js-string', 'js-template'],
+            imports: ['import { m } from \'$lib/paraglide/messages\''],
+          },
         ],
         placeholders: [braces],
       }),

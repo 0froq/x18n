@@ -9,9 +9,23 @@ export function polyglot(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:polyglot',
-        calls: [{ callee: ['polyglot.t', 'I18n.t'] }],
-        regex: [{ extensions: ['rb'], patterns: ['(?:polyglot|I18n)\\.t\\(\\s*[\'"`]({key})[\'"`]'] }],
-        templates: [{ template: 'polyglot.t(\'{key}\'{args})', kinds: ['js-string', 'js-template'] }],
+        calls: [
+          {
+            callee: ['polyglot.t', 'I18n.t'],
+          },
+        ],
+        regex: [
+          {
+            extensions: ['rb'],
+            patterns: ['(?:polyglot|I18n)\\.t\\(\\s*[\'"`]({key})[\'"`]'],
+          },
+        ],
+        templates: [
+          {
+            template: 'polyglot.t(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
+        ],
         placeholders: [percentBraces],
       }),
     ],

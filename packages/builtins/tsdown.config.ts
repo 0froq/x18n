@@ -64,7 +64,15 @@ export default defineConfig({
     'scanners/regex': 'src/scanners/regex/index.ts',
     'scanners/regex-scopes': 'src/scanners/regex-scopes/index.ts',
   },
-  deps: { neverBundle: ['@x18n/builtins/formats', '@x18n/builtins/presets', '@x18n/builtins/reporters', '@x18n/builtins/scanners', '@x18n/builtins/scanners/regex'] },
+  deps: {
+    neverBundle: [
+      '@x18n/builtins/formats',
+      '@x18n/builtins/presets',
+      '@x18n/builtins/reporters',
+      '@x18n/builtins/scanners',
+      '@x18n/builtins/scanners/regex',
+    ],
+  },
   dts: true,
   exports: true,
   publint: true,

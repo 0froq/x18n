@@ -10,30 +10,54 @@ export function chromeExtension(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:chrome-extension',
-        calls: [{ callee: ['chrome.i18n.getMessage', 'browser.i18n.getMessage', 'i18n.getMessage'] }],
-        regex: [{ extensions: ['json', 'html', 'css'], patterns: ['__MSG_({key})__'] }],
-        resources: [{ pattern: '_locales/{locale}/messages.json' }, { pattern: '{src,public,extension}/_locales/{locale}/messages.json' }],
+        calls: [
+          {
+            callee: ['chrome.i18n.getMessage', 'browser.i18n.getMessage', 'i18n.getMessage'],
+          },
+        ],
+        regex: [
+          {
+            extensions: ['json', 'html', 'css'],
+            patterns: ['__MSG_({key})__'],
+          },
+        ],
+        resources: [
+          { pattern: '_locales/{locale}/messages.json' },
+          { pattern: '{src,public,extension}/_locales/{locale}/messages.json' },
+        ],
         transformResource: {
           applies: ctx => /(?:^|\/)_locales\/[^/]+\/messages\.json$/.test(ctx.path),
           read(tree) {
             const out: Record<string, MessageTree[string]> = {}
             for (const [name, entry] of Object.entries(tree)) {
-              const message = isMessageLeaf(entry) ? undefined : entry.message
+              const message = isMessageLeaf(entry)
+                ? undefined
+                : entry.message
               if (message !== undefined && isMessageLeaf(message))
                 out[name] = message
             }
             return out
           },
-          toStored: path => [path.join('.'), 'message'],
+          toStored: path => [
+            path.join('.'),
+            'message',
+          ],
         },
-        templates: [{ template: 'chrome.i18n.getMessage(\'{key}\')', kinds: ['js-string', 'js-template'] }],
+        templates: [
+          {
+            template: 'chrome.i18n.getMessage(\'{key}\')',
+            kinds: ['js-string', 'js-template'],
+          },
+        ],
         placeholders: [dollars],
       }),
       {
         name: 'x18n:chrome-extension-source-locale',
         async config(draft, ctx) {
           const manifest = await ctx.host.readFile('manifest.json') ?? await ctx.host.readFile('src/manifest.json') ?? await ctx.host.readFile('public/manifest.json')
-          const locale = manifest ? /"default_locale"\s*:\s*"([^"]+)"/.exec(manifest)?.[1] : undefined
+          const locale = manifest
+            ? /"default_locale"\s*:\s*"([^"]+)"/.exec(manifest)?.[1]
+            : undefined
           if (locale)
             draft.sourceLocale = locale
         },

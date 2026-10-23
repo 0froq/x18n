@@ -9,10 +9,12 @@ export function rubyRails(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:ruby-rails',
-        regex: [{
-          extensions: ['rb', 'erb', 'haml', 'slim'],
-          patterns: ['[^\\w\\d]t(?:\\(| )\\s*[\'"`]({key})[\'"`]', '[^\\w\\d]t\\(:({key})\\)', 'I18n\\.t\\(\\s*[\'"`]({key})[\'"`]'],
-        }],
+        regex: [
+          {
+            extensions: ['rb', 'erb', 'haml', 'slim'],
+            patterns: ['[^\\w\\d]t(?:\\(| )\\s*[\'"`]({key})[\'"`]', '[^\\w\\d]t\\(:({key})\\)', 'I18n\\.t\\(\\s*[\'"`]({key})[\'"`]'],
+          },
+        ],
         resources: [
           { pattern: 'config/locales/{locale}.yml' },
           { pattern: 'config/locales/**/*.{locale}.yml' },
@@ -24,11 +26,15 @@ export function rubyRails(): Preset {
           applies: ctx => /\.ya?ml$/.test(ctx.path),
           read(tree, ctx) {
             const root = tree[ctx.locale]
-            return root !== undefined && !isMessageLeaf(root) ? root : {} satisfies MessageTree
+            return root !== undefined && !isMessageLeaf(root)
+              ? root
+              : {} satisfies MessageTree
           },
           toStored: (path, ctx) => [ctx.locale, ...path],
         },
-        templates: [{ template: 't(\'{key}\')' }],
+        templates: [
+          { template: 't(\'{key}\')' },
+        ],
         placeholders: [percentBraces],
       }),
     ],

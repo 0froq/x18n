@@ -9,12 +9,30 @@ export function emberIntl(): Preset {
     plugins: [
       createLibraryPlugin({
         name: 'x18n:ember-intl',
-        calls: [{ callee: ['intl.t'] }],
-        regex: [{ extensions: ['hbs', 'gjs', 'gts'], patterns: ['\\{\\{\\s*t\\s+[\'"`]({key})[\'"`]', '\\(\\s*t\\s+[\'"`]({key})[\'"`]'] }],
-        resources: [{ pattern: 'translations/{locale}.{ext}' }, { pattern: 'translations/{namespaces}/{locale}.{ext}' }],
+        calls: [
+          {
+            callee: ['intl.t'],
+          },
+        ],
+        regex: [
+          {
+            extensions: ['hbs', 'gjs', 'gts'],
+            patterns: ['\\{\\{\\s*t\\s+[\'"`]({key})[\'"`]', '\\(\\s*t\\s+[\'"`]({key})[\'"`]'],
+          },
+        ],
+        resources: [
+          { pattern: 'translations/{locale}.{ext}' },
+          { pattern: 'translations/{namespaces}/{locale}.{ext}' },
+        ],
         templates: [
-          { template: '{{t \'{key}\'}}', files: ['**/*.hbs'] },
-          { template: 'this.intl.t(\'{key}\'{args})', kinds: ['js-string', 'js-template'] },
+          {
+            template: '{{t \'{key}\'}}',
+            files: ['**/*.hbs'],
+          },
+          {
+            template: 'this.intl.t(\'{key}\'{args})',
+            kinds: ['js-string', 'js-template'],
+          },
         ],
         placeholders: [icu],
       }),

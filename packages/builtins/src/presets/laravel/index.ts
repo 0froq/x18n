@@ -11,7 +11,12 @@ export function laravel(): Preset {
       createLibraryPlugin({
         name: 'x18n:laravel',
         // JSON translation keys are whole sentences, so the key is anything inside the quotes.
-        regex: [{ extensions: ['php'], patterns: ['[^\\w\\d](?:__|trans|@lang|trans_choice|Lang::get|Lang::choice)\\(\\s*\'([^\']+)\'', '[^\\w\\d](?:__|trans|@lang|trans_choice|Lang::get|Lang::choice)\\(\\s*"([^"]+)"'] }],
+        regex: [
+          {
+            extensions: ['php'],
+            patterns: ['[^\\w\\d](?:__|trans|@lang|trans_choice|Lang::get|Lang::choice)\\(\\s*\'([^\']+)\'', '[^\\w\\d](?:__|trans|@lang|trans_choice|Lang::get|Lang::choice)\\(\\s*"([^"]+)"'],
+          },
+        ],
         resources: [
           { pattern: 'lang/{locale}/{namespaces}.php' },
           { pattern: 'resources/lang/{locale}/{namespaces}.php' },
@@ -19,8 +24,12 @@ export function laravel(): Preset {
           { pattern: 'resources/lang/{locale}.json' },
         ],
         // Nested translation files are referenced as `dir/file.key`.
-        normalizeKey: raw => raw.includes('/') ? raw.replace(/\//g, '.') : undefined,
-        templates: [{ template: '__(\'{key}\')' }],
+        normalizeKey: raw => raw.includes('/')
+          ? raw.replace(/\//g, '.')
+          : undefined,
+        templates: [
+          { template: '__(\'{key}\')' },
+        ],
         placeholders: [colon],
       }),
     ],
