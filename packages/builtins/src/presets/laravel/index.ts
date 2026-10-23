@@ -2,6 +2,7 @@ import type { Preset } from '@x18n/core'
 import { createLibraryPlugin } from '@x18n/core'
 // Detection and syntax adapted from i18n-ally (MIT), src/frameworks/*
 import { colon } from '../../placeholders'
+import { laravelKey, laravelResources } from './shared'
 
 /** Laravel: `lang/{locale}/{file}.php` arrays and `lang/{locale}.json`; keys are `file.key`. Exclusive like i18n-ally. */
 export function laravel(): Preset {
@@ -17,16 +18,8 @@ export function laravel(): Preset {
             patterns: ['[^\\w\\d](?:__|trans|@lang|trans_choice|Lang::get|Lang::choice)\\(\\s*\'([^\']+)\'', '[^\\w\\d](?:__|trans|@lang|trans_choice|Lang::get|Lang::choice)\\(\\s*"([^"]+)"'],
           },
         ],
-        resources: [
-          { pattern: 'lang/{locale}/{namespaces}.php' },
-          { pattern: 'resources/lang/{locale}/{namespaces}.php' },
-          { pattern: 'lang/{locale}.json' },
-          { pattern: 'resources/lang/{locale}.json' },
-        ],
-        // Nested translation files are referenced as `dir/file.key`.
-        normalizeKey: raw => raw.includes('/')
-          ? raw.replace(/\//g, '.')
-          : undefined,
+        resources: laravelResources,
+        normalizeKey: laravelKey,
         templates: [
           { template: '__(\'{key}\')' },
         ],

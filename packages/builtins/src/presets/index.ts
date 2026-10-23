@@ -10,6 +10,7 @@ import i18nTag from './i18n-tag/entry'
 import i18nextShopify from './i18next-shopify/entry'
 import i18next from './i18next/entry'
 import jekyll from './jekyll/entry'
+import laravelVueI18n from './laravel-vue-i18n/entry'
 import laravel from './laravel/entry'
 import lingui from './lingui/entry'
 import nextInternational from './next-international/entry'
@@ -65,6 +66,8 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'ui5': ui5,
   'chrome-extension': chromeExtension,
   'vscode-extension': vscodeExtension,
+  // Before the exclusive `laravel`, which stops the presets after it.
+  'laravel-vue-i18n': laravelVueI18n,
   'laravel': laravel,
   'php-joomla': phpJoomla,
   'php-gettext': phpGettext,
