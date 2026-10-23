@@ -91,6 +91,7 @@ Detection uses the dependencies listed. "Parity" means the i18n-ally framework w
 | `fluent-vue` | fluent-vue | `ftl` format, `$t`, `<fluent>` blocks | 2 |
 | `fluent-react` | @fluent/react | `ftl` format, `<Localized id>`, `l10n.getString`, `props.getString` from `withLocalization`, attributes through `attrs` | 2 |
 | `paraglide` | @inlang/paraglide-js | `messages/{locale}.json`, `m.key()` accessor calls | 2 |
+| `gravity-ui-i18n` | @gravity-ui/i18n | `i18n.i18n(keyset, key)`, `i18n.keyset(keyset)` and `i18n.bind(null, keyset)` with the keyset as key prefix, `{namespaces}/{locale}.json` keyset folders, CLDR plural objects, `{{x}}` placeholders | 2 |
 | `typesafe-i18n` | typesafe-i18n | `src/i18n/{locale}/index.ts` and `{locale}/{namespace}/index.ts` through the `js` format, `LL.a.b()` and `$LL.a.b()` accessor calls (regex), `{name:type\|formatter}` placeholders | 2 |
 | `laravel` | composer: laravel/framework | `php` format, `lang/{locale}/{namespace}.php`, `__()`, `trans()`, `@lang` | 2 |
 | `laravel-vue-i18n` | laravel-vue-i18n | `laravel` resources and keys, `trans()`, `wTrans()`, `transChoice()`, `$t()`, `$tChoice()`; `keygen: 'source'`, ignores the `php_{locale}` files of the Vite plugin; listed before the exclusive `laravel` so both apply | 2 |

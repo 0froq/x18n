@@ -36,6 +36,7 @@ export default defineConfig({
     'presets/svelte-i18n': 'src/presets/svelte-i18n/index.ts',
     'presets/solid-primitives-i18n': 'src/presets/solid-primitives-i18n/index.ts',
     'presets/paraglide': 'src/presets/paraglide/index.ts',
+    'presets/gravity-ui-i18n': 'src/presets/gravity-ui-i18n/index.ts',
     'presets/laravel-vue-i18n': 'src/presets/laravel-vue-i18n/index.ts',
     'presets/typesafe-i18n': 'src/presets/typesafe-i18n/index.ts',
     'presets/ngx-translate': 'src/presets/ngx-translate/index.ts',

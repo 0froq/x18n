@@ -9,6 +9,7 @@ import flutterTranslate from './flutter-translate/entry'
 import flutter from './flutter/entry'
 import general from './general/entry'
 import globalize from './globalize/entry'
+import gravityUiI18n from './gravity-ui-i18n/entry'
 import i18nJs from './i18n-js/entry'
 import i18nTag from './i18n-tag/entry'
 import i18nextShopify from './i18next-shopify/entry'
@@ -65,6 +66,7 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'svelte-i18n': svelteI18n,
   'solid-primitives-i18n': solidPrimitivesI18n,
   'paraglide': paraglide,
+  'gravity-ui-i18n': gravityUiI18n,
   'typesafe-i18n': typesafeI18n,
   'ngx-translate': ngxTranslate,
   'transloco': transloco,

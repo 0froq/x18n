@@ -12,6 +12,7 @@ export { flutter }
 export { flutterTranslate }
 export { general }
 export { globalize }
+export { gravityUiI18n }
 export { i18next }
 export { i18nextShopify }
 export { i18nice }
