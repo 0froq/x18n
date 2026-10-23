@@ -1,7 +1,9 @@
 import type { PresetEntry } from '@x18n/core'
 import chromeExtension from './chrome-extension/entry'
+import easyLocalization from './easy-localization/entry'
 import emberIntl from './ember-intl/entry'
 import fluentVue from './fluent-vue/entry'
+import flutterTranslate from './flutter-translate/entry'
 import flutter from './flutter/entry'
 import general from './general/entry'
 import globalize from './globalize/entry'
@@ -74,5 +76,7 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'ruby-rails': rubyRails,
   'jekyll': jekyll,
   'flutter': flutter,
+  'easy-localization': easyLocalization,
+  'flutter-translate': flutterTranslate,
   'general': general,
 }

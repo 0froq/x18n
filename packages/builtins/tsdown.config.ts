@@ -52,6 +52,8 @@ export default defineConfig({
     'presets/ruby-rails': 'src/presets/ruby-rails/index.ts',
     'presets/jekyll': 'src/presets/jekyll/index.ts',
     'presets/flutter': 'src/presets/flutter/index.ts',
+    'presets/easy-localization': 'src/presets/easy-localization/index.ts',
+    'presets/flutter-translate': 'src/presets/flutter-translate/index.ts',
     'presets/general': 'src/presets/general/index.ts',
     'reporters': 'src/reporters/index.ts',
     'reporters/pretty': 'src/reporters/pretty.ts',
