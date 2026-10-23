@@ -3,6 +3,7 @@ import cargoI18n from './cargo-i18n/entry'
 import chromeExtension from './chrome-extension/entry'
 import easyLocalization from './easy-localization/entry'
 import emberIntl from './ember-intl/entry'
+import fluentReact from './fluent-react/entry'
 import fluentVue from './fluent-vue/entry'
 import flutterTranslate from './flutter-translate/entry'
 import flutter from './flutter/entry'
@@ -52,6 +53,7 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'nuxt-i18n-micro': nuxtI18nMicro,
   'vue-i18n': vueI18n,
   'fluent-vue': fluentVue,
+  'fluent-react': fluentReact,
   'i18next-shopify': i18nextShopify,
   'react-i18next': reactI18next,
   'svelte-i18next': svelteI18next,

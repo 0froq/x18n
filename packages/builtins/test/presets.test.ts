@@ -1,5 +1,6 @@
 import type { Project } from '@x18n/core'
 import { describe, expect, it } from 'vitest'
+import { findCandidates } from '../src/extractors'
 import { createTestProject, json } from './_utils'
 
 function pkg(...deps: string[]): string {
@@ -81,6 +82,46 @@ describe('tier 1 presets', () => {
       'src/App.svelte': `<h1>{m.hello_world({ name })}</h1>\n<p>{m['a.b']()}</p>`,
     })
     expect(project.usages().map(m => m.usage.key)).toEqual(['hello_world', 'a.b'])
+  })
+
+  it('fluent-react: <Localized>, useLocalization and withLocalization', async () => {
+    const { project } = await createTestProject({
+      'package.json': pkg('@fluent/react', 'react'),
+      'public/locales/en/main.ftl': 'hello = Hello { $name }\ntitle = Title\n',
+      'public/locales/en/extra.ftl': 'bye = Bye\n',
+      'public/locales/de/main.ftl': 'hello = Hallo { $who }\n',
+      'src/App.tsx': [
+        `const a = <Localized id="hello" vars={{ name }}><p>Hello</p></Localized>`,
+        `function B() { const { l10n } = useLocalization(); return l10n.getString('title') }`,
+        `function C(props) { return props.getString('bye') }`,
+        `export default withLocalization(C)`,
+        `const getString = (id) => id`,
+        `getString('not-a-key')`,
+      ].join('\n'),
+    })
+    expect(project.explain().presets.find(p => p.name === 'fluent-react')?.reason).toBe('detected')
+    expect(project.keys()).toEqual(['bye', 'hello', 'title'])
+    expect(project.usages().map(m => m.usage.key)).toEqual(['hello', 'title', 'bye'])
+    expect(project.analyze().diagnostics.map(d => `${d.code}:${d.key}`)).toContain('placeholder-mismatch:hello')
+  })
+
+  it('fluent-react: attributes read through attrs are used', async () => {
+    const { project } = await createTestProject({
+      'package.json': pkg('@fluent/react'),
+      'src/locales/en.ftl': 'login = Sign in\n    .title = Sign in to your account\n',
+      'src/App.tsx': `export const App = () => <Localized id="login" attrs={{ title: true }}><button title="Sign in">Sign in</button></Localized>\n`,
+    })
+    expect(project.keys()).toEqual(['login', 'login.title'])
+    expect(project.analyze().unused).toEqual([])
+  })
+
+  it('fluent-react: extracts JSX text into <Localized>', async () => {
+    const { project } = await createTestProject({
+      'package.json': pkg('@fluent/react'),
+      'src/locales/en.ftl': 'title = Title\n',
+      'src/App.tsx': `export function App() {\n  const { l10n } = useLocalization()\n  const label = 'Sign in'\n  return <p>Welcome home</p>\n}\n`,
+    })
+    expect(findCandidates(project).map(c => c.replacement)).toEqual(['l10n.getString(\'signIn\')', '<Localized id="welcomeHome" />'])
   })
 
   it('typesafe-i18n: TS locale files, namespaces, LL.a.b() usages and typed placeholders', async () => {

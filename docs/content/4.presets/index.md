@@ -11,6 +11,7 @@ A preset is a group of plugins for one i18n library. It tells x18n which calls a
 | [`nuxt-i18n-micro`](/presets/nuxt-i18n-micro) | Nuxt I18n Micro | `nuxt-i18n-micro` |
 | [`vue-i18n`](/presets/vue-i18n) | vue-i18n | `vue-i18n`, `vuex-i18n`, `petite-vue-i18n`, `vue-i18n-bridge`, `@intlify/*` |
 | [`fluent-vue`](/presets/fluent-vue) | fluent-vue | `fluent-vue`, `fluent-vue-loader`, `rollup-plugin-fluent-vue`, `unplugin-fluent-vue` |
+| [`fluent-react`](/presets/fluent-react) | @fluent/react | `@fluent/react` |
 | [`i18next-shopify`](/presets/i18next-shopify) | i18next-shopify | `@shopify/i18next-shopify` |
 | [`react-i18next`](/presets/react-i18next) | react-i18next | `react-i18next`, `next-i18next` |
 | [`svelte-i18next`](/presets/svelte-i18next) | svelte-i18next | `svelte-i18next` |
@@ -82,7 +83,7 @@ presets: [vue-i18n, general]
 
 ::
 
-In TS, the presets are functions from `@x18n/cli/presets`: `nuxtI18n`, `nuxtI18nMicro`, `vueI18n`, `fluentVue`, `i18nextShopify`, `reactI18next`, `svelteI18next`, `nextTranslate`, `nextInternational`, `i18next`, `nextIntl`, `reactIntl`, `svelteI18n`, `solidPrimitivesI18n`, `paraglide`, `typesafeI18n`, `ngxTranslate`, `transloco`, `lingui`, `emberIntl`, `polyglot`, `globalize`, `i18nTag`, `i18nJs`, `ui5`, `chromeExtension`, `vscodeExtension`, `laravelVueI18n`, `laravel`, `phpJoomla`, `phpGettext`, `rubyRails`, `jekyll`, `flutter`, `easyLocalization`, `flutterTranslate`, `pythonGettext`, `i18nice`, `cargoI18n` and `general`. In YAML and JSON, use the names in the first column of the table. `presets: []` turns every preset off.
+In TS, the presets are functions from `@x18n/cli/presets`: `nuxtI18n`, `nuxtI18nMicro`, `vueI18n`, `fluentVue`, `fluentReact`, `i18nextShopify`, `reactI18next`, `svelteI18next`, `nextTranslate`, `nextInternational`, `i18next`, `nextIntl`, `reactIntl`, `svelteI18n`, `solidPrimitivesI18n`, `paraglide`, `typesafeI18n`, `ngxTranslate`, `transloco`, `lingui`, `emberIntl`, `polyglot`, `globalize`, `i18nTag`, `i18nJs`, `ui5`, `chromeExtension`, `vscodeExtension`, `laravelVueI18n`, `laravel`, `phpJoomla`, `phpGettext`, `rubyRails`, `jekyll`, `flutter`, `easyLocalization`, `flutterTranslate`, `pythonGettext`, `i18nice`, `cargoI18n` and `general`. In YAML and JSON, use the names in the first column of the table. `presets: []` turns every preset off.
 
 ## What a preset adds
 
@@ -116,7 +117,7 @@ A placeholder syntax tells x18n how placeholders look in messages. The [`placeho
 | double braces | `{{name}}`, `{{name, format}}`, `{{- raw}}` | i18next, react-i18next, i18next-shopify, next-translate, ngx-translate, transloco, flutter-translate |
 | nesting | `$t(key)` | i18next, react-i18next, i18next-shopify |
 | ICU | `{name}`, `{count, plural, one {# item} other {# items}}` | next-intl, react-intl, svelte-i18n, lingui, ember-intl, globalize |
-| fluent | `{ $name }` | fluent-vue |
+| fluent | `{ $name }` | fluent-vue, fluent-react |
 | percent braces | `%{name}` | polyglot, i18n-js, ruby-rails, i18nice |
 | printf | `%s`, `%d`, `%1$s` | php-joomla, php-gettext |
 | Python percent | `%(name)s`, `%s`, `%d` | python-gettext |

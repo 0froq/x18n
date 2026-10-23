@@ -18,6 +18,12 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
     to: '/presets/i18next',
     color: '#26a69a',
   },
+  {
+    name: 'Fluent',
+    icon: 'logos:mozilla',
+    to: '/presets/fluent-react',
+    mono: true,
+  },
   { name: 'Astro', icon: 'logos:astro-icon', to: '/presets/paraglide' },
   { name: 'Ember', icon: 'logos:ember', to: '/presets/ember-intl' },
   { name: 'Shopify', icon: 'logos:shopify', to: '/presets/i18next-shopify' },

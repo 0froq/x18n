@@ -36,6 +36,7 @@
     "./presets/chrome-extension": "./dist/presets/chrome-extension.mjs",
     "./presets/easy-localization": "./dist/presets/easy-localization.mjs",
     "./presets/ember-intl": "./dist/presets/ember-intl.mjs",
+    "./presets/fluent-react": "./dist/presets/fluent-react.mjs",
     "./presets/fluent-vue": "./dist/presets/fluent-vue.mjs",
     "./presets/flutter": "./dist/presets/flutter.mjs",
     "./presets/flutter-translate": "./dist/presets/flutter-translate.mjs",

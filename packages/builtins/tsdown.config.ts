@@ -24,6 +24,7 @@ export default defineConfig({
     'presets/nuxt-i18n-micro': 'src/presets/nuxt-i18n-micro/index.ts',
     'presets/vue-i18n': 'src/presets/vue-i18n/index.ts',
     'presets/fluent-vue': 'src/presets/fluent-vue/index.ts',
+    'presets/fluent-react': 'src/presets/fluent-react/index.ts',
     'presets/i18next-shopify': 'src/presets/i18next-shopify/index.ts',
     'presets/react-i18next': 'src/presets/react-i18next/index.ts',
     'presets/svelte-i18next': 'src/presets/svelte-i18next/index.ts',

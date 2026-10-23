@@ -6,6 +6,7 @@ export { cargoI18n }
 export { chromeExtension }
 export { easyLocalization }
 export { emberIntl }
+export { fluentReact }
 export { fluentVue }
 export { flutter }
 export { flutterTranslate }

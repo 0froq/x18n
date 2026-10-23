@@ -89,6 +89,7 @@ Detection uses the dependencies listed. "Parity" means the i18n-ally framework w
 | `transloco` | @jsverse/transloco, @ngneat/transloco | pipe, directive, `*transloco="let t; read: 'scope'"` scopes, camelCase scope folders as key prefixes | 2 |
 | `lingui` | @lingui/core | `po` format, `{locale}/messages.po`, `t` macro, `<Trans>` | 2 |
 | `fluent-vue` | fluent-vue | `ftl` format, `$t`, `<fluent>` blocks | 2 |
+| `fluent-react` | @fluent/react | `ftl` format, `<Localized id>`, `l10n.getString`, `props.getString` from `withLocalization`, attributes through `attrs` | 2 |
 | `paraglide` | @inlang/paraglide-js | `messages/{locale}.json`, `m.key()` accessor calls | 2 |
 | `typesafe-i18n` | typesafe-i18n | `src/i18n/{locale}/index.ts` and `{locale}/{namespace}/index.ts` through the `js` format, `LL.a.b()` and `$LL.a.b()` accessor calls (regex), `{name:type\|formatter}` placeholders | 2 |
 | `laravel` | composer: laravel/framework | `php` format, `lang/{locale}/{namespace}.php`, `__()`, `trans()`, `@lang` | 2 |
