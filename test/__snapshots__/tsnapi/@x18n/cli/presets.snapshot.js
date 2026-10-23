@@ -25,6 +25,7 @@ export { nextIntl }
 export { nextTranslate }
 export { ngxTranslate }
 export { nuxtI18n }
+export { nuxtI18nMicro }
 export { paraglide }
 export { phpGettext }
 export { phpJoomla }

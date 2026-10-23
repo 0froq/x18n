@@ -21,6 +21,7 @@ import nextInternational from './next-international/entry'
 import nextIntl from './next-intl/entry'
 import nextTranslate from './next-translate/entry'
 import ngxTranslate from './ngx-translate/entry'
+import nuxtI18nMicro from './nuxt-i18n-micro/entry'
 import nuxtI18n from './nuxt-i18n/entry'
 import paraglide from './paraglide/entry'
 import phpGettext from './php-gettext/entry'
@@ -48,6 +49,7 @@ import vueI18n from './vue-i18n/entry'
  */
 export const presets: { readonly [name: string]: PresetEntry } = {
   'nuxt-i18n': nuxtI18n,
+  'nuxt-i18n-micro': nuxtI18nMicro,
   'vue-i18n': vueI18n,
   'fluent-vue': fluentVue,
   'i18next-shopify': i18nextShopify,

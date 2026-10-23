@@ -55,6 +55,7 @@
     "./presets/next-translate": "./dist/presets/next-translate.mjs",
     "./presets/ngx-translate": "./dist/presets/ngx-translate.mjs",
     "./presets/nuxt-i18n": "./dist/presets/nuxt-i18n.mjs",
+    "./presets/nuxt-i18n-micro": "./dist/presets/nuxt-i18n-micro.mjs",
     "./presets/paraglide": "./dist/presets/paraglide.mjs",
     "./presets/php-gettext": "./dist/presets/php-gettext.mjs",
     "./presets/php-joomla": "./dist/presets/php-joomla.mjs",

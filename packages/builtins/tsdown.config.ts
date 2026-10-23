@@ -21,6 +21,7 @@ export default defineConfig({
     'placeholders': 'src/placeholders/index.ts',
     'presets': 'src/presets/index.ts',
     'presets/nuxt-i18n': 'src/presets/nuxt-i18n/index.ts',
+    'presets/nuxt-i18n-micro': 'src/presets/nuxt-i18n-micro/index.ts',
     'presets/vue-i18n': 'src/presets/vue-i18n/index.ts',
     'presets/fluent-vue': 'src/presets/fluent-vue/index.ts',
     'presets/i18next-shopify': 'src/presets/i18next-shopify/index.ts',
