@@ -11,6 +11,34 @@ Universal toolkits for linting, viewing and managing i18n for any frameworks.
 
 `x18n` is the spiritual successor of [i18n-ally](https://github.com/lokalise/i18n-ally), that generalizes its concepts into a framework-agnostic toolkit that runs everywhere with a more robust and extensible architecture.
 
+## Features
+
+**Works with your project**
+
+- 🧩 **45+ Presets, Zero Config** - Detects Vue, React, Angular, Svelte, Astro, Next.js, Nuxt, Flutter, Laravel, Rails, .NET and more automatically
+- 🗂 **Any Format** - JSON, JSON5, YAML, PO, Fluent, INI, Properties, PHP and .NET resource files
+- 🗃 **Namespaces** - Organize messages with `ns:key` style keys
+- 🔌 **Extensible** - Add your own formats, scanners, checks and presets with plugins
+
+**Keep it healthy**
+
+- ✅ **Lint & Check** - Missing, unused and invalid keys, placeholder mismatches and glossary violations, ready for CI
+- 🕐 **Stale Detection** - Find translations whose source text changed since they were written
+- ⚡ **Find Missing** - Report and fill in missing keys and translations for any locale
+- 📦 **Extract Hard Strings** - Detect hard-coded strings and move them into locale files
+
+**Built for agents and CI**
+
+- 🤖 **Agent Friendly** - Translate and review prompts, plus stable `--json` output for scripts and agents
+- 📝 **Review** - Prompts and checks for reviewing existing translations
+
+**Wherever you work**
+
+- 🖥 **CLI, UI and Editors** - The same engine in the terminal, a browser UI, VS Code, any LSP editor, and Vite and Nuxt DevTools
+- 🌍 **Inline Annotations & Hover Preview** - See every locale of a key right in your code
+- 🧭 **Go to Definition & Find References** - Jump from a key to its messages, or list all of its usages
+- 🔁 **Migrate from i18n Ally** - Bring your existing settings over
+
 ## Usages
 
 You can use the `@x18n/cli` package to check, analyze, and manage your i18n resources from the command line.
@@ -63,6 +91,14 @@ For other editors, you can use the [Language Server](./packages/lsp) to enable s
 ## Credits
 
 x18n builds on the ideas of [i18n Ally](https://github.com/lokalise/i18n-ally) and [i18n Ally Next](https://github.com/Lydanne/i18n-ally-next).
+
+## Sponsors
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
+    <img src="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg" alt="Sponsors"/>
+  </a>
+</p>
 
 ## License
 
