@@ -1020,6 +1020,23 @@ class Server {
     return { unused, missing }
   }
 
+  /** Matches of every project, best first. */
+  search(params: P.SearchParams): P.SearchMatch[] {
+    const found = this.projects.flatMap(entry => entry.project.search(params.query, { exact: params.exact }).map(match => ({ entry, match })))
+    return found.sort((a, b) => b.match.score - a.match.score).slice(0, 100).map(({ entry, match }) => {
+      const { project } = entry
+      const node = project.locations(match.key).find(node => node.locale === match.locale)
+      return {
+        project: entry.name,
+        key: match.key,
+        locale: match.locale,
+        value: match.value,
+        definition: node && this.entryLocation(entry, node),
+        usages: project.usages({ key: match.key }).map(m => this.location(entry, m.usage.path, m.usage.range)),
+      }
+    })
+  }
+
   async decorations(params: P.DocumentParams): Promise<P.DecorationsResult> {
     await this.ready
     const found = this.locate(params.uri)
@@ -1101,6 +1118,10 @@ export function setupServer(connection: Connection, options: ServerOptions = {})
   connection.onRequest(methods.usageReport, async () => {
     await server.ready
     return server.usageReport()
+  })
+  connection.onRequest(methods.search, async (params: P.SearchParams) => {
+    await server.ready
+    return server.search(params)
   })
   connection.onRequest(methods.decorations, (params: P.DocumentParams) => server.decorations(params))
   connection.onNotification(methods.setDisplayLocale, (params: P.SetDisplayLocaleParams) => {

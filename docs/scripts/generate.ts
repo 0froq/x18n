@@ -584,6 +584,12 @@ const methodDocs = {
     result: 'UsageReportResult',
     doc: 'Unused keys, and used keys that are not defined.',
   },
+  search: {
+    kind: 'request',
+    params: 'SearchParams',
+    result: 'SearchMatch[]',
+    doc: 'Keys found by their value in any locale, best first: fuzzy unless `exact`, ignoring case. Each match has the matched value, its locale entry and the usages. At most 100.',
+  },
   decorations: {
     kind: 'request',
     params: 'DocumentParams',

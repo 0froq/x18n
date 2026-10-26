@@ -141,6 +141,43 @@ function locate(loaded: LoadedProject, path: string, start: number, end: number)
   }
 }
 
+export async function search(query: string, options: GlobalOptions & { readonly exact?: boolean | undefined, readonly limit?: number | undefined, readonly cursor?: string | undefined }): Promise<void> {
+  const workspace = await openWorkspace(options)
+  const projects = workspace.projects.map((loaded) => {
+    const { project } = loaded
+    const { items, total, nextCursor } = page(project.search(String(query), { exact: options.exact }), options)
+    return {
+      name: loaded.name,
+      total,
+      nextCursor,
+      matches: items.map(m => ({
+        key: m.key,
+        locale: m.locale,
+        value: m.value,
+        usages: project.usages({ key: m.key }).map(u => ({
+          possible: u.possible,
+          ...locate(loaded, u.usage.path, u.usage.range.start, u.usage.range.end),
+        })),
+      })),
+    }
+  })
+  if (options.json) {
+    printJson('search', { projects })
+    return
+  }
+  for (const p of projects) {
+    if (workspace.projects.length > 1)
+      out(`# ${p.name}`)
+    for (const m of p.matches) {
+      out(`${m.key}  ${m.locale}  ${JSON.stringify(m.value)}`)
+      for (const u of m.usages)
+        out(`  ${u.file}:${u.line}:${u.column}${u.possible ? ' (possible)' : ''}`)
+    }
+    if (p.nextCursor)
+      out(`… ${p.total - Number(p.nextCursor)} more (--cursor ${p.nextCursor})`)
+  }
+}
+
 export async function get(input: string, options: GlobalOptions): Promise<void> {
   const workspace = await openWorkspace(options)
   const projects = workspace.projects.flatMap((loaded) => {
