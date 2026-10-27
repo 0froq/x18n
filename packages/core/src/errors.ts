@@ -113,7 +113,7 @@ export const errorDefinitions = {
   },
   X18N5003: {
     why: (p: { reason: string }): string => `Reviews are not available: ${p.reason}`,
-    fix: 'Set `review.enabled` to true, and fix the review file if x18n reports it.',
+    fix: 'Set `review.enabled` to true, and fix the review file if the check reports a problem with it.',
   },
   X18N5004: {
     why: (p: { id: string }): string => `Review not found: ${p.id}`,
