@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const frameworks: { name: string, icon: string, to: string, mono?: boolean, color?: string }[] = [
+const frameworks: { name: string, icon: string, class?: string, to: string, mono?: boolean, color?: string, text?: string }[] = [
   { name: 'Vue', icon: 'logos:vue', to: '/presets/vue-i18n' },
   { name: 'Nuxt', icon: 'logos:nuxt-icon', to: '/presets/nuxt-i18n' },
   { name: 'React', icon: 'logos:react', to: '/presets/react-i18next' },
@@ -19,21 +19,22 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
     color: '#26a69a',
   },
   {
-    name: 'Fluent',
-    icon: 'logos:mozilla',
-    to: '/presets/fluent-react',
-    mono: true,
+    name: 'Astro',
+    icon: 'logos:astro-icon',
+    class: 'dark:invert dark:hue-rotate-180',
+    to: '/presets/paraglide',
   },
-  { name: 'Astro', icon: 'logos:astro-icon', to: '/presets/paraglide' },
   { name: 'Gravity UI', icon: 'ph:planet-bold', to: '/presets/gravity-ui-i18n' },
-  { name: 'Ember', icon: 'logos:ember', to: '/presets/ember-intl' },
-  { name: 'Shopify', icon: 'logos:shopify', to: '/presets/i18next-shopify' },
-  { name: 'SAP', icon: 'logos:sap', to: '/presets/ui5' },
+  { name: 'TypeScript', icon: 'logos:typescript-icon', to: '/presets/typesafe-i18n' },
+
   { name: 'Laravel', icon: 'logos:laravel', to: '/presets/laravel' },
   { name: 'Joomla', icon: 'logos:joomla', to: '/presets/php-joomla' },
   { name: 'PHP', icon: 'logos:php', to: '/presets/php-gettext' },
+  { name: 'Ruby', icon: 'logos:ruby', to: '/presets/ruby-i18n-js' },
   { name: 'Rails', icon: 'logos:rails', to: '/presets/ruby-rails' },
+  { name: 'Ember', icon: 'logos:ember', to: '/presets/ember-intl' },
   { name: 'Jekyll', icon: 'devicon:jekyll', to: '/presets/jekyll' },
+  { name: 'Dart', icon: 'logos:dart', to: '/presets/easy-localization' },
   { name: 'Flutter', icon: 'logos:flutter-icon', to: '/presets/flutter' },
   { name: 'Python', icon: 'logos:python', to: '/presets/python-gettext' },
   { name: 'Django', icon: 'logos:django-icon', to: '/presets/python-gettext' },
@@ -53,6 +54,14 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
   { name: 'Chrome', icon: 'logos:chrome', to: '/presets/chrome-extension' },
   { name: 'Firefox', icon: 'logos:firefox', to: '/presets/chrome-extension' },
   { name: 'VS Code', icon: 'logos:visual-studio-code', to: '/presets/vscode-extension' },
+  { name: 'SAP', icon: 'logos:sap', to: '/presets/ui5' },
+  { name: 'Shopify', icon: 'logos:shopify', to: '/presets/i18next-shopify' },
+  {
+    name: 'Airbnb',
+    icon: 'simple-icons:airbnb',
+    to: '/presets/polyglot',
+    color: '#ff5a5f',
+  },
 ]
 </script>
 
@@ -69,11 +78,13 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
           :aria-label="item.name"
           class="flex h-14 items-center justify-center rounded-lg border border-default bg-elevated/50 px-4 transition duration-200 hover:border-accented hover:bg-elevated"
         >
+          <span v-if="item.text" class="x18n-wordmark text-2xl leading-none">{{ item.text }}</span>
           <UIcon
+            v-else
             :name="item.icon"
             mode="svg"
             class="h-7 w-auto"
-            :class="item.mono && 'dark:invert'"
+            :class="[item.class, item.mono && 'dark:invert']"
             :style="item.color ? { color: item.color } : undefined"
           />
         </NuxtLink>
@@ -82,3 +93,10 @@ const frameworks: { name: string, icon: string, to: string, mono?: boolean, colo
     <UButton to="/presets" color="neutral" variant="soft" trailing-icon="i-ph-arrow-right" label="Check full list" />
   </div>
 </template>
+
+<style scoped>
+.x18n-wordmark {
+  font-family: 'Sarina', 'Snell Roundhand', cursive;
+  color: #ff9400;
+}
+</style>

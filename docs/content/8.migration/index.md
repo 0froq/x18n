@@ -127,7 +127,7 @@ When a folder has `i18n-ally.*` settings in `.vscode/settings.json` and no `x18n
 | `polyglot` | `polyglot` |
 | `globalize` | `globalize` |
 | `i18n-tag` | `i18n-tag` |
-| `i18n-js` | `i18n-js` |
+| `i18n-js` | `ruby-i18n-js` |
 | `ui5` | `ui5` |
 | `chrome-ext` | `chrome-extension` |
 | `vscode` | `vscode-extension` |

@@ -32,7 +32,7 @@ A preset is a group of plugins for one i18n library. It tells x18n which calls a
 | [`polyglot`](/presets/polyglot) | Polyglot.js | `node-polyglot` |
 | [`globalize`](/presets/globalize) | Globalize | `globalize` |
 | [`i18n-tag`](/presets/i18n-tag) | es2015-i18n-tag | `es2015-i18n-tag` |
-| [`i18n-js`](/presets/i18n-js) | i18n-js | `i18n-js` |
+| [`ruby-i18n-js`](/presets/ruby-i18n-js) | i18n-js | `i18n-js` |
 | [`ui5`](/presets/ui5) | SAPUI5, OpenUI5 | `@ui5/cli` |
 | [`chrome-extension`](/presets/chrome-extension) | Chrome and WebExtension i18n | `default_locale` in `manifest.json`, `src/manifest.json` or `public/manifest.json` |
 | [`vscode-extension`](/presets/vscode-extension) | VS Code extension API | `vscode`, `@types/vscode` |
@@ -120,7 +120,7 @@ A placeholder syntax tells x18n how placeholders look in messages. The [`placeho
 | nesting | `$t(key)` | i18next, react-i18next, i18next-shopify |
 | ICU | `{name}`, `{count, plural, one {# item} other {# items}}` | next-intl, react-intl, svelte-i18n, lingui, ember-intl, globalize |
 | fluent | `{ $name }` | fluent-vue, fluent-react |
-| percent braces | `%{name}` | polyglot, i18n-js, ruby-rails, i18nice |
+| percent braces | `%{name}` | polyglot, ruby-i18n-js, ruby-rails, i18nice |
 | printf | `%s`, `%d`, `%1$s` | php-joomla, php-gettext |
 | Python percent | `%(name)s`, `%s`, `%d` | python-gettext |
 | colon | `:name` | laravel |

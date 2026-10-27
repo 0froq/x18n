@@ -11,7 +11,6 @@ import flutter from './flutter/entry'
 import general from './general/entry'
 import globalize from './globalize/entry'
 import gravityUiI18n from './gravity-ui-i18n/entry'
-import i18nJs from './i18n-js/entry'
 import i18nTag from './i18n-tag/entry'
 import i18nextShopify from './i18next-shopify/entry'
 import i18next from './i18next/entry'
@@ -33,6 +32,7 @@ import polyglot from './polyglot/entry'
 import pythonGettext from './python-gettext/entry'
 import reactI18next from './react-i18next/entry'
 import reactIntl from './react-intl/entry'
+import rubyI18nJs from './ruby-i18n-js/entry'
 import rubyRails from './ruby-rails/entry'
 import solidPrimitivesI18n from './solid-primitives-i18n/entry'
 import svelteI18n from './svelte-i18n/entry'
@@ -76,7 +76,7 @@ export const presets: { readonly [name: string]: PresetEntry } = {
   'polyglot': polyglot,
   'globalize': globalize,
   'i18n-tag': i18nTag,
-  'i18n-js': i18nJs,
+  'ruby-i18n-js': rubyI18nJs,
   'ui5': ui5,
   'chrome-extension': chromeExtension,
   'vscode-extension': vscodeExtension,

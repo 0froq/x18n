@@ -3,12 +3,12 @@ import { createLibraryPlugin } from '@x18n/core'
 // Detection and syntax adapted from i18n-ally (MIT), src/frameworks/*
 import { percentBraces } from '../../placeholders'
 
-export function i18nJs(): Preset {
+export function rubyI18nJs(): Preset {
   return {
-    name: 'i18n-js',
+    name: 'ruby-i18n-js',
     plugins: [
       createLibraryPlugin({
-        name: 'x18n:i18n-js',
+        name: 'x18n:ruby-i18n-js',
         calls: [
           {
             callee: ['I18n.t', 'i18n.t'],
@@ -26,4 +26,4 @@ export function i18nJs(): Preset {
   }
 }
 
-export default i18nJs
+export default rubyI18nJs

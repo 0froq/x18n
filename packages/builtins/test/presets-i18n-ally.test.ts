@@ -156,7 +156,7 @@ describe('every i18n-ally framework is detected and understood', () => {
         'i18n-js',
         'src/a.js',
         'I18n.t(\'a.b\')',
-        'i18n-js',
+        'ruby-i18n-js',
       ],
       [
         'ember-intl',

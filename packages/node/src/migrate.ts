@@ -57,7 +57,7 @@ const frameworkPresets: Readonly<Record<string, string>> = {
   'ui5': 'ui5',
   'lingui': 'lingui',
   'jekyll': 'jekyll',
-  'i18n-js': 'i18n-js',
+  'i18n-js': 'ruby-i18n-js',
 }
 
 const languageExtensions: Readonly<Record<string, readonly string[]>> = {

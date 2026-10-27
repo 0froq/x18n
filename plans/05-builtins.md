@@ -109,7 +109,7 @@ Detection uses the dependencies listed. "Parity" means the i18n-ally framework w
 | `chrome-extension` | manifest.json with `default_locale` | `_locales/{locale}/messages.json`, `.message` transform, `chrome.i18n.getMessage` | 2 |
 | `angular` | @angular/localize | `xliff`, `$localize` | 3 |
 | `ember-intl` | ember-intl | `t` helper | 3 |
-| `polyglot`, `globalize`, `i18n-tag`, `ui5`, `php-gettext`, `php-joomla`, `jekyll`, `i18n-js` | as in i18n-ally | port of the i18n-ally definition | 3 |
+| `polyglot`, `globalize`, `i18n-tag`, `ui5`, `php-gettext`, `php-joomla`, `jekyll`, `ruby-i18n-js` | as in i18n-ally | port of the i18n-ally definition | 3 |
 
 ## Checks
 

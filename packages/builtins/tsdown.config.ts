@@ -47,7 +47,7 @@ export default defineConfig({
     'presets/polyglot': 'src/presets/polyglot/index.ts',
     'presets/globalize': 'src/presets/globalize/index.ts',
     'presets/i18n-tag': 'src/presets/i18n-tag/index.ts',
-    'presets/i18n-js': 'src/presets/i18n-js/index.ts',
+    'presets/ruby-i18n-js': 'src/presets/ruby-i18n-js/index.ts',
     'presets/ui5': 'src/presets/ui5/index.ts',
     'presets/chrome-extension': 'src/presets/chrome-extension/index.ts',
     'presets/vscode-extension': 'src/presets/vscode-extension/index.ts',

@@ -17,7 +17,7 @@ i18n-ally is MIT licensed (Copyright Lokalise Inc., Anthony Fu, think2011). x18n
 | `core/loaders/LocaleLoader.ts` `guessDirStructure`, `findLocaleDirs` | `pattern` finder auto-guess | Only the heuristics; the loader itself is replaced by the core engine. |
 | `tagSystems/*` | `@x18n/core` lenient `localeInfo` parse | Display data only (language, region, flag); codes are never rewritten. Declare `bcp-47` as a dependency (missing in i18n-ally). |
 | `utils/flat.ts`, `utils/utils.ts` `applyPendingToObject` | core key style | |
-| `frameworks/*.ts` | `@x18n/builtins/presets` | Regexes become `regex` scanner config for parity; call specs for the `js` scanner are new. Refactor templates, derived key rules, `rewriteKeys`, scope rules, data transforms (Rails, chrome-ext). Fix `perferredKeystyle` typos while porting. Register `i18n-js` (never registered upstream). |
+| `frameworks/*.ts` | `@x18n/builtins/presets` | Regexes become `regex` scanner config for parity; call specs for the `js` scanner are new. Refactor templates, derived key rules, `rewriteKeys`, scope rules, data transforms (Rails, chrome-ext). Fix `perferredKeystyle` typos while porting. Register `ruby-i18n-js` (never registered upstream). |
 | `frameworks/custom.ts` | YAML plugin format + migration | |
 | `utils/Regex.ts` (`handleRegexMatch`, `regexFindKeys`, `normalizeUsageMatchRegex`) | `regex` scanner | Replace `lastIndexOf` positioning with capture group indices (`d` flag). |
 | `core/Analyst.ts` usage report | core analysis + `unused-key` / `missing-key` checks | |

@@ -17,7 +17,6 @@ export { gravityUiI18n }
 export { i18next }
 export { i18nextShopify }
 export { i18nice }
-export { i18nJs }
 export { i18nTag }
 export { jekyll }
 export { laravel }
@@ -37,6 +36,7 @@ export { pythonGettext }
 export { railsLazyKey }
 export { reactI18next }
 export { reactIntl }
+export { rubyI18nJs }
 export { rubyRails }
 export { solidPrimitivesI18n }
 export { svelteI18n }
