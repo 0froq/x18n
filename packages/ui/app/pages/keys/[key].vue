@@ -13,10 +13,13 @@ import KeySidebar from '../../components/KeySidebar.vue'
 import LocaleFlag from '../../components/LocaleFlag.vue'
 import MessageEditor from '../../components/MessageEditor.vue'
 import MessageText from '../../components/MessageText.vue'
+import ReviewComposer from '../../components/ReviewComposer.vue'
+import ReviewThread from '../../components/ReviewThread.vue'
 import UiSection from '../../components/ui/UiSection.vue'
 import { applyEdit, describeProblem, setMessage } from '../../edit'
 import { t } from '../../i18n'
 import { translatePrompt } from '../../prompt'
+import { reviewStates } from '../../review'
 import { backend, currentProject, locales, projectName, showAllLocales, useLive, visibleLocales } from '../../state'
 
 const route = useRoute()
@@ -26,7 +29,10 @@ const detail = useLive((b, project) => b.key(project, key.value))
 const rows = computed(() => visibleLocales.value.map(locale => ({
   locale: locale.code,
   message: detail.value?.messages.find(m => m.locale === locale.code),
+  thread: detail.value?.reviews.find(r => r.locale === locale.code),
 })))
+const reviewing = ref<string>()
+const canReview = computed(() => backend.value?.capabilities.write === true && currentProject.value?.reviews !== undefined)
 const hiddenCount = computed(() => locales.value.length - visibleLocales.value.length)
 const sourceValue = computed(() => detail.value?.messages.find(m => m.locale === currentProject.value?.sourceLocale)?.value)
 
@@ -100,11 +106,12 @@ function openUsage(usage: UsageView): void {
             {{ t('localeBar.noneShown') }}
           </p>
           <div v-for="row in rows" :key="row.locale" class="grid grid-cols-[7rem_1fr_auto] items-start gap-4 border-b border-base px-4 py-3 last:border-b-0" :data-locale="row.locale">
-            <span class="flex items-center gap-2 pt-0.5 font-mono">
+            <span class="flex flex-wrap items-center gap-2 pt-0.5 font-mono">
               <LocaleFlag :code="row.locale" />
               {{ row.locale }}
               <span v-if="row.locale === currentProject?.sourceLocale" class="badge">{{ t('overview.source') }}</span>
               <span v-if="row.message?.outdated" class="badge border-current color-warn" :title="t('history.outdatedHint')">{{ t('history.outdated') }}</span>
+              <span v-if="row.thread?.state" class="badge gap-1 border-current" :class="reviewStates[row.thread.state].color" :title="t(reviewStates[row.thread.state].label)"><span :class="reviewStates[row.thread.state].icon" />{{ row.thread.comments.filter(c => !c.resolved).length }}</span>
             </span>
             <MessageEditor
               v-if="editing?.locale === row.locale"
@@ -130,6 +137,9 @@ function openUsage(usage: UsageView): void {
               </dl>
             </div>
             <div class="flex gap-1">
+              <button v-if="canReview" type="button" class="btn-icon h-6 w-6 text-sm" :class="reviewing === row.locale && 'bg-hover color-base'" :aria-label="t('review.add')" :title="t('review.add')" :aria-expanded="reviewing === row.locale" @click="reviewing = reviewing === row.locale ? undefined : row.locale">
+                <span class="i-ph-chat-circle-text-duotone" />
+              </button>
               <CopyPrompt v-if="row.locale !== currentProject?.sourceLocale" :text="translatePrompt([{ locale: row.locale, key }])" :label="t('prompt.copy')" :hint="t('prompt.hint')" />
               <InfoPop v-if="row.message" icon="i-ph-file-text-duotone" :label="t('detail.file')">
                 <FilePath :path="row.message.path" :line="row.message.line" />
@@ -137,6 +147,10 @@ function openUsage(usage: UsageView): void {
               <InfoPop v-if="row.message?.changed" icon="i-ph-clock-counter-clockwise-duotone" :label="t('history.title')">
                 <ChangeInfo :change="row.message.changed" />
               </InfoPop>
+            </div>
+            <div v-if="row.thread?.comments.length || reviewing === row.locale" class="col-span-2 col-start-2 grid gap-3 pb-1">
+              <ReviewThread v-if="row.thread?.comments.length" :thread="row.thread" :current="row.message?.value" />
+              <ReviewComposer v-if="reviewing === row.locale" :review-key="key" :locale="row.locale" :current="row.message?.value" @close="reviewing = undefined" />
             </div>
           </div>
           <button v-if="hiddenCount" class="btn-ghost h-9 w-full justify-start px-4" @click="showAllLocales">

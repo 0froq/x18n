@@ -13,7 +13,7 @@ import { reporters } from '../../packages/builtins/src/reporters/index'
 import { exitCodeFor } from '../../packages/cli/src/context'
 import { buildJsonSchema } from '../../packages/core/scripts/schema'
 import { errorDefinitions } from '../../packages/core/src/errors'
-import { ConfigSchema, contractVersion, createMemoryHost, PluginFileSchema, resolveConfig } from '../../packages/core/src/index'
+import { ConfigSchema, contractVersion, createMemoryHost, PluginFileSchema, resolveConfig, ReviewFileSchema } from '../../packages/core/src/index'
 import { commands as lspCommands, methods as lspMethods } from '../../packages/lsp/src/protocol'
 import { registerAgentTools } from '../../packages/ui/src/node/agent'
 import vscodePackage from '../../packages/vscode/package.json' with { type: 'json' }
@@ -1112,6 +1112,7 @@ async function main(): Promise<void> {
   await mkdir(join(docs, 'public/schema'), { recursive: true })
   await writeFile(join(docs, 'public/schema/config.json'), `${JSON.stringify(buildJsonSchema(ConfigSchema, 'x18n config'), null, 2)}\n`)
   await writeFile(join(docs, 'public/schema/plugin.json'), `${JSON.stringify(buildJsonSchema(PluginFileSchema, 'x18n YAML plugin'), null, 2)}\n`)
+  await writeFile(join(docs, 'public/schema/reviews.json'), `${JSON.stringify(buildJsonSchema(ReviewFileSchema, 'x18n reviews'), null, 2)}\n`)
   process.stdout.write(`Generated ${outputs.size} files (${changed.length} changed, ${stale.length} removed).\n`)
 }
 

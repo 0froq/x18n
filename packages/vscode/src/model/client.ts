@@ -8,6 +8,8 @@ import type {
   PositionParams,
   ProgressResult,
   ProjectInfo,
+  ReviewsParams,
+  ReviewsResult,
   SearchMatch,
   SearchParams,
   TranslatePromptParams,
@@ -28,6 +30,7 @@ export interface Requests {
   'x18n/decorations': [DocumentParams, DecorationsResult]
   'x18n/openUi': [OpenUiParams, OpenUiResult]
   'x18n/translatePrompt': [TranslatePromptParams, string]
+  'x18n/reviews': [ReviewsParams, ReviewsResult]
   'x18n/explain': [undefined, string]
 }
 

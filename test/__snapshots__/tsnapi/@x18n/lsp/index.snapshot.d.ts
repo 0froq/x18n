@@ -13,6 +13,9 @@ export interface Commands {
   readonly renamePrefix: "x18n.renamePrefix";
   readonly extract: "x18n.extract";
   readonly migrateI18nAlly: "x18n.migrateI18nAlly";
+  readonly review: "x18n.review";
+  readonly resolveReview: "x18n.resolveReview";
+  readonly applySuggestion: "x18n.applySuggestion";
 }
 export interface Decoration {
   readonly range: Range;
@@ -71,6 +74,7 @@ export interface Methods {
   readonly setDisplayLocale: "x18n/setDisplayLocale";
   readonly openUi: "x18n/openUi";
   readonly translatePrompt: "x18n/translatePrompt";
+  readonly reviews: "x18n/reviews";
   readonly explain: "x18n/explain";
   readonly changed: "x18n/changed";
 }
@@ -109,6 +113,37 @@ export interface ProjectInfo {
 export interface Range {
   readonly start: Position;
   readonly end: Position;
+}
+export interface ReviewCommentInfo {
+  readonly id: string;
+  readonly type: "comment" | "approve" | "request-change" | "suggestion";
+  readonly author?: {
+    readonly name?: string | undefined;
+    readonly email?: string | undefined;
+  } | undefined;
+  readonly time: string;
+  readonly text?: string | undefined;
+  readonly suggestion?: string | undefined;
+  readonly value?: string | undefined;
+  readonly resolved?: boolean | undefined;
+  readonly stale: boolean;
+}
+export interface ReviewsParams {
+  readonly project?: string | undefined;
+  readonly key?: string | undefined;
+  readonly locale?: string | undefined;
+  readonly open?: boolean | undefined;
+}
+export interface ReviewsResult {
+  readonly threads: readonly ReviewThreadInfo[];
+}
+export interface ReviewThreadInfo {
+  readonly project: string;
+  readonly key: string;
+  readonly locale: string;
+  readonly state: "changes-requested" | "approved" | "stale-approval" | "suggested" | "commented" | undefined;
+  readonly comments: readonly ReviewCommentInfo[];
+  readonly location: Location | undefined;
 }
 export interface SearchMatch {
   readonly project: string;

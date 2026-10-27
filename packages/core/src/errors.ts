@@ -107,6 +107,22 @@ export const errorDefinitions = {
     why: (p: { reason: string }): string => `Invalid edit input: ${p.reason}`,
     fix: 'Check the input shape against the docs.',
   },
+  X18N5001: {
+    why: (p: { path: string, reason: string }): string => `Review file ${p.path} could not be read: ${p.reason}`,
+    fix: 'Fix the file against `schema/reviews.json`, or restore it from git.',
+  },
+  X18N5003: {
+    why: (p: { reason: string }): string => `Reviews are not available: ${p.reason}`,
+    fix: 'Set `review.enabled` to true, and fix the review file if x18n reports it.',
+  },
+  X18N5004: {
+    why: (p: { id: string }): string => `Review not found: ${p.id}`,
+    fix: 'List review ids with `x18n review list` (agents: the `x18n_reviews` tool).',
+  },
+  X18N5005: {
+    why: (p: { id: string }): string => `Review ${p.id} is not an open suggestion`,
+    fix: 'Apply only open reviews of type `suggestion`.',
+  },
 }
 
 export type ErrorCode = keyof typeof errorDefinitions
