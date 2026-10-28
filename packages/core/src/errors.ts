@@ -133,7 +133,7 @@ type ErrorHandles = { readonly [C in ErrorCode]: (...args: Parameters<Diagnostic
 
 /** Raise with `throw errors.X18N2002({ path, reason })`. Core has no reporters: surfaces print what they catch. */
 export const errors: ErrorHandles = defineDiagnostics({
-  docsBase: 'https://x18n.antfu.dev/errors',
+  docsBase: 'https://x18n.dev/errors',
   codes: errorDefinitions,
 }) as ErrorHandles // nostics types `name` and `code` as string; each handle sets both to its own code
 

@@ -46,4 +46,4 @@ In VS Code, the extension offers the same migration when it finds i18n-ally sett
 | `localeCountryMap` | `localeInfo` flags in the generated YAML plugin |
 | custom framework `languageIds`, `usageMatchRegex`, `scopeRangeRegex`, `refactorTemplates`, `monopoly` | the generated YAML plugin: `scanners.regex`, `scopes.regex`, `extract.templates`; `monopoly` sets `presets: []` |
 
-The full map is on the docs page <https://x18n.antfu.dev/migration>.
+The full map is on the docs page <https://x18n.dev/migration>.

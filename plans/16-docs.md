@@ -1,6 +1,6 @@
 # 16 - Docs site
 
-The site lives at `https://x18n.antfu.dev` (`site.url` and `llms.domain`).
+The site lives at `https://x18n.dev` (`site.url` and `llms.domain`).
 
 `docs/` is a Nuxt app that extends the `comark-docs` layer, the same setup as devframe's docs (`devframes/devframe` `docs/`):
 

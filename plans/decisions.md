@@ -145,7 +145,7 @@ Each entry: what was decided, what else was considered, and why. New decisions g
 ## D24 - Identity and access
 
 - Extension id `antfu.x18n`, through a staged packaging copy, because Turborepo needs unique workspace names.
-- Docs at `x18n.antfu.dev`.
+- Docs at `x18n.dev`.
 - One lockstep version for all packages and the extension.
 - `x18n ui` auth always on: magic link, issued tokens, bearer token for HTTP MCP, `--no-auth` for CI only.
 - The UI SPA ships inside `@x18n/ui`.

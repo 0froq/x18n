@@ -46,8 +46,8 @@ export const sarifReporter: Reporter = {
           tool: {
             driver: {
               name: 'x18n',
-              informationUri: 'https://x18n.antfu.dev',
-              rules: rules.map(id => ({ id, helpUri: `https://x18n.antfu.dev/checks/${id}` })),
+              informationUri: 'https://x18n.dev',
+              rules: rules.map(id => ({ id, helpUri: `https://x18n.dev/checks/${id}` })),
             },
           },
           results,

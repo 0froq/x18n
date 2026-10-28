@@ -266,9 +266,9 @@ function customFramework(data: unknown, parts: PluginParts): void {
 
 function configFile(config: SerializableConfig, format: 'ts' | 'yml' | 'json'): MigrationFile {
   if (format === 'yml')
-    return { path: 'x18n.config.yml', content: `# yaml-language-server: $schema=https://x18n.antfu.dev/schema/config.json\n${stringifyYaml(config)}` }
+    return { path: 'x18n.config.yml', content: `# yaml-language-server: $schema=https://x18n.dev/schema/config.json\n${stringifyYaml(config)}` }
   if (format === 'json')
-    return { path: 'x18n.config.json', content: `${JSON.stringify({ $schema: 'https://x18n.antfu.dev/schema/config.json', ...config }, null, 2)}\n` }
+    return { path: 'x18n.config.json', content: `${JSON.stringify({ $schema: 'https://x18n.dev/schema/config.json', ...config }, null, 2)}\n` }
   const body = JSON.stringify(config, null, 2).replace(/"([a-z_$][\w$]*)":/gi, '$1:').replace(/'/g, '\\\'').replace(/"/g, '\'')
   return { path: 'x18n.config.ts', content: `import { defineConfig } from '@x18n/core'\n\n// Migrated from i18n-ally by \`x18n migrate i18n-ally\`.\nexport default defineConfig(${body})\n` }
 }

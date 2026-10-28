@@ -7,7 +7,7 @@ Comments, approvals, change requests and suggested values on messages. A port of
 Default file `.x18n/reviews.yml` (`review.file`), tracked in git, so reviews travel with the branch and show up in PR diffs. Its schema is `ReviewFileSchema` in core, published as `schema/reviews.json`.
 
 ```yaml
-# yaml-language-server: $schema=https://x18n.antfu.dev/schema/reviews.json
+# yaml-language-server: $schema=https://x18n.dev/schema/reviews.json
 x18n: 1
 threads:
   'auth:login.title':

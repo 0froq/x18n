@@ -417,7 +417,7 @@
     "jsonValidation": [
       {
         "fileMatch": "x18n.config.json",
-        "url": "https://x18n.antfu.dev/schema/config.json"
+        "url": "https://x18n.dev/schema/config.json"
       }
     ],
     "yamlValidation": [
@@ -426,14 +426,14 @@
           "x18n.config.yml",
           "x18n.config.yaml"
         ],
-        "url": "https://x18n.antfu.dev/schema/config.json"
+        "url": "https://x18n.dev/schema/config.json"
       },
       {
         "fileMatch": [
           "*.x18n-plugin.yml",
           "*.x18n-plugin.yaml"
         ],
-        "url": "https://x18n.antfu.dev/schema/plugin.json"
+        "url": "https://x18n.dev/schema/plugin.json"
       }
     ]
   },

@@ -50,7 +50,7 @@ describe('reviews', () => {
     const { project, files } = await setup()
     await run(project, review('save', 'de', 'comment', { text: 'Fine?', id: 'aaaaaa' }), review('login.title', 'de', 'request-change', { text: 'Too formal, use "Anmelden".', id: 'bbbbbb' }))
     expect(files.get('.x18n/reviews.yml')).toMatchInlineSnapshot(`
-      "# yaml-language-server: $schema=https://x18n.antfu.dev/schema/reviews.json
+      "# yaml-language-server: $schema=https://x18n.dev/schema/reviews.json
       x18n: 1
       threads:
         login.title:

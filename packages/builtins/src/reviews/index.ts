@@ -2,7 +2,7 @@ import type { Plugin, ReviewFile, ReviewStore } from '@x18n/core'
 import { ReviewFileSchema, validate } from '@x18n/core'
 import { parse, stringify } from 'yaml'
 
-const header = '# yaml-language-server: $schema=https://x18n.antfu.dev/schema/reviews.json\n'
+const header = '# yaml-language-server: $schema=https://x18n.dev/schema/reviews.json\n'
 
 /** Reviews in a YAML file (`.x18n/reviews.yml`), tracked in git so they show up in pull requests. */
 export const yamlReviewStore: ReviewStore = {

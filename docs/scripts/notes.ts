@@ -8,7 +8,7 @@ export const errorNotes: { readonly [C in ErrorCode]: { readonly title: string, 
 
 1. Read the field path in the message and compare the value with the [config reference](/references/config).
 2. YAML and JSON configs reject unknown keys. If the field is a typo, fix the name.
-3. Add \`$schema: https://x18n.antfu.dev/schema/config.json\` to a YAML or JSON config. Your editor then shows the errors as you type.
+3. Add \`$schema: https://x18n.dev/schema/config.json\` to a YAML or JSON config. Your editor then shows the errors as you type.
 
 The CLI uses the same code for command input it cannot use: an unknown \`--reporter\` id, an unknown \`x18n prompt\` kind, a missing \`--to\`, or an \`x18n.config.*\` that already exists when you run \`x18n init\` or \`x18n migrate\` without \`--force\`.`,
   },
@@ -61,7 +61,7 @@ Commands that write files (\`set\`, \`apply\`, \`rename\`, \`delete\`, \`fill\`,
     title: 'Invalid YAML plugin',
     notes: `A YAML plugin file does not match the plugin schema. The message names the file, the field and the problem.
 
-1. Add \`# yaml-language-server: $schema=https://x18n.antfu.dev/schema/plugin.json\` as the first line of the file. Your editor then shows the errors.
+1. Add \`# yaml-language-server: $schema=https://x18n.dev/schema/plugin.json\` as the first line of the file. Your editor then shows the errors.
 2. Fix each field that the message lists. See [YAML plugins](/plugins/yaml).`,
   },
 
@@ -183,7 +183,7 @@ Commands that write files (\`set\`, \`apply\`, \`rename\`, \`delete\`, \`fill\`,
     notes: `x18n found the review file (\`review.file\`, default \`.x18n/reviews.yml\`), but it is not valid YAML or does not match the reviews schema. Until it is fixed, x18n does not write reviews, so the file never loses what it holds. Renames and deletes still work, but leave the file as it is.
 
 1. Fix the problem that the message names. A merge conflict in the file is a common cause.
-2. Add \`# yaml-language-server: $schema=https://x18n.antfu.dev/schema/reviews.json\` as the first line. Your editor then shows the errors.
+2. Add \`# yaml-language-server: $schema=https://x18n.dev/schema/reviews.json\` as the first line. Your editor then shows the errors.
 3. Or restore the file from git.`,
   },
 

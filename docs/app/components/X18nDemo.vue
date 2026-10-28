@@ -1,8 +1,9 @@
 <script setup lang="ts">
 const tabs = [
   { id: 'cli', label: 'CLI', icon: 'i-ph-terminal-window-duotone' },
-  { id: 'ui', label: 'DevTools UI', icon: 'i-ph-table-duotone' },
-  { id: 'vscode', label: 'VS Code', icon: 'i-ph-code-duotone' },
+  { id: 'ui', label: 'Interactive UI', icon: 'i-ph-table-duotone' },
+  { id: 'vscode', label: 'VS Code', icon: 'i-bxl-visual-studio' },
+  { id: 'try', label: 'Try it now', icon: 'i-ph-rocket-launch-duotone' },
 ] as const
 
 const active = ref<(typeof tabs)[number]['id']>('cli')
@@ -63,7 +64,7 @@ function onKeydown(event: KeyboardEvent) {
     </div>
     <div role="tabpanel" :aria-labelledby="`${uid}-${active}`" class="relative h-[33rem] overflow-hidden rounded-lg border border-muted bg-default">
       <svg
-        v-if="auto && progress.ms"
+        v-if="auto && progress.ms && active !== 'try'"
         viewBox="0 0 20 20"
         class="pointer-events-none absolute right-3 top-3 z-30 size-3.5 -rotate-90 opacity-40"
         aria-hidden="true"
@@ -84,7 +85,8 @@ function onKeydown(event: KeyboardEvent) {
       <Transition name="x18n-pane" mode="out-in">
         <X18nDemoCli v-if="active === 'cli'" @start="onStart" @done="next" />
         <X18nDemoUi v-else-if="active === 'ui'" @start="onStart" @done="next" />
-        <X18nDemoVscode v-else @start="onStart" @done="next" />
+        <X18nDemoVscode v-else-if="active === 'vscode'" @start="onStart" @done="next" />
+        <X18nDemoTry v-else />
       </Transition>
     </div>
   </div>

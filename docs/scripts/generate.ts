@@ -286,8 +286,8 @@ This page lists every option of the config file. Read [Configuration](/guide/con
 
 YAML and JSON configs are validated with a JSON Schema. Point your editor at it:
 
-- YAML: \`# yaml-language-server: $schema=https://x18n.antfu.dev/schema/config.json\` as the first line.
-- JSON: \`"$schema": "https://x18n.antfu.dev/schema/config.json"\`.
+- YAML: \`# yaml-language-server: $schema=https://x18n.dev/schema/config.json\` as the first line.
+- JSON: \`"$schema": "https://x18n.dev/schema/config.json"\`.
 
 \`x18n schema config\` prints the same schema. A default is the value before presets run. Presets add resources, call specs, derived keys and extraction templates on top of it.
 
@@ -879,7 +879,7 @@ async function errorPages(): Promise<void> {
 \`\`\`
 [${errorCode}] ${entry.title} <detail>
 ├▶ fix: ${fix}
-╰▶ see: https://x18n.antfu.dev/errors/${errorCode.toLowerCase()}
+╰▶ see: https://x18n.dev/errors/${errorCode.toLowerCase()}
 \`\`\`
 
 The CLI prints the code and why the error happened, with details such as a file name or a field. The fix and a link to this page follow. With \`--json\`, the same parts are in \`errors\` of the [envelope](/references/json-contracts).
@@ -1108,7 +1108,7 @@ async function main(): Promise<void> {
   }
   for (const path of stale)
     await rm(join(docs, path))
-  // Served at https://x18n.antfu.dev/schema/*.json; rebuilt on every run, so not committed.
+  // Served at https://x18n.dev/schema/*.json; rebuilt on every run, so not committed.
   await mkdir(join(docs, 'public/schema'), { recursive: true })
   await writeFile(join(docs, 'public/schema/config.json'), `${JSON.stringify(buildJsonSchema(ConfigSchema, 'x18n config'), null, 2)}\n`)
   await writeFile(join(docs, 'public/schema/plugin.json'), `${JSON.stringify(buildJsonSchema(PluginFileSchema, 'x18n YAML plugin'), null, 2)}\n`)

@@ -2,7 +2,7 @@
 
 Manage and view the i18n files of any project: inline translations, missing-key diagnostics, key rename, hard-string extraction, and the x18n UI in a panel.
 
-See the [documentation](https://x18n.antfu.dev/surfaces/vscode) for setup and usage.
+See the [documentation](https://x18n.dev/surfaces/vscode) for setup and usage.
 
 ## Features
 

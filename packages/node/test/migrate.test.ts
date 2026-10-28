@@ -36,7 +36,7 @@ describe('migrate i18n-ally', () => {
     const { files, notes, removable, project } = await migrateAndLoad(dir)
     const config = JSON.parse(files.find(f => f.path === 'x18n.config.json')!.content)
     expect(config).toEqual({
-      $schema: 'https://x18n.antfu.dev/schema/config.json',
+      $schema: 'https://x18n.dev/schema/config.json',
       sourceLocale: 'en',
       presets: ['vue-i18n'],
       resources: [
@@ -70,7 +70,7 @@ describe('migrate i18n-ally', () => {
     const dir = await fixture('vue')
     const { files, notes, removable, project } = await migrateAndLoad(dir)
     expect(files.find(f => f.path === '.x18n/reviews.yml')!.content).toMatchInlineSnapshot(`
-      "# yaml-language-server: $schema=https://x18n.antfu.dev/schema/reviews.json
+      "# yaml-language-server: $schema=https://x18n.dev/schema/reviews.json
       x18n: 1
       threads:
         home.title:

@@ -74,11 +74,11 @@ export async function init(options: GlobalOptions & { readonly format?: string |
   let content: string
   if (format === 'yml' || format === 'yaml') {
     file = join(root, 'x18n.config.yml')
-    content = `# yaml-language-server: $schema=https://x18n.antfu.dev/schema/config.json\n${stringifyYaml(config)}`
+    content = `# yaml-language-server: $schema=https://x18n.dev/schema/config.json\n${stringifyYaml(config)}`
   }
   else if (format === 'json') {
     file = join(root, 'x18n.config.json')
-    content = `${JSON.stringify({ $schema: 'https://x18n.antfu.dev/schema/config.json', ...config }, null, 2)}\n`
+    content = `${JSON.stringify({ $schema: 'https://x18n.dev/schema/config.json', ...config }, null, 2)}\n`
   }
   else {
     file = join(root, 'x18n.config.ts')

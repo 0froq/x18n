@@ -32,7 +32,7 @@ export default defineConfig({
 
 ```yaml
 # x18n.config.yml
-# yaml-language-server: $schema=https://x18n.antfu.dev/schema/config.json
+# yaml-language-server: $schema=https://x18n.dev/schema/config.json
 sourceLocale: en
 presets: [vue-i18n]
 plugins:
@@ -98,7 +98,7 @@ The CLI, LSP and UI show every project. `x18n check` checks all of them, and `--
 ## Schemas and types
 
 - valibot schemas in `@x18n/core` are the single source for runtime validation, for the JSON Schemas, and for the TS types of the serializable part (`v.InferInput`).
-- The `@x18n/core` build writes `schema/config.json` and `schema/plugin.json` with `@valibot/to-json-schema`. They are part of the package `exports`. The docs site serves the same files at `https://x18n.antfu.dev/schema/*.json`.
+- The `@x18n/core` build writes `schema/config.json` and `schema/plugin.json` with `@valibot/to-json-schema`. They are part of the package `exports`. The docs site serves the same files at `https://x18n.dev/schema/*.json`.
 - `x18n-vscode` contributes `jsonValidation` for `x18n.config.json`, and `yaml.schemas` (through the YAML extension) for `x18n.config.y?(a)ml` and `*.x18n-plugin.y?(a)ml`.
 - `defineConfig` in TS accepts more than the schema (plugin objects, functions). That part is typed by TS only, and the schema shows it as `plugins: (string | [string, object])[]`.
 - A test asserts that the TS input type and the valibot output type agree on the serializable keys, so they cannot drift.
