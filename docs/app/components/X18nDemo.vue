@@ -45,7 +45,7 @@ function onKeydown(event: KeyboardEvent) {
 <template>
   <div class="not-prose x18n-demo w-full text-left">
     <div class="mb-3">
-      <div role="tablist" aria-label="x18n surfaces" class="flex items-center gap-1" @keydown="onKeydown">
+      <div role="tablist" aria-label="x18n surfaces" class="flex flex-wrap items-center gap-0.5 sm:gap-1 max-sm:px-3" @keydown="onKeydown">
         <button
           v-for="tab in tabs"
           :id="`${uid}-${tab.id}`"
@@ -53,7 +53,7 @@ function onKeydown(event: KeyboardEvent) {
           role="tab"
           :aria-selected="active === tab.id"
           :tabindex="active === tab.id ? 0 : -1"
-          class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors"
+          class="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1.5 text-sm transition-colors sm:px-3"
           :class="active === tab.id ? 'bg-elevated text-highlighted' : 'text-muted hover:text-highlighted'"
           @click="select(tab.id)"
         >
@@ -62,7 +62,7 @@ function onKeydown(event: KeyboardEvent) {
         </button>
       </div>
     </div>
-    <div role="tabpanel" :aria-labelledby="`${uid}-${active}`" class="relative h-[33rem] overflow-hidden rounded-lg border border-muted bg-default">
+    <div role="tabpanel" :aria-labelledby="`${uid}-${active}`" class="relative h-[33rem] overflow-hidden border-y border-muted bg-default rounded-lg border">
       <svg
         v-if="auto && progress.ms && active !== 'try'"
         viewBox="0 0 20 20"
@@ -93,6 +93,13 @@ function onKeydown(event: KeyboardEvent) {
 </template>
 
 <style>
+/* Below the container's `sm` gutter (1rem), run edge to edge. */
+@media (max-width: 639px) {
+  .x18n-demo {
+    margin-inline: -2rem;
+    width: calc(100% + 4rem);
+  }
+}
 /* Bleed past the hero column, but only into the space beside the 80rem container. */
 @media (min-width: 1024px) {
   .x18n-demo {

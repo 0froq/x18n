@@ -84,7 +84,7 @@ function badge(level: Block['level']) {
 </script>
 
 <template>
-  <div class="h-full overflow-hidden bg-white p-5 font-mono text-[13px] leading-6 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-200">
+  <div class="h-full bg-white p-3 font-mono sm:p-5 text-[13px] leading-6 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-200">
     <div class="flex items-center gap-2.5">
       <span class="text-emerald-600 dark:text-emerald-400">❯</span>
       <span>{{ typed }}<span v-if="shown === 0 && !running" class="cli-caret">▍</span></span>
@@ -101,10 +101,10 @@ function badge(level: Block['level']) {
           <div>
             <span class="text-cyan-700 underline decoration-cyan-700/40 underline-offset-2 dark:text-cyan-400 dark:decoration-cyan-400/40">{{ b.path }}</span><span class="text-neutral-500">:{{ b.pos }}</span>
           </div>
-          <div class="mt-0.5 flex items-center gap-2">
-            <span class="rounded px-1.5 text-xs font-semibold uppercase" :class="badge(b.level)">{{ b.level }}</span>
+          <div class="mt-0.5 flex flex-wrap items-center gap-x-2">
+            <span class="shrink-0 rounded px-1.5 text-xs font-semibold uppercase" :class="badge(b.level)">{{ b.level }}</span>
             <span>{{ b.text }}</span>
-            <span class="ml-auto text-neutral-500">{{ b.rule }}</span>
+            <span class="ml-auto whitespace-nowrap text-neutral-500">{{ b.rule }}</span>
           </div>
           <div class="mt-1.5 overflow-hidden whitespace-pre border-l-2 border-neutral-300 pl-3 text-xs leading-5 dark:border-neutral-700">
             <div v-for="(line, j) in b.frame[1]" :key="j">
@@ -118,10 +118,10 @@ function badge(level: Block['level']) {
       </template>
     </div>
 
-    <div v-if="shown > blocks.length" class="cli-in mt-5 flex items-center gap-4 border-t border-neutral-200 pt-3 dark:border-neutral-800">
-      <span class="font-semibold text-red-600 dark:text-red-400">✖ 1 error</span>
-      <span class="font-semibold text-yellow-700 dark:text-yellow-400">⚠ 1 warning</span>
-      <span class="ml-auto text-neutral-500">2 files · 96ms</span>
+    <div v-if="shown > blocks.length" class="cli-in mt-5 flex flex-wrap items-center gap-x-4 border-t border-neutral-200 pt-3 dark:border-neutral-800">
+      <span class="whitespace-nowrap font-semibold text-red-600 dark:text-red-400">✖ 1 error</span>
+      <span class="whitespace-nowrap font-semibold text-yellow-700 dark:text-yellow-400">⚠ 1 warning</span>
+      <span class="ml-auto whitespace-nowrap text-neutral-500">2 files · 96ms</span>
     </div>
   </div>
 </template>

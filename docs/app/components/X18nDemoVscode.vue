@@ -238,7 +238,7 @@ useDemoLoop(async (sleep) => {
         <span class="flex items-center gap-1"><UIcon name="i-ph-x-circle" class="size-3.5" />0</span>
         <span class="flex items-center gap-1"><UIcon name="i-ph-warning-duotone" class="size-3.5" />1</span>
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-4 whitespace-nowrap">
         <span class="flex items-center gap-1"><UIcon name="i-ph-globe-duotone" class="size-3.5" />en</span>
         <span class="flex items-center gap-1">
           <UIcon name="i-ph-eye-duotone" class="size-3.5" />{{ displayLocale.code }}

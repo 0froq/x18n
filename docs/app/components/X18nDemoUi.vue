@@ -126,9 +126,9 @@ useDemoLoop(async (sleep) => {
           <div
             v-for="l in locales"
             :key="l.code"
-            class="flex items-center gap-4 border-b border-muted px-5 py-2.5"
+            class="flex items-center gap-4 border-b border-muted px-5 py-2.5 whitespace-nowrap"
           >
-            <span class="flex w-24 shrink-0 items-center gap-2 text-sm text-highlighted">
+            <span class="flex w-24 shrink-0 items-center gap-2 text-sm text-highlighted whitespace-nowrap">
               <UIcon :name="`i-circle-flags-${l.flag}`" class="size-4" />
               {{ l.code }}
             </span>
