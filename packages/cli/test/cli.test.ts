@@ -338,6 +338,19 @@ describe('x18n binary', () => {
     expect(prompt.data.items.find((item: any) => item.key === 'app.title')).toMatchObject({ source: 'My Great App', previousSource: 'My App' })
   })
 
+  it('prints the shipped skills as prompts', async () => {
+    const dir = await fixture('vue-i18n')
+    const setup = await x18n(dir, ['prompt', 'setup'])
+    expect(setup.code).toBe(0)
+    expect(setup.stdout).toContain('# Set up x18n')
+    expect(setup.stdout).toContain('# Migrate from i18n-ally')
+    expect(setup.stdout).not.toContain('name: x18n-setup')
+    const check = await x18n(dir, ['prompt', 'check'])
+    expect(check.code).toBe(0)
+    expect(check.stdout).toContain('x18n check')
+    expect(check.stdout).not.toContain('name: x18n-check')
+  })
+
   it('keeps the JSON contract of every read command', async () => {
     const dir = await fixture('vue-i18n')
     const name = basename(dir)

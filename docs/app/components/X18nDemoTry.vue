@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // A static pane: it never starts an animation, so the demo stops cycling here.
-const prompt = `Set up https://x18n.dev/ in this project. Run \`pnpx @x18n/cli doctor\` to see what it detects, then follow the x18n-setup skill that ships in @x18n/cli (skills/x18n-setup).`
+const prompt = `Set up https://x18n.dev/ in this project. Run \`pnpx @x18n/cli prompt setup\` and follow the instructions it prints.`
 
 const copied = ref(false)
 

@@ -75,7 +75,7 @@ export function createCli(): CAC {
   cli.command('', 'Show the status and the main commands').action(run('status', async (options: GlobalOptions) => {
     await status(options)
     if (!options.json)
-      process.stdout.write('\nCommands: check, keys, search, get, usages, set, apply, rename, delete, fill, prompt translate, ui. Run `x18n --help` for all.\n')
+      process.stdout.write('\nCommands: check, keys, search, get, usages, set, apply, rename, delete, fill, prompt translate, prompt setup, prompt check, ui. Run `x18n --help` for all.\n')
   }))
   cli.command('status', 'Locales with coverage, resources, keys and diagnostics').action(run('status', status))
   cli.command('keys [glob]', 'List keys')
@@ -144,7 +144,7 @@ export function createCli(): CAC {
     .option('--dry-run', 'Print the plan instead of writing')
     .action(run('extract', extract))
 
-  cli.command('prompt <kind>', 'Print a prompt for an agent or LLM: `prompt translate --to <locale>` or `prompt review --locale <locale>`')
+  cli.command('prompt <kind>', 'Print a prompt for an agent or LLM: `prompt translate --to <locale>`, `prompt review --locale <locale>`, or the skills `prompt setup` and `prompt check`')
     .option('--to <locale>', 'Target locale (translate)')
     .option('--locale <locale>', 'Locale to review')
     .option('--keys <glob>', 'Only keys matching a glob')
