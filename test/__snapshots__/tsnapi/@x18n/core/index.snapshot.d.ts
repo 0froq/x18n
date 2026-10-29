@@ -20,6 +20,10 @@ export interface ArgSource {
   readonly arg: number;
   readonly property?: string | undefined;
 }
+export interface BaselineSummary {
+  readonly suppressed: number;
+  readonly fixed: number;
+}
 export interface Builtins {
   readonly plugins: readonly Plugin[];
   readonly presets: {
@@ -703,6 +707,7 @@ export interface Reporter {
 export interface ReporterContext {
   readonly displayPath: (_: string, _: string) => string;
   readonly color: boolean;
+  readonly baseline?: BaselineSummary | undefined;
 }
 export interface ReportInput {
   readonly project: string;
