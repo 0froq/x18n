@@ -17,6 +17,8 @@ export interface PromptOptions {
   readonly context?: boolean | undefined
   /** Translate prompts: add stale translations (load history first). */
   readonly stale?: boolean | undefined
+  /** Translate prompts: also list keys whose target equals the source (except do-not-translate glossary terms). */
+  readonly includeIdentical?: boolean | undefined
 }
 
 export interface UsageContext {
@@ -59,6 +61,14 @@ function text(value: MessageLeaf | undefined): string | undefined {
     : String(value)
 }
 
+function doNotTranslateTerms(config: ResolvedConfig): ReadonlySet<string> {
+  return new Set(config.glossary.filter(entry => entry.doNotTranslate === true).map(entry => entry.term.toLowerCase()))
+}
+
+function isDoNotTranslateCopy(value: string, terms: ReadonlySet<string>): boolean {
+  return terms.has(value.toLowerCase())
+}
+
 function contextOf(project: Project, key: KeyString): UsageContext[] {
   return project.usages({ key }).slice(0, 2).flatMap(({ usage }) => {
     const source = project.text(usage.path)
@@ -93,6 +103,7 @@ export function buildPrompt(project: Project, kind: 'translate' | 'review', to: 
     : undefined
   const outdated = new Set(project.analyze().coverage.find(c => c.locale === to)?.outdated)
   const stale = (key: KeyString): boolean => outdated.has(key)
+  const identicalTerms = doNotTranslateTerms(extra.config)
   const candidates = project.keys({ namespace: options.namespace }).filter((key) => {
     if (match && !match(key))
       return false
@@ -104,7 +115,11 @@ export function buildPrompt(project: Project, kind: 'translate' | 'review', to: 
     const target = text(project.message(key, to)?.value)
     if (kind === 'review')
       return target !== undefined && target !== ''
-    return list !== undefined || target === undefined || target === '' || (options.stale === true && stale(key))
+    const missing = target === undefined || target === ''
+    const identical = options.includeIdentical === true
+      && target === source
+      && !isDoNotTranslateCopy(source, identicalTerms)
+    return list !== undefined || missing || (options.stale === true && stale(key)) || identical
   })
   const start = Number(options.cursor ?? 0) || 0
   const limit = options.limit ?? 50
@@ -130,7 +145,7 @@ export function buildPrompt(project: Project, kind: 'translate' | 'review', to: 
     ? project.keys().flatMap((key) => {
         const source = text(project.message(key, from)?.value)
         const target = text(project.message(key, to)?.value)
-        return source && target && !candidates.includes(key)
+        return source && target && source !== target && !candidates.includes(key)
           ? [
               { key, source, target },
             ]
