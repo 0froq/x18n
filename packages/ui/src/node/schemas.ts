@@ -41,6 +41,7 @@ export const PromptQuerySchema: v.GenericSchema<PromptQuery> = v.object({
   limit: v.optional(v.pipe(v.number(), v.description('Messages per prompt. Default 50.'))),
   cursor: v.optional(text('`nextCursor` of the previous prompt.')),
   stale: v.optional(v.pipe(v.boolean(), v.description('Also translate stale translations: those older than their source message.'))),
+  includeIdentical: v.optional(v.pipe(v.boolean(), v.description('Also translate messages that copy the source (except do-not-translate glossary terms).'))),
 })
 
 const reviewType = v.picklist([

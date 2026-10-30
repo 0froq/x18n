@@ -156,6 +156,7 @@ export function createCli(): CAC {
     .option('--format <format>', 'markdown (default) or json')
     .option('--no-context', 'Leave out code around usages')
     .option('--stale', 'Also translate stale translations (needs git history)')
+    .option('--include-identical', 'Also translate messages that copy the source (except do-not-translate glossary terms)')
     .action(run('prompt', prompt))
 
   cli.command('review <action> [target]', 'Reviews: `list [key]`, `comment|approve|request-change|suggest <key>`, `resolve|apply-suggestion <id>`, `mark-fresh <key>`')

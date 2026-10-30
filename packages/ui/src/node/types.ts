@@ -45,6 +45,8 @@ export interface PromptQuery extends ProjectQuery {
   readonly cursor?: string | undefined
   /** Also translate stale translations. */
   readonly stale?: boolean | undefined
+  /** Also translate messages that copy the source (except do-not-translate glossary terms). */
+  readonly includeIdentical?: boolean | undefined
 }
 
 /** Edit ops the UI and agents send; extraction has its own functions. */

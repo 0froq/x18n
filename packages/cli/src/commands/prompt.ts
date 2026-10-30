@@ -13,6 +13,7 @@ export interface PromptCommandOptions extends GlobalOptions {
   readonly format?: string | undefined
   readonly context?: boolean | undefined
   readonly stale?: boolean | undefined
+  readonly includeIdentical?: boolean | undefined
 }
 
 /** The skill each skill prompt prints. */
@@ -71,6 +72,7 @@ export async function prompt(kind: string, options: PromptCommandOptions): Promi
     cursor: options.cursor,
     context: options.context,
     stale: options.stale,
+    includeIdentical: options.includeIdentical,
   })
   if (options.json || options.format === 'json')
     printJson(`prompt ${kind}`, data)
