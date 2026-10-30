@@ -1027,6 +1027,24 @@ describe('namespaces', () => {
     expect(project.explain().presets.find(p => p.name === 'angular-localize')?.reason).toBe('not-detected')
   })
 
+  it('ngx-translate: standalone translate() and ternary before pipe', async () => {
+    const { project } = await createTestProject({
+      'package.json': pkg('@angular/core', '@ngx-translate/core'),
+      'src/assets/i18n/en.json': json({
+        a: { yes: 'Yes', no: 'No' },
+        standalone: { key: 'Standalone' },
+      }),
+      'src/app/app.component.html': `{{ (ok ? 'a.yes' : 'a.no') | translate }}`,
+      'src/app/app.component.ts': [
+        `import { translate } from '@ngx-translate/core'`,
+        `export function label() { return translate('standalone.key') }`,
+      ].join('\n'),
+    })
+    expect(project.explain().presets.find(p => p.name === 'ngx-translate')?.reason).toBe('detected')
+    expect(project.usages().map(m => m.usage.key).sort()).toEqual(['a.no', 'a.yes', 'standalone.key'])
+    expect(project.analyze().undefinedUsages).toEqual([])
+  })
+
   it('transloco: a kebab-case scope folder is a camelCase key prefix', async () => {
     const { project, files } = await createTestProject({
       'package.json': pkg('@jsverse/transloco'),
