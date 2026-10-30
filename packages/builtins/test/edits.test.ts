@@ -495,4 +495,39 @@ describe('prompts', () => {
     expect(project.prompt('translate', 'de', { cursor: '1' }).items.map(i => i.key)).toEqual(['b'])
     expect(project.prompt('review', 'de').items.map(i => i.key)).toEqual(['c'])
   })
+
+  it('omits identical source/target pairs from style examples', async () => {
+    const { project } = await createTestProject({
+      'locales/en.json': json({ copied: 'Hello', good: 'Save' }),
+      'locales/de.json': json({ copied: 'Hello', good: 'Speichern' }),
+    }, {
+      resources: [
+        { pattern: 'locales/{locale}.json' },
+      ],
+    })
+    expect(project.prompt('translate', 'de').examples).toEqual([
+      { key: 'good', source: 'Save', target: 'Speichern' },
+    ])
+  })
+
+  it('lists identical targets with includeIdentical except do-not-translate glossary terms', async () => {
+    const { project } = await createTestProject({
+      'locales/en.json': json({ greeting: 'Hello', brand: 'x18n', farewell: 'Goodbye' }),
+      'locales/de.json': json({ greeting: 'Hello', brand: 'x18n', farewell: '' }),
+      'src/x.ts': 't("greeting"); t("brand"); t("farewell")',
+    }, {
+      resources: [
+        { pattern: 'locales/{locale}.json' },
+      ],
+      usage: {
+        include: ['src/**/*'],
+      },
+      glossary: [
+        { term: 'x18n', doNotTranslate: true },
+      ],
+    })
+    expect(project.prompt('translate', 'de').items.map(i => i.key)).toEqual(['farewell'])
+    expect(project.prompt('translate', 'de', { includeIdentical: true }).items.map(i => i.key).sort()).toEqual(['farewell', 'greeting'].sort())
+    expect(project.prompt('translate', 'de', { includeIdentical: true }).examples).toEqual([])
+  })
 })

@@ -694,6 +694,7 @@ export interface PromptOptions {
   readonly cursor?: string | undefined;
   readonly context?: boolean | undefined;
   readonly stale?: boolean | undefined;
+  readonly includeIdentical?: boolean | undefined;
 }
 export interface RegexScannerSpec {
   readonly extensions: readonly string[];

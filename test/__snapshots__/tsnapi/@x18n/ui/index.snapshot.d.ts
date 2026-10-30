@@ -182,6 +182,7 @@ export interface PromptQuery extends ProjectQuery {
   readonly limit?: number | undefined;
   readonly cursor?: string | undefined;
   readonly stale?: boolean | undefined;
+  readonly includeIdentical?: boolean | undefined;
 }
 export interface ReviewQuery extends ProjectQuery {
   readonly key?: KeyString | undefined;

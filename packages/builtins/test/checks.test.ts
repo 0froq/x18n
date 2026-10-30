@@ -86,4 +86,11 @@ describe('identical-to-source', () => {
       ],
     })).toEqual(['de:other'])
   })
+
+  it('reports a copied greeting while empty keys stay missing-translation', async () => {
+    expect(await identical(
+      { greeting: 'Hello', farewell: 'Goodbye' },
+      { greeting: 'Hello', farewell: '' },
+    )).toEqual(['de:greeting'])
+  })
 })

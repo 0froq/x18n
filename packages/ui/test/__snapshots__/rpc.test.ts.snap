@@ -197,6 +197,10 @@ exports[`agent tools > names the tools for MCP 1`] = `
           "description": "\`nextCursor\` of the previous prompt.",
           "type": "string",
         },
+        "includeIdentical": {
+          "description": "Also translate messages that copy the source (except do-not-translate glossary terms).",
+          "type": "boolean",
+        },
         "keys": {
           "anyOf": [
             {
@@ -871,9 +875,9 @@ exports[`rpc functions > builds the translate prompt 1`] = `
 
 - \`app.greeting\`: "Hello {name}" → "Hallo"
 - \`app.title\`: "My App" → "Meine App"
-- \`linked\`: "@:app.title!" → "@:app.title!"
 - \`nav.home\`: "Home" → "Start"
 - \`pages.home.title\`: "Welcome" → "Willkommen"
+- \`unused\`: "Nobody uses me" → "Niemand"
 
 ## Messages
 
