@@ -1,0 +1,37 @@
+name: VS Code Extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or SHA to package. Leave empty to use this workflow branch.
+        required: false
+        type: string
+  push:
+    branches:
+      - ci/vscode-extension
+  pull_request:
+    branches:
+      - ci/vscode-extension
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: pnpm
+      - run: pnpm install
+      - name: Package extension
+        working-directory: packages/vscode
+        run: pnpm run ext:package
+      - name: Check UI assets
+        run: test -f packages/vscode/dist/public/index.html
