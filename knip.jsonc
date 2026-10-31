@@ -15,8 +15,8 @@
       "ignoreDependencies": ["@oxc-parser/binding-wasm32-wasip1"]
     },
     "packages/zed": {
-      // Manual patch helper and Node tests run directly, outside Vitest.
-      "entry": ["scripts/run-patch-x18n-lsp.mjs", "tests/*.test.mjs"],
+      // Node tests run directly, outside Vitest.
+      "entry": ["tests/*.test.mjs"],
       // Tests read the published package from node_modules and spawn its binary.
       "ignoreDependencies": ["@x18n/lsp"]
     },

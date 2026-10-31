@@ -1,9 +1,7 @@
-mod lsp_patch;
 mod server_resolve;
 
 use std::{env, fs};
 
-use lsp_patch::{ensure_patched_lsp_src, lsp_src_path_from_bin, server_bin_after_patch_attempt};
 use server_resolve::{
     build_initialization_options, choose_server_source, join_path, local_server_path_from_root,
     merge_initialization_options, package_json_lists_x18n_lsp, pinned_server_version,
@@ -95,9 +93,7 @@ impl X18nExtension {
         version: &str,
     ) -> Result<String> {
         self.ensure_bundled_server(language_server_id, version)?;
-        let bundled = self.bundled_server_path();
-        ensure_patched_lsp_src(&lsp_src_path_from_bin(&bundled))?;
-        Ok(bundled)
+        Ok(self.bundled_server_path())
     }
 
     fn node_stdio_command(script: String) -> Result<zed::Command> {
@@ -106,25 +102,6 @@ impl X18nExtension {
             args: vec![script, "--stdio".into()],
             env: Default::default(),
         })
-    }
-
-    /// Patch when possible, then start Node on `bin.mjs`. Falls back to the extension-managed
-    /// copy when the workspace install cannot be read (e.g. pnpm symlinks under WASI).
-    fn command_for_patched_server(
-        &mut self,
-        language_server_id: &zed::LanguageServerId,
-        preferred_bin: String,
-        version: &str,
-    ) -> Result<zed::Command> {
-        let patch_local = ensure_patched_lsp_src(&lsp_src_path_from_bin(&preferred_bin));
-        let script = match patch_local {
-            Ok(_) => preferred_bin,
-            Err(err) => {
-                let bundled = self.prepare_bundled_bin(language_server_id, version)?;
-                server_bin_after_patch_attempt(&preferred_bin, Err(err), &bundled)
-            }
-        };
-        Self::node_stdio_command(script)
     }
 }
 
@@ -192,7 +169,7 @@ impl zed::Extension for X18nExtension {
             }
             ServerSource::LocalWorkspace => {
                 let script = local_server_path_from_root(worktree.root_path().as_str());
-                self.command_for_patched_server(language_server_id, script, version)
+                Self::node_stdio_command(script)
             }
             ServerSource::Npx => {
                 let npx = npx_path.ok_or("npx not found on PATH")?;

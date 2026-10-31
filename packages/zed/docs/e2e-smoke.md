@@ -9,7 +9,7 @@ Use this after installing the dev extension. Package checks run Node tests, Rust
 - [ ] Zed with **Install Dev Extension** (`packages/zed`)
 - [ ] A project with locale resources. `x18n.config.*` is optional, and i18n-ally / `.vscode/settings.json` layouts work.
 
-If Zed.log showed `No workspace folder is open.`, see [workspace-folders.md](./workspace-folders.md). The extension patches `@x18n/lsp` for servers it starts.
+If Zed.log showed `No workspace folder is open.`, see [workspace-folders.md](./workspace-folders.md). Use `@x18n/lsp` 0.1.5 or newer.
 
 ## Install the language server
 
@@ -18,7 +18,7 @@ Pick one:
 1. **Workspace package** (recommended, matches VS Code `x18n.useLocalServer`):
 
    ```sh
-   npm install -D @x18n/lsp@0.1.3
+   npm install -D @x18n/lsp@^0.1.5
    ```
 
 2. **Extension download** of `@x18n/lsp` into the extension work directory on first start (needs the npm install capability).
