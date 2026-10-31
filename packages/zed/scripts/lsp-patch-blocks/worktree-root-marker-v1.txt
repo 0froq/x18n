@@ -1,1 +1,0 @@
-if (this.folders.length === 0 && typeof settings?.worktreeRoot === "string") this.folders = [settings.worktreeRoot];
